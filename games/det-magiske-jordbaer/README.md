@@ -80,6 +80,30 @@ RETRO_GAME_RUNTIME_DIR=~/retro-game-runtime \
 
 Import `lutris.yml` as a local Lutris install script/config. The wrapper remains the canonical game entry point; `install.sh` is for first-time ISO acquisition/import.
 
+## AppImage build
+
+After the game has been prepared locally, build a mostly self-contained x86_64 AppImage:
+
+```sh
+./extras/build_appimage.sh
+```
+
+Useful variants:
+
+```sh
+./extras/build_appimage.sh --appdir-only   # build and verify AppDir only
+./extras/build_appimage.sh --no-download   # require local appimagetool/cache
+```
+
+Outputs are ignored by Git:
+
+- AppDir: `extras/build/det-magiske-jordbaer.AppDir`
+- AppImage: `extras/dist/det-magiske-jordbaer-x86_64.AppImage`
+
+The AppImage bundles the local extracted game files plus the official DOSBox-Staging Linux x86_64 runtime. It still needs a reasonably compatible Linux host with glibc/kernel, OpenGL and audio support. Save/config files are kept outside the read-only AppImage in `~/.local/share/det-magiske-jordbaer/`.
+
+Only distribute an AppImage made this way if you have the right to distribute the bundled game data.
+
 ## Reference link
 
 Archive.org reference/download URL used by `install.sh`:

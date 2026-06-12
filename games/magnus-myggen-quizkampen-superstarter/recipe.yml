@@ -1,0 +1,46 @@
+id: "magnus-myggen-quizkampen-superstarter"
+title: "Magnus & Myggen: Quizkampen Superstarter"
+runner: "wine"
+status: "working"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Archive.org direct ISO reference"
+      url: "https://archive.org/download/magnus-myggen-quizkampen-superstarter-version/Quizkampen%20Superstarter%20Version.iso"
+      note: "Used by install.sh when the user chooses download. Verify legal status yourself."
+    - name: "Original media"
+      url: ""
+      note: "Use your own legally obtained copy; install.sh can import a physical CD/DVD to ISO."
+
+game_files:
+  required:
+    - filename: "Quizkampen Superstarter Version.iso"
+      type: "cdrom-image"
+      sha256: "TODO"
+      note: "Place under local/sources/magnus-myggen-quizkampen-superstarter/, set MMQ_ISO, or run install.sh."
+
+paths:
+  source_dir: "local/sources/magnus-myggen-quizkampen-superstarter"
+  runtime_dir: "local/runtime/magnus-myggen-quizkampen-superstarter"
+
+setup:
+  installer: "install.sh"
+  modes:
+    - "existing ISO"
+    - "download from archive.org reference URL"
+    - "import physical CD/DVD with dd"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+  default_mode: "game"
+  executable: "mm12main.exe"
+  notes:
+    - "AUTORUN.INF opens LAUNCHER.EXE, but the reliable launcher bypasses InstallShield and manually extracts Application_DK/mm12main.exe plus CXT resources/Xtras from DATA1.CAB."
+    - "Wine prefix is win32/win98 by default."
+
+appimage:
+  script: "extras/build_appimage.sh"
+  status: "working-appdir"

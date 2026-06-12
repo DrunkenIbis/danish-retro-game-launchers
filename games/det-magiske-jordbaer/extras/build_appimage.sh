@@ -288,38 +288,169 @@ EOF
 }
 
 write_icon() {
-  log "Genererer ikon"
-  python3 - "$APPDIR/usr/share/icons/hicolor/256x256/apps/${PROJECT_NAME}.png" <<'PY'
-from pathlib import Path
-import struct, sys, zlib
-out = Path(sys.argv[1])
-w = h = 256
-raw = bytearray()
-for y in range(h):
-    raw.append(0)
-    for x in range(w):
-        # Strawberry-ish radial background with simple green top.
-        cx, cy = x - 128, y - 136
-        dist = min(1.0, (cx*cx + cy*cy) ** 0.5 / 170)
-        r = int(235 - 60 * dist)
-        g = int(42 + 20 * (1 - dist))
-        b = int(70 + 25 * dist)
-        if 38 < y < 95 and abs(x - 128) < 75 - (y - 38) // 2:
-            r, g, b = 54, 145, 72
-        if 65 < y < 220 and ((x - 128) ** 2 / 86 ** 2 + (y - 142) ** 2 / 96 ** 2) < 1:
-            r, g, b = 220, 36, 58
-            if (x * 13 + y * 7) % 37 < 2:
-                r, g, b = 255, 230, 135
-        raw.extend((r, g, b, 255))
+  log "Genererer ikon fra spillets STRMGC.ICN"
+  local source_icon="$APPDIR/game/cdrom/STRMGC.ICN"
+  [[ -f "$source_icon" ]] || source_icon="$APPDIR/game/game-template/STRMGC.ICN"
 
-def chunk(kind, data):
-    return struct.pack('>I', len(data)) + kind + data + struct.pack('>I', zlib.crc32(kind + data) & 0xffffffff)
-png = b'\x89PNG\r\n\x1a\n'
-png += chunk(b'IHDR', struct.pack('>IIBBBBB', w, h, 8, 6, 0, 0, 0))
-png += chunk(b'IDAT', zlib.compress(bytes(raw), 9))
-png += chunk(b'IEND', b'')
-out.parent.mkdir(parents=True, exist_ok=True)
-out.write_bytes(png)
+  python3 - "$source_icon" "$APPDIR/usr/share/icons/hicolor" "$PROJECT_NAME" <<'PY'
+from pathlib import Path
+import struct
+import sys
+import zlib
+
+src, icon_root, project_name = sys.argv[1:4]
+src = Path(src)
+root = Path(icon_root)
+
+
+def png_bytes(width, height, rgba):
+    raw = bytearray()
+    for y in range(height):
+        raw.append(0)  # filter type 0
+        for r, g, b, a in rgba[y * width:(y + 1) * width]:
+            raw.extend((r, g, b, a))
+
+    def chunk(kind, data):
+        return (
+            struct.pack('>I', len(data))
+            + kind
+            + data
+            + struct.pack('>I', zlib.crc32(kind + data) & 0xFFFFFFFF)
+        )
+
+    out = b'\x89PNG\r\n\x1a\n'
+    out += chunk(b'IHDR', struct.pack('>IIBBBBB', width, height, 8, 6, 0, 0, 0))
+    out += chunk(b'IDAT', zlib.compress(bytes(raw), 9))
+    out += chunk(b'IEND', b'')
+    return out
+
+
+def fallback_icon():
+    width = height = 256
+    rgba = []
+    for y in range(height):
+        for x in range(width):
+            cx, cy = x - 128, y - 136
+            dist = min(1.0, (cx * cx + cy * cy) ** 0.5 / 170)
+            r = int(235 - 60 * dist)
+            g = int(42 + 20 * (1 - dist))
+            b = int(70 + 25 * dist)
+            if 38 < y < 95 and abs(x - 128) < 75 - (y - 38) // 2:
+                r, g, b = 54, 145, 72
+            if 65 < y < 220 and ((x - 128) ** 2 / 86 ** 2 + (y - 142) ** 2 / 96 ** 2) < 1:
+                r, g, b = 220, 36, 58
+                if (x * 13 + y * 7) % 37 < 2:
+                    r, g, b = 255, 230, 135
+            rgba.append((r, g, b, 255))
+    return width, height, rgba
+
+
+def decode_ico(path):
+    data = path.read_bytes()
+    if len(data) < 22:
+        raise ValueError('too small for ICO')
+    reserved, ico_type, count = struct.unpack_from('<HHH', data, 0)
+    if reserved != 0 or ico_type not in (1, 2) or count < 1:
+        raise ValueError('not an ICO/ICN resource')
+
+    # Pick the largest embedded image. STRMGC.ICN contains one 32x32 16-colour
+    # DIB icon, but this keeps the converter useful if another frame appears.
+    entries = []
+    for i in range(count):
+        off = 6 + i * 16
+        w, h, colors, _reserved, planes, bit_count, size, image_off = struct.unpack_from('<BBBBHHII', data, off)
+        w = 256 if w == 0 else w
+        h = 256 if h == 0 else h
+        entries.append((w * h, w, h, bit_count, colors, size, image_off))
+    _, width, height, _bit_count, _colors, size, image_off = max(entries)
+    blob = data[image_off:image_off + size]
+
+    header_size = struct.unpack_from('<I', blob, 0)[0]
+    if header_size < 40:
+        raise ValueError('unsupported ICO bitmap header')
+    _header_size, dib_w, dib_h, planes, bpp, compression, _size_image, *_ = struct.unpack_from('<IiiHHIIiiII', blob, 0)
+    if compression != 0:
+        raise ValueError(f'compressed ICO bitmap is unsupported: {compression}')
+    width = abs(dib_w)
+    # ICO DIB height includes XOR bitmap + 1-bit transparency mask.
+    height = abs(dib_h) // 2 if abs(dib_h) == height * 2 or abs(dib_h) > width else abs(dib_h)
+    if planes != 1:
+        raise ValueError(f'unsupported ICO planes: {planes}')
+
+    palette_entries = 0
+    if bpp <= 8:
+        palette_entries = (1 << bpp)
+    palette_off = header_size
+    palette = []
+    for i in range(palette_entries):
+        b, g, r, _ = blob[palette_off + i * 4:palette_off + i * 4 + 4]
+        palette.append((r, g, b, 255))
+
+    pixel_off = header_size + palette_entries * 4
+    row_stride = ((width * bpp + 31) // 32) * 4
+    mask_off = pixel_off + row_stride * height
+    mask_stride = ((width + 31) // 32) * 4
+    rgba = [(0, 0, 0, 0)] * (width * height)
+
+    for file_y in range(height):
+        y = height - 1 - file_y if dib_h > 0 else file_y
+        row = blob[pixel_off + file_y * row_stride:pixel_off + (file_y + 1) * row_stride]
+        for x in range(width):
+            if bpp == 32:
+                b, g, r, a = row[x * 4:x * 4 + 4]
+                pixel = (r, g, b, a)
+            elif bpp == 24:
+                b, g, r = row[x * 3:x * 3 + 3]
+                pixel = (r, g, b, 255)
+            elif bpp == 8:
+                pixel = palette[row[x]]
+            elif bpp == 4:
+                val = row[x // 2]
+                idx = (val >> 4) if x % 2 == 0 else (val & 0x0F)
+                pixel = palette[idx]
+            elif bpp == 1:
+                val = row[x // 8]
+                idx = (val >> (7 - (x % 8))) & 1
+                pixel = palette[idx]
+            else:
+                raise ValueError(f'unsupported ICO bit depth: {bpp}')
+            rgba[y * width + x] = pixel
+
+    # Apply 1-bit AND mask when present. For 32-bit icons with real alpha, this
+    # is usually all zero; for STRMGC.ICN it preserves the original transparent
+    # shape from the Windows icon resource.
+    if mask_off + mask_stride * height <= len(blob):
+        for file_y in range(height):
+            y = height - 1 - file_y if dib_h > 0 else file_y
+            row = blob[mask_off + file_y * mask_stride:mask_off + (file_y + 1) * mask_stride]
+            for x in range(width):
+                if (row[x // 8] >> (7 - (x % 8))) & 1:
+                    r, g, b, _a = rgba[y * width + x]
+                    rgba[y * width + x] = (r, g, b, 0)
+    return width, height, rgba
+
+
+def scale_nearest(width, height, rgba, size):
+    out = []
+    for y in range(size):
+        sy = min(height - 1, y * height // size)
+        for x in range(size):
+            sx = min(width - 1, x * width // size)
+            out.append(rgba[sy * width + sx])
+    return out
+
+
+try:
+    width, height, rgba = decode_ico(src)
+except Exception as exc:
+    print(f'warning: could not decode {src}: {exc}; using generated fallback icon', file=sys.stderr)
+    width, height, rgba = fallback_icon()
+
+for size in (32, 48, 64, 128, 256):
+    out_dir = root / f'{size}x{size}' / 'apps'
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_rgba = rgba if (width, height) == (size, size) else scale_nearest(width, height, rgba, size)
+    (out_dir / f'{project_name}.png').write_bytes(png_bytes(size, size, out_rgba))
 PY
   cp "$APPDIR/usr/share/icons/hicolor/256x256/apps/${PROJECT_NAME}.png" "$APPDIR/.DirIcon"
   cp "$APPDIR/usr/share/icons/hicolor/256x256/apps/${PROJECT_NAME}.png" "$APPDIR/${PROJECT_NAME}.png"

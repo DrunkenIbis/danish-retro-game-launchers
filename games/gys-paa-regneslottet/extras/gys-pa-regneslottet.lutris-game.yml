@@ -1,0 +1,9 @@
+game:
+  exe: /home/test/lutris_game_scripts_Regneslottet/launch_gys_regneslottet.sh
+  working_dir: /home/test/lutris_game_scripts_Regneslottet
+game_slug: gys-pa-regneslottet
+name: Gys på Regneslottet
+slug: gys-pa-regneslottet-local-dosbox
+version: Local DOSBox-Staging wrapper
+system:
+  disable_runtime: false

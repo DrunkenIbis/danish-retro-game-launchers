@@ -1,0 +1,32 @@
+id: "magnus-myggen-leg-og-laer"
+title: "Magnus & Myggen: Leg og Lær"
+runner: "wine/winevdm"
+status: "migrated-from-local-working-folder"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive search"
+      url: "https://archive.org/search?query=Magnus+&+Myggen:+Leg+og+Lær"
+      note: "Reference/search link only. Verify legal status yourself."
+    - name: "Second-hand / original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "TODO"
+      type: "original game media"
+      sha256: "TODO"
+      note: "Place under ~/retro-game-files/magnus-myggen-leg-og-laer/ or local/sources/magnus-myggen-leg-og-laer/."
+
+paths:
+  source_dir: "local/sources/magnus-myggen-leg-og-laer"
+  runtime_dir: "local/runtime/magnus-myggen-leg-og-laer"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+
+migrated_from: "/home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer"

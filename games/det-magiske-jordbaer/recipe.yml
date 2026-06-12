@@ -1,0 +1,32 @@
+id: "det-magiske-jordbaer"
+title: "Det Magiske Jordbær"
+runner: "dosbox-staging"
+status: "migrated-from-local-working-folder"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive search"
+      url: "https://archive.org/search?query=Det+Magiske+Jordbær"
+      note: "Reference/search link only. Verify legal status yourself."
+    - name: "Second-hand / original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "TODO"
+      type: "original game media"
+      sha256: "TODO"
+      note: "Place under ~/retro-game-files/det-magiske-jordbaer/ or local/sources/det-magiske-jordbaer/."
+
+paths:
+  source_dir: "local/sources/det-magiske-jordbaer"
+  runtime_dir: "local/runtime/det-magiske-jordbaer"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+
+migrated_from: "/home/test/lutris_game_scripts_DetMagiskeJordbaer"

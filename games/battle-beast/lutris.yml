@@ -1,0 +1,20 @@
+name: Battle Beast
+game_slug: battle-beast
+version: Local wrapper
+slug: battle-beast-local-wrapper
+runner: linux
+script:
+  game:
+    exe: /home/test/lutris_game_scripts/battle_beast_launch_and_install.sh
+    working_dir: /home/test/lutris_game_scripts
+  system:
+    env:
+      BB_WINE_BIN: wine32
+      BB_WINE_BIN: 'wine32'
+      BB_VIRTUAL_DESKTOP: '1'
+      BB_DESKTOP_SIZE: '800x600'
+      BB_DESKTOP_NAME: 'BattleBeast'
+    disable_runtime: false
+  installer:
+    - chmodx: /home/test/lutris_game_scripts/battle_beast_launch_and_install.sh
+  install_complete_text: Battle Beast er tilføjet og starter i Wine window mode / virtual desktop. Start spillet fra Lutris; wrapperen bruger wine32 og Wine virtual desktop.

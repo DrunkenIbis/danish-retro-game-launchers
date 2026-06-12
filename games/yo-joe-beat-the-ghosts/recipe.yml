@@ -1,0 +1,32 @@
+id: "yo-joe-beat-the-ghosts"
+title: "Yo! Joe! Beat the Ghosts"
+runner: "dosbox-staging"
+status: "migrated-from-local-working-folder"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive search"
+      url: "https://archive.org/search?query=Yo!+Joe!+Beat+the+Ghosts"
+      note: "Reference/search link only. Verify legal status yourself."
+    - name: "Second-hand / original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "TODO"
+      type: "original game media"
+      sha256: "TODO"
+      note: "Place under ~/retro-game-files/yo-joe-beat-the-ghosts/ or local/sources/yo-joe-beat-the-ghosts/."
+
+paths:
+  source_dir: "local/sources/yo-joe-beat-the-ghosts"
+  runtime_dir: "local/runtime/yo-joe-beat-the-ghosts"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+
+migrated_from: "/home/test/lutris_game_scripts_yoejoe"

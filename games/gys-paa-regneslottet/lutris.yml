@@ -1,0 +1,16 @@
+name: Gys på Regneslottet
+game_slug: gys-pa-regneslottet
+version: Local DOSBox-Staging wrapper
+slug: gys-pa-regneslottet-local-dosbox
+runner: linux
+script:
+  game:
+    exe: /home/test/lutris_game_scripts_Regneslottet/launch_gys_regneslottet.sh
+    working_dir: /home/test/lutris_game_scripts_Regneslottet
+  system:
+    disable_runtime: false
+    env:
+      GYS_ZIP: /home/test/lutris_game_scripts_Regneslottet/Gys_Paa_Regneslottet.zip
+  installer:
+    - chmodx: /home/test/lutris_game_scripts_Regneslottet/launch_gys_regneslottet.sh
+  install_complete_text: "Gys på Regneslottet er sat op med DOSBox-Staging wrapper."

@@ -1,0 +1,14 @@
+id: "example-game"
+title: "Example Game"
+runner: "wine"
+status: "template"
+
+sources:
+  references: []
+
+game_files:
+  required: []
+
+paths:
+  source_dir: "local/sources/example-game"
+  runtime_dir: "local/runtime/example-game"

@@ -1,0 +1,32 @@
+id: "uden-at-prale-det-er-harry"
+title: "Uden at prale, det er Harry"
+runner: "wine"
+status: "migrated-from-local-working-folder"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive search"
+      url: "https://archive.org/search?query=Uden+at+prale,+det+er+Harry"
+      note: "Reference/search link only. Verify legal status yourself."
+    - name: "Second-hand / original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "TODO"
+      type: "original game media"
+      sha256: "TODO"
+      note: "Place under ~/retro-game-files/uden-at-prale-det-er-harry/ or local/sources/uden-at-prale-det-er-harry/."
+
+paths:
+  source_dir: "local/sources/uden-at-prale-det-er-harry"
+  runtime_dir: "local/runtime/uden-at-prale-det-er-harry"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+
+migrated_from: "/home/test/lutris_game_scripts_uden_at_prale_harry"

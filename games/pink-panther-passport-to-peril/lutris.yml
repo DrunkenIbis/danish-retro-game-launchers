@@ -1,0 +1,32 @@
+name: 'Den Lyserøde Panter: På hemmelig mission i udlandet'
+game_slug: den-lyseroede-panter-paa-hemmelig-mission-i-udlandet
+version: Local ISO wrapper
+slug: den-lyseroede-panter-paa-hemmelig-mission-i-udlandet-local-iso-wrapper
+runner: linux
+script:
+  game:
+    exe: /home/test/lutris_game_scripts_Pink_panter/pink_panther_launch.sh
+    working_dir: /home/test/lutris_game_scripts_Pink_panter
+  system:
+    env:
+      PP_ISO: /home/test/lutris_game_scripts_Pink_panter/Den Lyserøde Panter på hemmelig mission i udlandet.iso
+      PP_WINEPREFIX: /home/test/lutris_game_scripts_Pink_panter/wineprefix32
+      PP_WINE_BIN: wine32
+      PP_FORCE_WIN32: '1'
+      PP_CD_DRIVE: d
+      PP_CD_LABEL: PANTER
+      PP_LAUNCH_MODE: installed
+      PP_VIRTUAL_DESKTOP: '1'
+      PP_DESKTOP_SIZE: '640x480'
+      PP_DESKTOP_NAME: PinkPanther
+      PP_WINEDEBUG: '-all'
+    disable_runtime: false
+  installer:
+    - chmodx: /home/test/lutris_game_scripts_Pink_panter/pink_panther_launch.sh
+    - execute:
+        file: /home/test/lutris_game_scripts_Pink_panter/pink_panther_launch.sh
+        working_dir: /home/test/lutris_game_scripts_Pink_panter
+        env:
+          PP_INSTALL_ONLY: '1'
+          PP_WINEDEBUG: '-all'
+  install_complete_text: Den Lyserøde Panter er tilføjet. Installer-fasen forbereder Wine-prefixen og laver en manuel clean install uden gamle system-DLL'er. Start derefter spillet fra Lutris.

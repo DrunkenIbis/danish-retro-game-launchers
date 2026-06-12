@@ -1,0 +1,35 @@
+name: Pyrus
+slug: pyrus
+version: Local ISO Wine wrapper
+game_slug: pyrus
+runner: linux
+script:
+  game:
+    exe: /home/test/lutris_game_scripts_Pyrus_working/run-pyrus.sh
+    working_dir: /home/test/lutris_game_scripts_Pyrus_working
+  installer:
+    - chmodx: /home/test/lutris_game_scripts_Pyrus_working/run-pyrus.sh
+  system:
+    env:
+      PYRUS_MODE: pyrus
+      PYRUS_SKIP_INTRO: '1'
+      PYRUS_DESKTOP: Pyrus,640x480
+      PYRUS_CENTER_WINDOW: '1'
+      PYRUS_REGISTER_QUARTZ: '1'
+      PYRUS_USE_LOCAL_GST: '1'
+      PYRUS_FIX_QUIZ_INSTALL: '1'
+      PYRUS_REDIRECT_QUIZ_SETUP: '1'
+    gamemode: false
+    gamescope: false
+game:
+  exe: /home/test/lutris_game_scripts_Pyrus_working/run-pyrus.sh
+  working_dir: /home/test/lutris_game_scripts_Pyrus_working
+system:
+  env:
+    PYRUS_MODE: pyrus
+    PYRUS_SKIP_INTRO: '1'
+    PYRUS_DESKTOP: Pyrus,640x480
+    PYRUS_CENTER_WINDOW: '1'
+    PYRUS_REGISTER_QUARTZ: '1'
+  gamemode: false
+  gamescope: false

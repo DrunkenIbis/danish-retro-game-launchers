@@ -1,0 +1,27 @@
+name: 'Magnus & Myggen: Skumlesens Hævn'
+game_slug: magnus-myggen-skumlesens-haevn
+version: Local ISO wrapper
+slug: magnus-myggen-skumlesens-haevn-local-iso-wrapper
+runner: linux
+script:
+  game:
+    exe: /home/test/lutris_game_scripts_mm2/magnus_myggen_2_launch.sh
+    working_dir: /home/test/lutris_game_scripts_mm2
+  system:
+    env:
+      MM2_ISO: /home/test/lutris_game_scripts_mm2/Magnus-Myggen-Skumlesens-Skygge.iso
+      MM2_WINEPREFIX: /home/test/lutris_game_scripts_mm2/wineprefix32
+      MM2_WINE_BIN: wine32
+      MM2_FORCE_WIN32: '1'
+      MM2_CD_DRIVE: d
+      MM2_CD_LABEL: '200904171145'
+      MM2_RUN_INSTALLER: '0'
+      MM2_LAUNCH_MODE: cdexe
+      MM2_VIRTUAL_DESKTOP: '1'
+      MM2_DESKTOP_SIZE: '800x600'
+      MM2_DESKTOP_NAME: MagnusMyggen2
+      MM2_WINEDEBUG: '-all'
+    disable_runtime: false
+  installer:
+    - chmodx: /home/test/lutris_game_scripts_mm2/magnus_myggen_2_launch.sh
+  install_complete_text: Magnus & Myggen er tilføjet. Wrapperen udpakker ISO'en første gang og starter LAUNCHER.EXE via Wine i virtuel desktop.

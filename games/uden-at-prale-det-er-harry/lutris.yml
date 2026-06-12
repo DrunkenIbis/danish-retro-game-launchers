@@ -1,0 +1,17 @@
+name: Uden at prale - det er Harry
+slug: uden-at-prale-det-er-harry
+version: Local BIN/CUE Wine GE wrapper
+runner: linux
+game_slug: uden-at-prale-det-er-harry
+script:
+  game:
+    exe: /home/test/lutris_game_scripts_uden_at_prale_harry/launch-harry.sh
+    working_dir: /home/test/lutris_game_scripts_uden_at_prale_harry
+  installer:
+    - chmodx: /home/test/lutris_game_scripts_uden_at_prale_harry/launch-harry.sh
+  system:
+    gamemode: false
+    gamescope: false
+    env:
+      HARRY_MODE: game
+      HARRY_DESKTOP_SIZE: 800x600

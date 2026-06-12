@@ -1,0 +1,14 @@
+name: Yo! Joe! Beat the Ghosts
+slug: yo-joe-beat-the-ghosts-local-dosbox
+game_slug: yo-joe-beat-the-ghosts
+version: Local DOSBox wrapper
+runner: linux
+script:
+  game:
+    exe: /home/test/lutris_game_scripts_yoejoe/run-yo-joe.sh
+    working_dir: /home/test/lutris_game_scripts_yoejoe
+  system:
+    disable_runtime: false
+  installer:
+    - chmodx: /home/test/lutris_game_scripts_yoejoe/run-yo-joe.sh
+  install_complete_text: "Yo! Joe! is configured to launch through DOSBox-Staging."

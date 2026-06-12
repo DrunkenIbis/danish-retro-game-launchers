@@ -1,0 +1,32 @@
+id: "battle-beast"
+title: "Battle Beast"
+runner: "wine"
+status: "migrated-from-local-working-folder"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive search"
+      url: "https://archive.org/search?query=Battle+Beast"
+      note: "Reference/search link only. Verify legal status yourself."
+    - name: "Second-hand / original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "TODO"
+      type: "original game media"
+      sha256: "TODO"
+      note: "Place under ~/retro-game-files/battle-beast/ or local/sources/battle-beast/."
+
+paths:
+  source_dir: "local/sources/battle-beast"
+  runtime_dir: "local/runtime/battle-beast"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+
+migrated_from: "/home/test/lutris_game_scripts"

@@ -1,0 +1,10 @@
+game:
+  exe: /home/test/lutris_game_scripts_uden_at_prale_harry/launch-harry.sh
+  working_dir: /home/test/lutris_game_scripts_uden_at_prale_harry
+linux: {}
+system:
+  env:
+    HARRY_MODE: game
+    HARRY_DESKTOP_SIZE: 800x600
+  gamemode: false
+  gamescope: false

@@ -1,0 +1,32 @@
+id: "magnus-myggen-skumlesens-skygge"
+title: "Magnus & Myggen: Skumlesens Skygge/Hævn"
+runner: "wine"
+status: "migrated-from-local-working-folder"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive search"
+      url: "https://archive.org/search?query=Magnus+&+Myggen:+Skumlesens+Skygge/Hævn"
+      note: "Reference/search link only. Verify legal status yourself."
+    - name: "Second-hand / original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "TODO"
+      type: "original game media"
+      sha256: "TODO"
+      note: "Place under ~/retro-game-files/magnus-myggen-skumlesens-skygge/ or local/sources/magnus-myggen-skumlesens-skygge/."
+
+paths:
+  source_dir: "local/sources/magnus-myggen-skumlesens-skygge"
+  runtime_dir: "local/runtime/magnus-myggen-skumlesens-skygge"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+
+migrated_from: "/home/test/lutris_game_scripts_mm4"

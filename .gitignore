@@ -1,0 +1,63 @@
+# Local private game media / copyrighted files
+/local/sources/
+/local/runtime/
+/local/cache/
+/local/tmp/
+/local/logs/
+
+# Common private/runtime folders if created near recipes
+**/wineprefix*/
+**/prefix/
+**/drive_c/
+**/cdrom/
+**/cd-files/
+**/game-files/
+**/game/
+**/installed*/
+**/manual-install/
+**/extract*/
+**/iso-extract/
+**/runtime/
+**/logs/
+**/screenshots/
+**/saves/
+**/runners/
+**/packages/
+**/local-gst*/
+**/build/
+**/dist/
+**/squashfs-root/
+**/.cache-appimage/
+**/.appimage-test-data/
+
+# Disk images / archives / installers
+*.iso
+*.ISO
+*.bin
+*.BIN
+*.cue
+*.CUE
+*.img
+*.mdf
+*.mds
+*.nrg
+*.zip
+*.7z
+*.rar
+*.AppImage
+
+# Logs and debug output
+*.log
+*.trace
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Locks/cache/editor
+*.lock
+__pycache__/
+*.pyc
+.venv/
+.vscode/
+.idea/

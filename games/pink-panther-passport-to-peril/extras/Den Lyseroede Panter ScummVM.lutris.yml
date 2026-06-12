@@ -1,0 +1,21 @@
+name: "Den Lyserøde Panter: På hemmelig mission i udlandet"
+game_slug: den-lyseroede-panter-paa-hemmelig-mission-i-udlandet-scummvm-local-iso
+version: Local ISO - ScummVM
+slug: den-lyseroede-panter-scummvm-local-iso
+runner: scummvm
+
+script:
+  game:
+    game_id: peril
+    path: /home/test/lutris_game_scripts_Pink_panter/game-files
+  installer:
+    - chmodx: /home/test/lutris_game_scripts_Pink_panter/pink_panther_launch.sh
+    - execute:
+        description: Udpakker ISO'en hvis nødvendigt, uden at starte Wine-spillet
+        file: /home/test/lutris_game_scripts_Pink_panter/pink_panther_launch.sh
+        workdir: /home/test/lutris_game_scripts_Pink_panter
+        env:
+          PP_PREPARE_ONLY: '1'
+  scummvm:
+    aspect: true
+    fullscreen: false

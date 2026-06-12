@@ -1,0 +1,32 @@
+id: "pyrus"
+title: "Pyrus"
+runner: "wine"
+status: "migrated-from-local-working-folder"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive search"
+      url: "https://archive.org/search?query=Pyrus"
+      note: "Reference/search link only. Verify legal status yourself."
+    - name: "Second-hand / original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "TODO"
+      type: "original game media"
+      sha256: "TODO"
+      note: "Place under ~/retro-game-files/pyrus/ or local/sources/pyrus/."
+
+paths:
+  source_dir: "local/sources/pyrus"
+  runtime_dir: "local/runtime/pyrus"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+
+migrated_from: "/home/test/lutris_game_scripts_Pyrus_working"

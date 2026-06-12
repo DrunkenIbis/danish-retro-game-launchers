@@ -1,0 +1,15 @@
+name: Det Magiske Jordbær
+game_slug: det-magiske-jordbaer
+version: Local DOSBox-Staging wrapper
+slug: det-magiske-jordbaer-local-dosbox
+runner: linux
+script:
+  game:
+    exe: /home/test/lutris_game_scripts_DetMagiskeJordbaer/launch_det_magiske_jordbaer.sh
+    working_dir: /home/test/lutris_game_scripts_DetMagiskeJordbaer
+  system:
+    disable_runtime: false
+    gamemode: false
+  installer:
+    - chmodx: /home/test/lutris_game_scripts_DetMagiskeJordbaer/launch_det_magiske_jordbaer.sh
+  install_complete_text: Det Magiske Jordbær er tilføjet som lokal DOSBox-Staging wrapper.

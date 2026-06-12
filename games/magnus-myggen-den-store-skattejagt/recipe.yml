@@ -1,0 +1,32 @@
+id: "magnus-myggen-den-store-skattejagt"
+title: "Magnus & Myggen: Den Store Skattejagt"
+runner: "wine"
+status: "migrated-from-local-working-folder"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive search"
+      url: "https://archive.org/search?query=Magnus+&+Myggen:+Den+Store+Skattejagt"
+      note: "Reference/search link only. Verify legal status yourself."
+    - name: "Second-hand / original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "TODO"
+      type: "original game media"
+      sha256: "TODO"
+      note: "Place under ~/retro-game-files/magnus-myggen-den-store-skattejagt/ or local/sources/magnus-myggen-den-store-skattejagt/."
+
+paths:
+  source_dir: "local/sources/magnus-myggen-den-store-skattejagt"
+  runtime_dir: "local/runtime/magnus-myggen-den-store-skattejagt"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+
+migrated_from: "/home/test/lutris_game_scripts_mm2"

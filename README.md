@@ -72,7 +72,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Gys på Regneslottet | — | ✅ | — |
 | Magnus & Myggen: Den Store Skattejagt | — | ✅ | — |
 | Magnus & Myggen: Leg og Lær | — | ✅ | ✅ |
-| Magnus & Myggen: Quizkampen Superstarter | ✅ | ✅ | ✅ |
+| Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |
 | Magnus & Myggen: Skumlesens Skygge/Hævn | — | ✅ | — |
 | Pink Panther: Passport to Peril | — | ✅ | — |
 | Pyrus | — | ✅ | — |

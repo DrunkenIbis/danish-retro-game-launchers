@@ -1,9 +1,23 @@
 # Magnus & Myggen: Quizkampen Superstarter
 
-Status: working recipe  
+Status: blocked after runtime starts: the game opens a SuperStarter/licence dialog instead of gameplay  
 Runner: Wine, manual InstallShield CAB extraction
 
 This directory contains only the compatibility recipe. It does not contain the game ISO, extracted game files, Wine prefix, AppDir, AppImage, logs or screenshots.
+
+## Current blocker
+
+The launcher can extract and start the real Director projector, but that is not enough for this Superstarter release. The running game immediately opens a custom in-game modal titled `0` (or `Information` if those registry fields are changed), with a Magnus drawing and an `Ok` button. This is not a Wine crash and not a missing-window issue: the process and windows are real, but the title remains at the SuperStarter/licence gate.
+
+Evidence gathered:
+
+- `mm12main.exe` starts and creates `WM_NAME = "Quizkampen"`.
+- The blocking modal is also owned by `mm12main.exe` and has `WM_NAME = "0"`.
+- Wine `+file,+reg` logs show all Director `.cxt` casts and Xtras load successfully from `C:\Quizkampen`/`installed/`.
+- The projector then queries `HKLM\Software\IVANOFF Interactive\mm12` values `reg_message`, `reg_caption`, and `appmanfile`, which are part of the title's SuperStarter/licence/app-manager logic.
+- SuperStarter itself displays Quizkampen as `0 gratis minutter` / `Køb spil`, so this ISO appears to be a SuperStarter/demo shell rather than a standalone fully unlocked game copy.
+
+Because bypassing that gate would be a no-CD/licence circumvention path, this recipe intentionally stops at the compatibility boundary: it prepares the runtime and documents the blocker, but does not patch the executable or forge licence state.
 
 ## What was identified
 
@@ -107,19 +121,18 @@ Import `lutris.yml` as a local Lutris install script/config. The wrapper remains
 
 ## AppImage build
 
-After the runtime has been prepared locally, build an AppDir/AppImage:
+`extras/build_appimage.sh` is kept as a packaging scaffold, but AppImage output is not marked working while the launcher remains blocked at the SuperStarter/licence dialog. Re-test the launcher with a legally unlocked/original copy before treating any AppImage as useful.
+
+If you still need to inspect the packaging mechanics locally:
 
 ```sh
 ./extras/build_appimage.sh --appdir-only
-./extras/build_appimage.sh
 ```
 
 Outputs are ignored by Git:
 
 - AppDir: `extras/build/magnus-myggen-quizkampen-superstarter.AppDir`
 - AppImage: `extras/dist/magnus-myggen-quizkampen-superstarter-x86_64.AppImage`
-
-The AppImage bundles the local extracted game files plus Wine runtime and a prepared Wine prefix. It still needs a reasonably compatible Linux host with glibc/kernel, X11/Wayland bridge, graphics and audio support. User state is copied outside the read-only AppImage to `~/.local/share/magnus-myggen-quizkampen-superstarter/`.
 
 Only distribute an AppImage made this way if you have the right to distribute the bundled game data.
 

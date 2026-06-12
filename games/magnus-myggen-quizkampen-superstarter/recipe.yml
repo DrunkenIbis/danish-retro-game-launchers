@@ -1,7 +1,7 @@
 id: "magnus-myggen-quizkampen-superstarter"
 title: "Magnus & Myggen: Quizkampen Superstarter"
 runner: "wine"
-status: "working"
+status: "blocked-superstarter-license-gate"
 
 repository_policy: "recipe-only; no game files included"
 
@@ -43,4 +43,4 @@ launch:
 
 appimage:
   script: "extras/build_appimage.sh"
-  status: "working-appdir"
+  status: "not-currently-useful-until-launcher-passes-superstarter-gate"

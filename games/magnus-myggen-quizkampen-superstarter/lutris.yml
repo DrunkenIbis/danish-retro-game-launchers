@@ -1,0 +1,20 @@
+name: Magnus & Myggen - Quizkampen Superstarter
+slug: magnus-myggen-quizkampen-superstarter
+version: Local ISO Wine wrapper
+runner: linux
+game_slug: magnus-myggen-quizkampen-superstarter
+script:
+  game:
+    exe: ./launch.sh
+    working_dir: .
+  installer:
+    - chmodx: ./install.sh
+    - chmodx: ./launch.sh
+  system:
+    gamemode: false
+    gamescope: false
+    env:
+      MMQ_MODE: game
+      MMQ_DESKTOP_SIZE: 800x600
+      MMQ_VIRTUAL_DESKTOP: "0"
+  install_complete_text: Magnus & Myggen Quizkampen Superstarter er tilføjet. Kør install.sh første gang for at hente/importere ISO'en og validere image-indholdet.

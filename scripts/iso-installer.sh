@@ -5,6 +5,9 @@
 #   GAME_ID="my-game"
 #   GAME_TITLE="My Game"
 #   INSTALLER_DOWNLOAD_URL="https://example.invalid/MyGame.iso"
+#   # Or, for multi-file media such as BIN/CUE:
+#   # INSTALLER_DOWNLOAD_FILES=("game.bin|https://example.invalid/game.bin" "game.cue|https://example.invalid/game.cue")
+#   # INSTALLER_POST_ACQUIRE_HOOK="my_game_make_iso_from_bin_cue"
 #   INSTALLER_ISO_NAME="MyGame.iso"
 #   INSTALLER_ISO_ENV_VAR="MYGAME_ISO"              # optional
 #   INSTALLER_SOURCE_DIR_ENV_VAR="MYGAME_SOURCE_DIR" # optional
@@ -34,6 +37,9 @@ iso_installer_init_defaults() {
   INSTALLER_LAUNCH_SCRIPT="${INSTALLER_LAUNCH_SCRIPT:-$HERE/launch.sh}"
   if ! declare -p INSTALLER_REQUIRED_IMAGE_PATHS >/dev/null 2>&1; then
     INSTALLER_REQUIRED_IMAGE_PATHS=()
+  fi
+  if ! declare -p INSTALLER_DOWNLOAD_FILES >/dev/null 2>&1; then
+    INSTALLER_DOWNLOAD_FILES=()
   fi
 
   SOURCE_BASE="${RETRO_GAME_SOURCE_DIR:-$REPO_ROOT/local/sources}"
@@ -176,6 +182,41 @@ iso_installer_list_image_paths() {
   7z l -slt "$image" | awk -F' = ' '$1 == "Path" && $2 != "" {print $2}'
 }
 
+iso_installer_run_post_acquire_hook() {
+  if [[ -n "${INSTALLER_POST_ACQUIRE_HOOK:-}" ]]; then
+    if ! declare -F "$INSTALLER_POST_ACQUIRE_HOOK" >/dev/null 2>&1; then
+      iso_installer_fatal "INSTALLER_POST_ACQUIRE_HOOK peger på ukendt funktion: $INSTALLER_POST_ACQUIRE_HOOK"
+    fi
+    iso_installer_log "Kører efterbehandling: $INSTALLER_POST_ACQUIRE_HOOK"
+    "$INSTALLER_POST_ACQUIRE_HOOK"
+  fi
+}
+
+iso_installer_download_reference_files() {
+  iso_installer_need_cmd curl
+  if [[ ${#INSTALLER_DOWNLOAD_FILES[@]} -gt 0 ]]; then
+    local entry filename url tmp
+    for entry in "${INSTALLER_DOWNLOAD_FILES[@]}"; do
+      filename="${entry%%|*}"
+      url="${entry#*|}"
+      [[ -n "$filename" && -n "$url" && "$filename" != "$url" ]] || iso_installer_fatal "Ugyldig INSTALLER_DOWNLOAD_FILES entry: $entry"
+      mkdir -p "$SOURCE_DIR"
+      tmp="$SOURCE_DIR/$filename.download"
+      iso_installer_log "Downloader fra ${INSTALLER_DOWNLOAD_LABEL}: $url"
+      curl -L --fail --continue-at - --output "$tmp" "$url"
+      mv -f "$tmp" "$SOURCE_DIR/$filename"
+    done
+  else
+    [[ -n "${INSTALLER_DOWNLOAD_URL:-}" ]] || iso_installer_fatal "INSTALLER_DOWNLOAD_URL mangler i install.sh"
+    local tmp
+    iso_installer_log "Downloader fra ${INSTALLER_DOWNLOAD_LABEL}: $INSTALLER_DOWNLOAD_URL"
+    tmp="$ISO_PATH.download"
+    curl -L --fail --continue-at - --output "$tmp" "$INSTALLER_DOWNLOAD_URL"
+    mv -f "$tmp" "$ISO_PATH"
+  fi
+  iso_installer_run_post_acquire_hook
+}
+
 iso_installer_validate_image() {
   local image="$1"
   [[ -f "$image" ]] || iso_installer_fatal "ISO blev ikke fundet: $image"
@@ -225,17 +266,14 @@ iso_installer_main() {
 
   case "$MODE" in
     existing)
+      if [[ ! -f "$ISO_PATH" && -n "${INSTALLER_POST_ACQUIRE_HOOK:-}" ]]; then
+        iso_installer_run_post_acquire_hook
+      fi
       [[ -f "$ISO_PATH" ]] || iso_installer_fatal "Ingen eksisterende ISO på: $ISO_PATH"
       iso_installer_validate_image "$ISO_PATH"
       ;;
     download)
-      [[ -n "${INSTALLER_DOWNLOAD_URL:-}" ]] || iso_installer_fatal "INSTALLER_DOWNLOAD_URL mangler i install.sh"
-      iso_installer_need_cmd curl
-      iso_installer_log "Downloader fra ${INSTALLER_DOWNLOAD_LABEL}: $INSTALLER_DOWNLOAD_URL"
-      local tmp
-      tmp="$ISO_PATH.download"
-      curl -L --fail --continue-at - --output "$tmp" "$INSTALLER_DOWNLOAD_URL"
-      mv -f "$tmp" "$ISO_PATH"
+      iso_installer_download_reference_files
       iso_installer_validate_image "$ISO_PATH"
       ;;
     cd)

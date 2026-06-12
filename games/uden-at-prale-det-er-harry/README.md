@@ -5,22 +5,68 @@ Runner: wine
 
 This directory contains only the compatibility recipe. It does not contain the game.
 
-## Bring your own game files
+## First-time setup
 
-Place your legally obtained game files in one of these locations:
+Run the installer/importer:
 
-```text
-~/retro-game-files/uden-at-prale-det-er-harry/
-# or
-local/sources/uden-at-prale-det-er-harry/
+```sh
+cd games/uden-at-prale-det-er-harry
+./install.sh
 ```
 
-See `recipe.yml` for expected metadata. Checksums still need to be filled in before publishing.
+It can:
+
+1. use an already prepared ISO,
+2. download the BIN/CUE pair from the reference links and convert it to ISO, or
+3. import a physical CD/DVD directly to ISO.
+
+Default private source paths:
+
+```text
+local/sources/uden-at-prale-det-er-harry/uden-at-prale-det-er-harry.bin
+local/sources/uden-at-prale-det-er-harry/uden-at-prale-det-er-harry.cue
+local/sources/uden-at-prale-det-er-harry/uden-at-prale-det-er-harry.iso
+```
+
+Default runtime path:
+
+```text
+local/runtime/uden-at-prale-det-er-harry/
+```
+
+Both are ignored by Git.
+
+## Non-interactive examples
+
+```sh
+./install.sh --download --no-launch
+./install.sh --existing --no-launch
+./install.sh --cd /dev/sr0 --no-launch
+```
 
 ## Run
 
 ```sh
-RETRO_GAME_SOURCE_DIR=~/retro-game-files RETRO_GAME_RUNTIME_DIR=~/retro-game-runtime ./games/uden-at-prale-det-er-harry/launch.sh
+./launch.sh
+```
+
+Or with external private folders:
+
+```sh
+RETRO_GAME_SOURCE_DIR=~/retro-game-files \
+RETRO_GAME_RUNTIME_DIR=~/retro-game-runtime \
+./games/uden-at-prale-det-er-harry/launch.sh
+```
+
+The wrapper extracts the ISO to the ignored runtime folder, creates/reuses a Wine prefix, silently installs the Inno Setup payload to `C:\Harry` when needed, maps the extracted CD as `D:` with the `HARRY` label, and launches `harry.exe` in a Wine virtual desktop.
+
+Useful modes:
+
+```sh
+HARRY_MODE=game ./launch.sh      # default installed game
+HARRY_MODE=cdmenu ./launch.sh    # CD menu fallback
+HARRY_MODE=setup ./launch.sh     # visible installer
+HARRY_MODE=kill ./launch.sh      # stop the Wine prefix
 ```
 
 ## Lutris

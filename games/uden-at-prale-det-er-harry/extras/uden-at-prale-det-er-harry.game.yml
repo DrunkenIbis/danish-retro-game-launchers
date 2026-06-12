@@ -1,6 +1,6 @@
 game:
-  exe: /home/test/lutris_game_scripts_uden_at_prale_harry/launch-harry.sh
-  working_dir: /home/test/lutris_game_scripts_uden_at_prale_harry
+  exe: ./launch.sh
+  working_dir: .
 linux: {}
 system:
   env:

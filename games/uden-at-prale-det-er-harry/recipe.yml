@@ -7,19 +7,30 @@ repository_policy: "recipe-only; no game files included"
 
 sources:
   references:
-    - name: "Internet Archive search"
-      url: "https://archive.org/search?query=Uden+at+prale,+det+er+Harry"
-      note: "Reference/search link only. Verify legal status yourself."
+    - name: "Archive.org BIN reference"
+      url: "https://archive.org/download/uden-at-prale-det-er-harry-titoonic-5707844000016/uden-at-prale-det-er-harry.bin"
+      note: "Used by install.sh when the user chooses download. Verify legal status yourself."
+    - name: "Archive.org CUE reference"
+      url: "https://archive.org/download/uden-at-prale-det-er-harry-titoonic-5707844000016/uden-at-prale-det-er-harry.cue"
+      note: "Used by install.sh when the user chooses download. Verify legal status yourself."
     - name: "Second-hand / original media"
       url: ""
-      note: "Use your own legally obtained copy."
+      note: "Use your own legally obtained copy; install.sh can import a physical CD/DVD to ISO."
 
 game_files:
   required:
-    - filename: "TODO"
-      type: "original game media"
+    - filename: "uden-at-prale-det-er-harry.bin"
+      type: "bin-cue-image"
       sha256: "TODO"
-      note: "Place under ~/retro-game-files/uden-at-prale-det-er-harry/ or local/sources/uden-at-prale-det-er-harry/."
+      note: "Download/import via install.sh or place under local/sources/uden-at-prale-det-er-harry/."
+    - filename: "uden-at-prale-det-er-harry.cue"
+      type: "bin-cue-image"
+      sha256: "TODO"
+      note: "Download/import via install.sh or place under local/sources/uden-at-prale-det-er-harry/."
+    - filename: "uden-at-prale-det-er-harry.iso"
+      type: "converted-cdrom-image"
+      sha256: "TODO"
+      note: "Generated from the MODE2/2352 BIN/CUE by install.sh."
 
 paths:
   source_dir: "local/sources/uden-at-prale-det-er-harry"

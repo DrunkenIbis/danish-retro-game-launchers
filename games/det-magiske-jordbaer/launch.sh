@@ -61,11 +61,24 @@ output = texture
 machine = svga_s3
 memsize = 16
 
+# The game only needs plain VGA/Sound Blaster. Disabling unused devices keeps
+# DOSBox-Staging's audio thread steadier on PipeWire/Flatpak setups.
+[voodoo]
+voodoo = false
+
+[ethernet]
+ne2000 = false
+
 [cpu]
 cpu_cycles = 12000
 
 [mixer]
-rate = 44100
+# PipeWire normally runs at 48 kHz. Avoid 44.1 -> 48 kHz host resampling and
+# give the mixer a little more latency headroom to prevent crackles/stutters.
+rate = 48000
+blocksize = 1024
+prebuffer = 80
+negotiate = false
 
 [sblaster]
 sbtype = sb16

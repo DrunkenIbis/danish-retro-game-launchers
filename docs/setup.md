@@ -41,6 +41,8 @@ iso_installer_main "$@"
 
 For multi-file media such as BIN/CUE, use `INSTALLER_DOWNLOAD_FILES` plus a small `INSTALLER_POST_ACQUIRE_HOOK` that converts or prepares the final ISO path before validation. The generic helper still owns the interactive mode selection, CD import, download loop, early validation, and launch handoff.
 
+For Wine-based AppImage packaging, use `scripts/wine-appimage-builder.sh` as the shared helper. A per-game `extras/build_appimage.sh` should declare project name, display name, runtime paths, icon source, and a small internal launcher; the helper handles Wine runtime copying, ELF dependency collection, AppRun/desktop/icon metadata, appimagetool download, and AppDir/AppImage verification.
+
 The generic installer supports:
 
 ```sh

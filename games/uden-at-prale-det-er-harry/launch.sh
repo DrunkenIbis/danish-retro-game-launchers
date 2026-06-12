@@ -121,12 +121,16 @@ main() {
     map_cd_drive
     case "$MODE" in
       setup|install|cdmenu|menu) : ;;
-      game|installed) install_game_if_needed ;;
-      *) fatal "Ukendt HARRY_MODE=$MODE; brug game, cdmenu, setup eller kill" ;;
+      prepare|game|installed) install_game_if_needed ;;
+      *) fatal "Ukendt HARRY_MODE=$MODE; brug game, cdmenu, setup, prepare eller kill" ;;
     esac
   ) 9>"$LOCK_FILE"
 
   case "$MODE" in
+    prepare)
+      log "Runtime klar: $RUNTIME_DIR"
+      exit 0
+      ;;
     game|installed) launch_wine_desktop 'C:\Harry\harry.exe' "$GAME_DIR" ;;
     cdmenu|menu) launch_wine_desktop 'D:\CDmenu.exe' "$CDROM_DIR" ;;
     setup|install) launch_wine_desktop 'D:\setup.exe' "$CDROM_DIR" ;;

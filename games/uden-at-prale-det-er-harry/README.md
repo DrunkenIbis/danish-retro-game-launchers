@@ -73,6 +73,30 @@ HARRY_MODE=kill ./launch.sh      # stop the Wine prefix
 
 If `lutris.yml` exists, import it as a local Lutris install script/config. The wrapper remains the canonical entry point.
 
+## AppImage build
+
+After preparing the game locally, build a mostly self-contained x86_64 AppImage:
+
+```sh
+./extras/build_appimage.sh
+```
+
+Useful variants:
+
+```sh
+./extras/build_appimage.sh --appdir-only   # build and verify AppDir only
+./extras/build_appimage.sh --no-download   # require local appimagetool/cache
+```
+
+Outputs are ignored by Git:
+
+- AppDir: `extras/build/uden-at-prale-det-er-harry.AppDir`
+- AppImage: `extras/dist/uden-at-prale-det-er-harry-x86_64.AppImage`
+
+The AppImage bundles the extracted CD-ROM, a prepared Wine prefix with `C:\Harry`, and a copied Wine runtime. On first run it copies the prefix and CD-ROM data to `~/.local/share/uden-at-prale-det-er-harry/` so Wine can update drive mappings and the `HARRY` CD label even though the AppImage itself is read-only.
+
+Only distribute an AppImage made this way if you have the right to distribute the bundled game data.
+
 ## Reference links
 
 The recipe may include search/reference links only. Verify legal status and provide your own copy.

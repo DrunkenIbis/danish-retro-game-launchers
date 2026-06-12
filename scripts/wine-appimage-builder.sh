@@ -167,11 +167,12 @@ mkdir -p "\$APP_STATE_DIR"
   if [[ ! -f "\$RUNTIME_PREFIX/system.reg" ]]; then
     rm -rf "\$RUNTIME_PREFIX"
     mkdir -p "\$RUNTIME_PREFIX"
-    if command -v rsync >/dev/null 2>&1; then
-      rsync -a "\$SEED_PREFIX/" "\$RUNTIME_PREFIX/"
-    else
-      cp -a "\$SEED_PREFIX/." "\$RUNTIME_PREFIX/"
-    fi
+    # Use cp for the seeded Wine prefix at launch time. Some prefixes contain
+    # legacy dosdevices symlinks to /dev/loop* or disappeared mount points;
+    # rsync can exit 13 on those from inside/extracted AppImages before the
+    # game launcher has a chance to rewrite d:/d::. cp -a preserves the tree
+    # well enough, and each game launcher cleans/remaps its active CD drive.
+    cp -a "\$SEED_PREFIX/." "\$RUNTIME_PREFIX/"
   fi
 ) 9>"\$LOCK_FILE"
 

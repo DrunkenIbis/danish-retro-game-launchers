@@ -105,6 +105,22 @@ RETRO_GAME_RUNTIME_DIR=~/retro-game-runtime \
 
 Import `lutris.yml` as a local Lutris install script/config. The wrapper remains the canonical game entry point; `install.sh` is for first-time BIN/CUE acquisition/import.
 
+## AppImage
+
+After preparing the local runtime, build a self-contained Wine AppDir/AppImage with:
+
+```sh
+./extras/build_appimage.sh
+```
+
+For a metadata/AppDir-only packaging check without creating the final large AppImage:
+
+```sh
+./extras/build_appimage.sh --appdir-only
+```
+
+The output goes under ignored `extras/build/`, `extras/dist/`, and `extras/.cache-appimage/`. The AppImage embeds the local game files and a prepared Wine prefix, so only build/distribute it for copies you have the right to package.
+
 ## Verification status
 
 The moved recipe was tested from this repo, not only from the old debug folder. The wrapper gets past media conversion, CD extraction, manual InstallShield extraction, Wine prefix setup, registry/resource lookup, and starts the actual `MM2RUN.EXE` process. Wine logs confirm that `D:\MM2.DAT`, `D:\MM2.IDX`, `D:\DK\MM2LNG.DAT`, and `D:\DK\MM2LNG.IDX` open successfully.

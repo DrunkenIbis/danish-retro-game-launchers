@@ -25,7 +25,8 @@ fi
 
 if [ ! -f "$ISO" ]; then
   echo "ISO mangler: $ISO" >&2
-  echo "Placér din egen lovligt anskaffede ISO her, eller kør med DMJ_ISO=/sti/til/DetMagiskeJordbaer.iso" >&2
+  echo "Kør ./install.sh for at vælge mellem download fra reference-link eller import fra CD/DVD." >&2
+  echo "Alternativt: placér din egen lovligt anskaffede ISO her, eller kør med DMJ_ISO=/sti/til/DetMagiskeJordbaer.iso" >&2
   exit 1
 fi
 

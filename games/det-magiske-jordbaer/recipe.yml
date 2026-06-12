@@ -1,29 +1,39 @@
 id: "det-magiske-jordbaer"
 title: "Det Magiske Jordbær"
 runner: "dosbox-staging"
-status: "migrated-from-local-working-folder"
+status: "working"
 
 repository_policy: "recipe-only; no game files included"
 
 sources:
   references:
+    - name: "Archive.org direct ISO reference"
+      url: "https://archive.org/download/det-magiske-jordbaer/DetMagiskeJordb%C3%A6r.iso"
+      note: "Used by install.sh when the user chooses download. Verify legal status yourself."
     - name: "Internet Archive search"
       url: "https://archive.org/search?query=Det+Magiske+Jordbær"
       note: "Reference/search link only. Verify legal status yourself."
     - name: "Second-hand / original media"
       url: ""
-      note: "Use your own legally obtained copy."
+      note: "Use your own legally obtained copy; install.sh can import a physical CD/DVD to ISO."
 
 game_files:
   required:
-    - filename: "TODO"
-      type: "original game media"
+    - filename: "DetMagiskeJordbaer.iso"
+      type: "cdrom-image"
       sha256: "TODO"
-      note: "Place under ~/retro-game-files/det-magiske-jordbaer/ or local/sources/det-magiske-jordbaer/."
+      note: "Place under local/sources/det-magiske-jordbaer/, set DMJ_ISO, or run install.sh to download/import."
 
 paths:
   source_dir: "local/sources/det-magiske-jordbaer"
   runtime_dir: "local/runtime/det-magiske-jordbaer"
+
+setup:
+  installer: "install.sh"
+  modes:
+    - "existing ISO"
+    - "download from archive.org reference URL"
+    - "import physical CD/DVD with dd"
 
 launch:
   wrapper: "launch.sh"

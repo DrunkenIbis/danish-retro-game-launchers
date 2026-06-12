@@ -12,4 +12,5 @@ script:
     gamemode: false
   installer:
     - chmodx: ./launch.sh
-  install_complete_text: Det Magiske Jordbær er tilføjet som lokal DOSBox-Staging wrapper. Placér ISO'en i local/sources/det-magiske-jordbaer/ eller sæt DMJ_ISO.
+    - chmodx: ./install.sh
+  install_complete_text: Det Magiske Jordbær er tilføjet. Kør install.sh første gang for at vælge eksisterende ISO, download fra archive.org reference-link, eller import fra CD/DVD.

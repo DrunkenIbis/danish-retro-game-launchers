@@ -15,3 +15,15 @@ Only top-level recipe files were moved. Runtime folders, ISOs, BIN/CUE images, e
 A local symlink was created from `local/sources/det-magiske-jordbaer/DetMagiskeJordbaer.iso` to the old private ISO for testing. This path is ignored by Git.
 
 Direct wrapper test reached DOSBox-Staging with the custom config loaded, mounted both generated runtime directories, and entered `VGA 320x200 256-colour graphics mode 13h`. The command timed out only because the game kept running, which is expected for this bounded smoke test.
+
+## Installer/importer design
+
+`install.sh` is the intended first-run entry point. It asks the user whether to reuse an existing ISO, download the ISO from the archive.org reference URL, or import a physical CD/DVD drive to an ISO via `dd`. It validates the resulting ISO with `7z l` by checking for `ADVENT.EXE`, then optionally calls `launch.sh`.
+
+Non-interactive examples:
+
+```sh
+./install.sh --existing --no-launch
+./install.sh --download
+./install.sh --cd /dev/sr0
+```

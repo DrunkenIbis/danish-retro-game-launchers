@@ -63,16 +63,18 @@ RETRO_GAME_SOURCE_DIR=~/retro-game-files RETRO_GAME_RUNTIME_DIR=~/retro-game-run
 
 ## Current migrated recipes
 
-| Game | Runner | Status | Notes |
-|---|---|---|---|
-| Battle Beast | Wine/wine32 | recipe migrated | old Win95/Win16-adjacent setup |
-| Det Magiske Jordbær | DOSBox-Staging | recipe migrated | local DOSBox wrapper |
-| Gys på Regneslottet | DOSBox-Staging | recipe migrated | local DOSBox wrapper |
-| Magnus & Myggen: Leg og Lær | Wine/winevdm | recipe migrated | Win16 Director, NE heap/prefix notes |
-| Magnus & Myggen: Den Store Skattejagt | Wine | recipe migrated | manual-install style wrapper |
-| Magnus & Myggen: Skumlesens Skygge/Hævn | Wine | recipe migrated | IVANOFF/InstallShield notes |
-| Pink Panther: Passport to Peril | Wine/ScummVM notes | recipe migrated | clean install notes |
-| Pyrus | Wine | recipe migrated | intro/video/DirectShow notes |
-| Uden at prale, det er Harry | Wine | recipe migrated | Director/Inno notes |
-| Yo! Joe! Beat the Ghosts | DOSBox-Staging | recipe migrated | DOS wrapper |
+Legend: ✅ = script exists in the recipe and is the current working/migrated path; — = not added yet.
+
+| Game | Installer script | Launch script | AppImage script |
+|---|---:|---:|---:|
+| Battle Beast | — | ✅ | — |
+| Det Magiske Jordbær | ✅ | ✅ | ✅ |
+| Gys på Regneslottet | — | ✅ | — |
+| Magnus & Myggen: Den Store Skattejagt | — | ✅ | — |
+| Magnus & Myggen: Leg og Lær | — | ✅ | ✅ |
+| Magnus & Myggen: Skumlesens Skygge/Hævn | — | ✅ | — |
+| Pink Panther: Passport to Peril | — | ✅ | — |
+| Pyrus | — | ✅ | — |
+| Uden at prale, det er Harry | — | ✅ | — |
+| Yo! Joe! Beat the Ghosts | — | ✅ | — |
 

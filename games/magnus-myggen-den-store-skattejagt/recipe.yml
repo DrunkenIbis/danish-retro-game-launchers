@@ -1,32 +1,56 @@
 id: "magnus-myggen-den-store-skattejagt"
 title: "Magnus & Myggen: Den Store Skattejagt"
 runner: "wine"
-status: "migrated-from-local-working-folder"
+status: "launches-centered-wine-desktop"
 
 repository_policy: "recipe-only; no game files included"
 
 sources:
   references:
-    - name: "Internet Archive search"
-      url: "https://archive.org/search?query=Magnus+&+Myggen:+Den+Store+Skattejagt"
-      note: "Reference/search link only. Verify legal status yourself."
-    - name: "Second-hand / original media"
+    - name: "Archive.org BIN/CUE reference"
+      url: "https://archive.org/download/magnus-myggen-den-store-skattejagt/"
+      files:
+        - "MM2NORD.bin"
+        - "MM2NORD.cue"
+      note: "install.sh can download these files and convert the MODE1/2352 data track to ISO. Verify legal status yourself."
+    - name: "Original media"
       url: ""
-      note: "Use your own legally obtained copy."
+      note: "Use your own legally obtained copy; install.sh can import a physical CD/DVD to ISO."
 
 game_files:
   required:
-    - filename: "TODO"
-      type: "original game media"
-      sha256: "TODO"
-      note: "Place under ~/retro-game-files/magnus-myggen-den-store-skattejagt/ or local/sources/magnus-myggen-den-store-skattejagt/."
+    - filename: "MM2NORD.bin"
+      type: "bin-cue-track"
+      sha256: "7ee9eb858b1acbf0cbc350e889a0f35d8e6807c62b93bf01744302d31a84329d"
+      note: "Place under local/sources/magnus-myggen-den-store-skattejagt/, set MM2_BIN, or run install.sh."
+    - filename: "MM2NORD.cue"
+      type: "cue-sheet"
+      sha256: "f5691999c0fabac829c6774cc5568a9e7d9b35212b4aac609d1c22e26e6c8b50"
+      note: "Single data track: TRACK 01 MODE1/2352."
+    - filename: "MM2NORD.iso"
+      type: "converted-cdrom-image"
+      sha256: "e5fec65947e115b07742be36646c5ad15c745fb6e798ec55d18bd2f13d7c4e91"
+      note: "Ignored local artifact created from BIN/CUE by install.sh or launch.sh. Volume label: MM2NORD."
 
 paths:
   source_dir: "local/sources/magnus-myggen-den-store-skattejagt"
   runtime_dir: "local/runtime/magnus-myggen-den-store-skattejagt"
 
+setup:
+  installer: "install.sh"
+  modes:
+    - "existing converted ISO or BIN/CUE"
+    - "download MM2NORD.bin + MM2NORD.cue from archive.org reference URL"
+    - "import physical CD/DVD with dd"
+
 launch:
   wrapper: "launch.sh"
   lutris: "lutris.yml"
+  default_mode: "game"
+  executable: "MM2RUN.EXE"
+  notes:
+    - "AUTORUN.INF opens LAUNCHER.EXE, but the reliable recipe bypasses InstallShield and extracts Program_files_DK/mm2run.exe from DATA1.CAB."
+    - "The large resource files stay on the extracted CD-ROM runtime as D:\\MM2.DAT / D:\\DK\\MM2LNG.DAT, with matching Ivanoff MM2 registry values."
+    - "Wine prefix is win32/win98 by default."
 
 migrated_from: "/home/test/lutris_game_scripts_mm2"

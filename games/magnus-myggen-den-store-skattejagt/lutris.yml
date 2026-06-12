@@ -1,23 +1,24 @@
-name: "Magnus & Myggen: Den Store Skattejagt"
-game_slug: magnus-myggen-den-store-skattejagt
-version: "Local BIN/CUE direct game wrapper"
-slug: magnus-myggen-den-store-skattejagt-local
+name: Magnus & Myggen - Den Store Skattejagt
+slug: magnus-myggen-den-store-skattejagt
+version: Local BIN-CUE Wine wrapper
 runner: linux
-
+game_slug: magnus-myggen-den-store-skattejagt
 script:
-  files: []
-  installer:
-    - chmodx: "/home/test/lutris_game_scripts_mm2/magnus_myggen_store_skattejagt_launch.sh"
   game:
-    exe: "/home/test/lutris_game_scripts_mm2/magnus_myggen_store_skattejagt_launch.sh"
-    working_dir: "/home/test/lutris_game_scripts_mm2"
+    exe: ./launch.sh
+    working_dir: .
+  installer:
+    - chmodx: ./install.sh
+    - chmodx: ./launch.sh
   system:
-    env:
-      MM2_MODE: "game"
-      MM2_WINEPREFIX: "/home/test/lutris_game_scripts_mm2/wineprefix32"
-      MM2_CD_DRIVE: "d"
-      MM2_DESKTOP_SIZE: "800x600"
-      MM2_VIRTUAL_DESKTOP: "1"
-      MM2_FORCE_WIN32: "1"
-      MM2_WINVER: "win98"
+    gamemode: false
     gamescope: false
+    env:
+      MM2_MODE: game
+      MM2_CD_DRIVE: d
+      MM2_DESKTOP_SIZE: 800x600
+      MM2_VIRTUAL_DESKTOP: "1"
+      MM2_CENTER_WINDOW: "1"
+      MM2_FORCE_WIN32: "1"
+      MM2_WINVER: win98
+  install_complete_text: Magnus & Myggen Den Store Skattejagt er tilføjet. Kør install.sh første gang for at hente/importere BIN/CUE og validere image-indholdet.

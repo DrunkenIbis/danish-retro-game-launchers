@@ -70,7 +70,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Battle Beast | — | ✅ | — |
 | Det Magiske Jordbær | ✅ | ✅ | ✅ |
 | Gys på Regneslottet | — | ✅ | — |
-| Magnus & Myggen: Den Store Skattejagt | — | ✅ | — |
+| Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |
 | Magnus & Myggen: Leg og Lær | — | ✅ | ✅ |
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |
 | Magnus & Myggen: Skumlesens Skygge/Hævn | — | ✅ | — |

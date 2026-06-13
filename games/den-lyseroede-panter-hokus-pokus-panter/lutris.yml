@@ -1,0 +1,21 @@
+name: "Den Lyserøde Panter: Hokus Pokus Panter"
+game_slug: "den-lyseroede-panter-hokus-pokus-panter"
+version: "local ISO recipe"
+slug: "den-lyseroede-panter-hokus-pokus-panter-local"
+runner: linux
+
+script:
+  game:
+    exe: "launch.sh"
+    working_dir: "."
+  installer:
+    - chmodx: "$GAMEDIR/launch.sh"
+    - chmodx: "$GAMEDIR/install.sh"
+  system:
+    disable_runtime: false
+    gamemode: false
+    gamescope: false
+    env:
+      HPP_MODE: "game"
+      HPP_VIRTUAL_DESKTOP: "1"
+      HPP_DESKTOP_SIZE: "640x480"

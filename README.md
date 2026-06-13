@@ -68,6 +68,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Game | Installer script | Launch script | AppImage script |
 |---|---:|---:|---:|
 | Battle Beast | — | ✅ | — |
+| Den Lyserøde Panter: Hokus Pokus Panter | ✅ | ⚠️ Visible Wine game scene; manual playthrough not verified | ✅ |
 | Det Magiske Jordbær | ✅ | ✅ | ✅ |
 | Gys på Regneslottet | — | ✅ | — |
 | Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |

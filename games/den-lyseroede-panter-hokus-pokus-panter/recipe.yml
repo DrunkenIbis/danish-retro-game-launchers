@@ -1,0 +1,55 @@
+id: "den-lyseroede-panter-hokus-pokus-panter"
+title: "Den Lyserøde Panter: Hokus Pokus Panter"
+runner: "wine"
+status: "visible-wine-game-scene-manual-playthrough-not-verified"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive item file"
+      url: "https://archive.org/download/Panter/Panter.iso"
+      note: "Reference/download link. Verify legal status yourself."
+    - name: "Internet Archive item"
+      url: "https://archive.org/details/Panter"
+      note: "Metadata lists Wanderlust Interactive, Danish language, publication date 1999."
+
+game_files:
+  required:
+    - filename: "Panter.iso"
+      type: "original game media ISO"
+      sha256: "0d75bc8fe46df230d1fa38da70bf5c51f58d8f564904326fafa20a733ce45a55"
+      volume_label: "PANTER"
+      note: "Place under local/sources/den-lyseroede-panter-hokus-pokus-panter/ or set HPP_ISO."
+  image_paths_required:
+    - "AUTORUN.INF"
+    - "teaser.exe"
+    - "setup.exe"
+    - "INSTALL/Hpp.exe"
+    - "INSTALL/HPP.BRO"
+    - "INSTALL/HPP.HLP"
+    - "INSTALL/SONGS.SON"
+    - "hpp.orb"
+
+paths:
+  source_dir: "local/sources/den-lyseroede-panter-hokus-pokus-panter"
+  runtime_dir: "local/runtime/den-lyseroede-panter-hokus-pokus-panter"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+  default_mode: "game"
+  fallback_modes:
+    - "teaser"
+    - "setup"
+
+appimage:
+  script: "extras/build_appimage.sh"
+  status: "verified-appimage-build-and-smoke-test"
+
+notes:
+  inspected:
+    autorun_open: "teaser.exe"
+    setup_exe_type: "Win16 NE GUI"
+    game_exe: "INSTALL/Hpp.exe"
+    game_exe_type: "PE32 Win32 GUI"

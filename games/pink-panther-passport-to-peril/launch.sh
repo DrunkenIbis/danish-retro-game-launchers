@@ -1,234 +1,279 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 
-# Den Lyserøde Panter: På hemmelig mission i udlandet
-# Lokal Lutris/Wine-wrapper til ISO'en i samme mappe.
-# Den udpakker ISO'en første gang, mapper den som CD-ROM i et win32 Wine-prefix,
-# og starter som standard fra en manuel clean install-kopi uden gamle system-DLL'er.
+# Den Lyserøde Panter på hemmelig mission i udlandet
+# Pink Panther: Passport to Peril (dansk CD, volume label PANTER)
+#
+# VIGTIGE KOMPATIBILITETSVALG (holdes her, så Lutris/AppImage kun kalder wrapperen):
+# 1) Recipe-only stier: ISO'en læses fra local/sources/<game-id>/PANTER.iso
+#    eller PP_ISO, mens udpakning, Wine-prefix og clean install skrives til
+#    local/runtime/<game-id> eller PP_RUNTIME_DIR. Ingen private spilfiler hører
+#    hjemme i Git-repoet.
+# 2) Win32/Wine32-prefix: SETUP.EXE er en gammel Win16/NE Windows 3.1-installer,
+#    mens det egentlige spil INSTALL/PPTP.EXE er PE32. Et win32-prefix via wine32
+#    er den mest stabile vej for denne Win95/Win98-era titel.
+# 3) Manuel clean install: INSTALL/ indeholder gamle Windows/Win32s system-DLL'er
+#    (VERSION.DLL, COMDLG32.DLL, SHELL32.DLL, WINSPOOL.DRV, WinG/Win32s m.fl.).
+#    Hvis de køres ved siden af PPTP.EXE, shadow'er de Wine's egne DLL'er og gav
+#    c000007b/import-loader fejl i den oprindelige fejlsøgning. Launcheren kopierer
+#    derfor kun spil/datafiler til C:\Program Files\Pink Panther og udelader de
+#    gamle systemfiler.
+# 4) CD-ROM mapping: Den udpakkede ISO mappes som D: med label PANTER, så spillets
+#    ressourceopslag fortsat ser den originale CD-kontekst.
+# 5) Win98 + Wine virtual desktop: Windows-version sættes til win98 og spillet
+#    startes som standard i en 640x480 Wine desktop. Det matcher tidsperioden og
+#    undgår at gamle 2D/DirectDraw-vinduer forsvinder under moderne window managers.
 
-SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+PROJECT_NAME="pink-panther-passport-to-peril"
 
-PP_ISO_DEFAULT="$SELF_DIR/Den Lyserøde Panter på hemmelig mission i udlandet.iso"
-PP_ISO="${PP_ISO:-$PP_ISO_DEFAULT}"
-PP_EXTRACT_DIR="${PP_EXTRACT_DIR:-$SELF_DIR/game-files}"
-PP_WINEPREFIX="${PP_WINEPREFIX:-$SELF_DIR/wineprefix32}"
+SOURCE_BASE="${RETRO_GAME_SOURCE_DIR:-$REPO_ROOT/local/sources}"
+RUNTIME_BASE="${RETRO_GAME_RUNTIME_DIR:-$REPO_ROOT/local/runtime}"
+SOURCE_DIR="${PP_SOURCE_DIR:-$SOURCE_BASE/$PROJECT_NAME}"
+RUNTIME_DIR="${PP_RUNTIME_DIR:-$RUNTIME_BASE/$PROJECT_NAME}"
+ISO_PATH="${PP_ISO:-$SOURCE_DIR/PANTER.iso}"
+CDROM_DIR="${PP_CDROM_DIR:-$RUNTIME_DIR/cdrom}"
+WINEPREFIX_DIR="${PP_WINEPREFIX:-$RUNTIME_DIR/wineprefix32}"
+INSTALL_DIR="${PP_INSTALL_DIR:-$WINEPREFIX_DIR/drive_c/Program Files/Pink Panther}"
+
+SEVENZ_BIN="${PP_SEVENZ_BIN:-7z}"
 if command -v wine32 >/dev/null 2>&1; then
-  PP_WINE_BIN="${PP_WINE_BIN:-wine32}"
+  WINE_BIN="${PP_WINE_BIN:-wine32}"
 else
-  PP_WINE_BIN="${PP_WINE_BIN:-wine}"
+  WINE_BIN="${PP_WINE_BIN:-wine}"
 fi
-PP_SEVENZ_BIN="${PP_SEVENZ_BIN:-7z}"
-PP_CD_DRIVE="${PP_CD_DRIVE:-d}"
-PP_CD_LABEL="${PP_CD_LABEL:-PANTER}"
-PP_DESKTOP_NAME="${PP_DESKTOP_NAME:-PinkPanther}"
-PP_DESKTOP_SIZE="${PP_DESKTOP_SIZE:-640x480}"
-PP_VIRTUAL_DESKTOP="${PP_VIRTUAL_DESKTOP:-1}"
-PP_WINEDEBUG="${PP_WINEDEBUG:--all}"
-PP_FORCE_WIN32="${PP_FORCE_WIN32:-1}"
-PP_DRY_RUN="${PP_DRY_RUN:-0}"
-PP_PREPARE_ONLY="${PP_PREPARE_ONLY:-0}"
-PP_INSTALL_ONLY="${PP_INSTALL_ONLY:-0}"
-PP_WINEBOOT_TIMEOUT="${PP_WINEBOOT_TIMEOUT:-45}"
+WINEBOOT_TIMEOUT="${PP_WINEBOOT_TIMEOUT:-90}"
+WINEDEBUG_VALUE="${PP_WINEDEBUG:--all}"
+MODE="${PP_MODE:-${PP_LAUNCH_MODE:-game}}"
+CD_DRIVE="${PP_CD_DRIVE:-d}"
+CD_LABEL="${PP_CD_LABEL:-PANTER}"
+DESKTOP_NAME="${PP_DESKTOP_NAME:-PinkPanther}"
+DESKTOP_SIZE="${PP_DESKTOP_SIZE:-640x480}"
+VIRTUAL_DESKTOP="${PP_VIRTUAL_DESKTOP:-1}"
+FORCE_WIN32="${PP_FORCE_WIN32:-1}"
+DRY_RUN="${PP_DRY_RUN:-0}"
 
-# launch_mode:
-#   cdexe     = start D:\INSTALL\PPTP.EXE direkte (kan fejle pga. gamle system-DLL'er)
-#   teaser    = start D:\TEASER.EXE fra autorun
-#   setup     = kør D:\SETUP.EXE (16-bit Windows 3.x installer; kræver wine32/win32-prefix)
-#   installed = start C:\Program Files\Pink Panther\PPTP.EXE efter manuel clean install
-PP_LAUNCH_MODE="${PP_LAUNCH_MODE:-installed}"
-PP_INSTALL_DIR="${PP_INSTALL_DIR:-$PP_WINEPREFIX/drive_c/Program Files/Pink Panther}"
-PP_INSTALLED_EXE="${PP_INSTALLED_EXE:-$PP_INSTALL_DIR/PPTP.EXE}"
+log() { printf '[Pink Panther Passport] %s\n' "$*"; }
+fatal() { printf '[Pink Panther Passport] FEJL: %s\n' "$*" >&2; exit 1; }
+need_cmd() { command -v "$1" >/dev/null 2>&1 || fatal "Mangler kommando: $1"; }
 
-need_cmd() {
-  if ! command -v "$1" >/dev/null 2>&1; then
-    echo "Mangler kommando: $1" >&2
-    exit 127
-  fi
+usage() {
+  cat <<EOF
+Brug: ./launch.sh
+
+Miljøvariabler:
+  PP_MODE=game|prepare|cdgame|teaser|setup|kill  (default: game)
+  PP_ISO=/sti/til/PANTER.iso
+  PP_SOURCE_DIR=/mappe/med/PANTER.iso
+  PP_RUNTIME_DIR=/runtime/mappe
+  PP_WINEPREFIX=/runtime/wineprefix32
+  PP_WINE_BIN=wine32|wine
+  PP_VIRTUAL_DESKTOP=0|1
+  PP_DESKTOP_SIZE=640x480
+  PP_DRY_RUN=1
+
+Private standardstier:
+  ISO:     $ISO_PATH
+  Runtime: $RUNTIME_DIR
+EOF
 }
 
-need_cmd "$PP_SEVENZ_BIN"
-need_cmd "$PP_WINE_BIN"
+case "${1:-}" in
+  -h|--help) usage; exit 0 ;;
+  "") ;;
+  *) fatal "Ukendt argument: $1 (brug PP_MODE=... for launch-mode)" ;;
+esac
 
-if [[ ! -e "$PP_ISO" ]]; then
-  cat >&2 <<EOF
-Kan ikke finde ISO'en:
-  $PP_ISO
+MAIN_EXE="$CDROM_DIR/INSTALL/PPTP.EXE"
+INSTALLED_EXE="$INSTALL_DIR/PPTP.EXE"
 
-Læg ISO'en i projektmappen som:
-  $PP_ISO_DEFAULT
-eller sæt miljøvariablen PP_ISO=/sti/til/fil.iso
+if [[ "$DRY_RUN" == "1" ]]; then
+  cat <<EOF
+DRY RUN
+PROJECT_NAME=$PROJECT_NAME
+ISO_PATH=$ISO_PATH
+CDROM_DIR=$CDROM_DIR
+RUNTIME_DIR=$RUNTIME_DIR
+WINEPREFIX=$WINEPREFIX_DIR
+WINE_BIN=$WINE_BIN
+WINEARCH=$([[ "$FORCE_WIN32" == "1" ]] && echo win32 || echo '<unset>')
+CD_DRIVE=${CD_DRIVE}: -> $CDROM_DIR
+CD_LABEL=$CD_LABEL
+MODE=$MODE
+MAIN_EXE=$MAIN_EXE
+INSTALLED_EXE=$INSTALLED_EXE
+VIRTUAL_DESKTOP=$VIRTUAL_DESKTOP
+DESKTOP_SIZE=$DESKTOP_SIZE
+WOULD_EXTRACT=$([[ -f "$MAIN_EXE" ]] && echo 0 || echo 1)
 EOF
-  exit 2
-fi
-
-main_exe="$PP_EXTRACT_DIR/INSTALL/PPTP.EXE"
-
-if [[ "$PP_DRY_RUN" == "1" ]]; then
-  echo "DRY RUN"
-  echo "ISO=$PP_ISO"
-  echo "EXTRACT_DIR=$PP_EXTRACT_DIR"
-  echo "WINEPREFIX=$PP_WINEPREFIX"
-  echo "WINE_BIN=$PP_WINE_BIN"
-  echo "CD_DRIVE=${PP_CD_DRIVE}: -> $PP_EXTRACT_DIR"
-  echo "CD_LABEL=$PP_CD_LABEL"
-  echo "LAUNCH_MODE=$PP_LAUNCH_MODE"
-  echo "MAIN_EXE=$main_exe"
-  echo "INSTALL_DIR=$PP_INSTALL_DIR"
-  echo "INSTALLED_EXE=$PP_INSTALLED_EXE"
-  echo "WOULD_EXTRACT=$([[ -e "$main_exe" ]] && echo 0 || echo 1)"
-  echo "VIRTUAL_DESKTOP=$PP_VIRTUAL_DESKTOP SIZE=$PP_DESKTOP_SIZE"
   exit 0
 fi
 
-if [[ ! -e "$main_exe" ]]; then
-  echo "Udpakker ISO til: $PP_EXTRACT_DIR"
-  mkdir -p "$PP_EXTRACT_DIR"
-  "$PP_SEVENZ_BIN" x -y -o"$PP_EXTRACT_DIR" "$PP_ISO"
+need_cmd "$SEVENZ_BIN"
+need_cmd "$WINE_BIN"
+
+if [[ "$MODE" == "kill" ]]; then
+  export WINEPREFIX="$WINEPREFIX_DIR"
+  if command -v wineserver >/dev/null 2>&1; then
+    wineserver -k >/dev/null 2>&1 || true
+  else
+    "$WINE_BIN" wineserver -k >/dev/null 2>&1 || true
+  fi
+  log "Wine-prefix stoppet: $WINEPREFIX_DIR"
+  exit 0
 fi
 
-if [[ ! -e "$main_exe" ]]; then
-  echo "Kunne ikke finde spillets executable: $main_exe" >&2
-  echo "Inspicér evt. $PP_EXTRACT_DIR eller prøv PP_LAUNCH_MODE=setup" >&2
-  exit 3
-fi
-
-export WINEPREFIX="$PP_WINEPREFIX"
-export WINEDEBUG="$PP_WINEDEBUG"
-if [[ "$PP_FORCE_WIN32" == "1" ]]; then
-  export WINEARCH=win32
-fi
-mkdir -p "$(dirname "$PP_WINEPREFIX")"
-
-setup_cdrom_drive() {
-  local drive_lower="${PP_CD_DRIVE,,}"
-  mkdir -p "$PP_WINEPREFIX/dosdevices"
-  ln -sfn "$PP_EXTRACT_DIR" "$PP_WINEPREFIX/dosdevices/${drive_lower}:"
-  printf '%s\n' "$PP_CD_LABEL" > "$PP_EXTRACT_DIR/.windows-label" 2>/dev/null || true
-
-  # Vigtigt: Kør IKKE `wine reg add` her.
-  # På en helt ny prefix tvinger det Wine til at bygge hele prefixet midt i
-  # Lutris' installer-fase, hvor den kan stå længe på "Wine configuration is
-  # being updated". Symlinket + .windows-label er nok til dette spil.
+extract_cdrom() {
+  if [[ -f "$MAIN_EXE" && -f "$CDROM_DIR/AUTORUN.INF" && -f "$CDROM_DIR/PPTP.ORB" ]]; then
+    return 0
+  fi
+  [[ -f "$ISO_PATH" ]] || fatal "Kan ikke finde ISO: $ISO_PATH. Kør ./install.sh --download --no-launch eller sæt PP_ISO."
+  log "Udpakker ISO til: $CDROM_DIR"
+  rm -rf "$CDROM_DIR.tmp"
+  mkdir -p "$CDROM_DIR.tmp"
+  "$SEVENZ_BIN" x -y -o"$CDROM_DIR.tmp" "$ISO_PATH"
+  [[ -f "$CDROM_DIR.tmp/INSTALL/PPTP.EXE" ]] || fatal "Udpakket ISO mangler INSTALL/PPTP.EXE"
+  [[ -f "$CDROM_DIR.tmp/PPTP.ORB" ]] || fatal "Udpakket ISO mangler PPTP.ORB"
+  rm -rf "$CDROM_DIR"
+  mv "$CDROM_DIR.tmp" "$CDROM_DIR"
 }
 
 repair_broken_prefix_if_needed() {
-  # Den forrige version kunne efterlade en halv-oprettet prefix:
-  # system.reg/user.reg fandtes, men drive_c/windows manglede. Så starter Wine
-  # med gentagne "could not open working directory C:\\windows\\system32".
-  if [[ -d "$PP_WINEPREFIX" && ! -d "$PP_WINEPREFIX/drive_c/windows" ]]; then
-    local backup="${PP_WINEPREFIX}.broken.$(date +%Y%m%d-%H%M%S)"
-    echo "Finder halvfærdig Wine-prefix uden drive_c/windows." >&2
-    echo "Flytter den til: $backup" >&2
-    mv "$PP_WINEPREFIX" "$backup"
+  if [[ -d "$WINEPREFIX_DIR" && ! -d "$WINEPREFIX_DIR/drive_c/windows" ]]; then
+    local backup="${WINEPREFIX_DIR}.broken.$(date +%Y%m%d-%H%M%S)"
+    log "Finder halvfærdig Wine-prefix uden drive_c/windows; flytter til $backup"
+    mv "$WINEPREFIX_DIR" "$backup"
   fi
 }
 
-initialize_wine_prefix() {
-  # Lad Wine bygge C:-drevet FØR vi selv opretter dosdevices/d:.
-  # Hvis vi opretter wineprefix32/dosdevices først, tror Wine at prefixen findes,
-  # men den mangler C:\windows\system32 og går i loop.
-  if [[ ! -d "$PP_WINEPREFIX/drive_c/windows/system32" ]]; then
-    echo "Initialiserer Wine-prefix: $PP_WINEPREFIX"
-    local boot_status=0
+init_prefix() {
+  export WINEPREFIX="$WINEPREFIX_DIR"
+  export WINEDEBUG="$WINEDEBUG_VALUE"
+  if [[ "$FORCE_WIN32" == "1" ]]; then
+    export WINEARCH=win32
+  fi
+  mkdir -p "$(dirname "$WINEPREFIX_DIR")"
+  if [[ ! -d "$WINEPREFIX_DIR/drive_c/windows/system32" ]]; then
+    log "Initialiserer Wine-prefix: $WINEPREFIX_DIR"
+    local status=0
     if command -v timeout >/dev/null 2>&1; then
-      timeout "${PP_WINEBOOT_TIMEOUT}s" "$PP_WINE_BIN" wineboot -u || boot_status=$?
+      timeout "${WINEBOOT_TIMEOUT}s" "$WINE_BIN" wineboot -u || status=$?
     else
-      "$PP_WINE_BIN" wineboot -u || boot_status=$?
+      "$WINE_BIN" wineboot -u || status=$?
     fi
-    if [[ "$boot_status" != "0" && -d "$PP_WINEPREFIX/drive_c/windows/system32" ]]; then
-      echo "wineboot returnerede $boot_status, men prefixens C:-drev findes; fortsætter."
-      "$PP_WINE_BIN" wineserver -k >/dev/null 2>&1 || true
-    elif [[ "$boot_status" != "0" ]]; then
-      echo "wineboot fejlede med status $boot_status før prefixen var klar." >&2
-      exit "$boot_status"
+    if [[ "$status" != 0 && -d "$WINEPREFIX_DIR/drive_c/windows/system32" ]]; then
+      log "wineboot returnerede $status, men prefixen findes; stopper første-init processer og fortsætter"
+      # Første Wine-init kan efterlade wineboot/rundll32-vinduer, især når vi
+      # afbryder med timeout. Stop dem nu, ellers kan de blokere den efterfølgende
+      # spilstarter og efterlade et generisk "Wine"-vindue i stedet for PPTP.EXE.
+      if command -v timeout >/dev/null 2>&1; then
+        timeout 15s "$WINE_BIN" wineserver -k >/dev/null 2>&1 || true
+      else
+        "$WINE_BIN" wineserver -k >/dev/null 2>&1 || true
+      fi
+    elif [[ "$status" != 0 ]]; then
+      fatal "wineboot fejlede med status $status før prefixen var klar"
     fi
   fi
-  if [[ ! -d "$PP_WINEPREFIX/drive_c/windows/system32" ]]; then
-    echo "Wine-prefix blev ikke initialiseret korrekt: $PP_WINEPREFIX" >&2
-    exit 5
+  [[ -d "$WINEPREFIX_DIR/drive_c/windows/system32" ]] || fatal "Wine-prefix blev ikke initialiseret korrekt"
+  if command -v timeout >/dev/null 2>&1; then
+    timeout 15s "$WINE_BIN" reg add 'HKCU\Software\Wine' /v Version /d win98 /f >/dev/null 2>&1 || true
+  else
+    "$WINE_BIN" reg add 'HKCU\Software\Wine' /v Version /d win98 /f >/dev/null 2>&1 || true
   fi
+}
+
+setup_cdrom_drive() {
+  local drive_lower="${CD_DRIVE,,}"
+  mkdir -p "$WINEPREFIX_DIR/dosdevices"
+  rm -f "$WINEPREFIX_DIR/dosdevices/${drive_lower}:" "$WINEPREFIX_DIR/dosdevices/${drive_lower}::"
+  ln -s "$CDROM_DIR" "$WINEPREFIX_DIR/dosdevices/${drive_lower}:"
+  printf '%s\n' "$CD_LABEL" > "$CDROM_DIR/.windows-label" 2>/dev/null || true
+  if command -v timeout >/dev/null 2>&1; then
+    timeout 15s "$WINE_BIN" reg add 'HKCU\Software\Wine\Drives' /v "${drive_lower}:" /d cdrom /f >/dev/null 2>&1 || true
+  else
+    "$WINE_BIN" reg add 'HKCU\Software\Wine\Drives' /v "${drive_lower}:" /d cdrom /f >/dev/null 2>&1 || true
+  fi
+}
+
+is_old_system_file() {
+  case "${1^^}" in
+    COMCTL32.DLL|COMDLG32.DLL|CRTDLL.DLL|LZ32.DLL|NETAPI32.DLL|OLECLI.DLL|OLECLI32.DLL|OLESVR32.DLL|RICHED32.DLL|SHELL32.DLL|VERSION.DLL|WINMM.DLL|WINMM16.DLL|WINSPOOL.DRV|WSOCK32.DLL|WINHLP32.EXE|WIN32S.EXE|W32S.386|W32SCOMB.DLL|W32SKRNL.DLL|W32SYS.DLL|WIN32S16.DLL|WING.DLL|WING32.DLL|WINGDE.DLL|WINGDIB.DRV|WINGPAL.WND)
+      return 0 ;;
+    *) return 1 ;;
+  esac
 }
 
 manual_install_game() {
-  local marker="$PP_INSTALL_DIR/.pink-panther-clean-install-v2"
-  if [[ -e "$PP_INSTALLED_EXE" && -e "$marker" ]]; then
+  local marker="$INSTALL_DIR/.pink-panther-clean-install-v2"
+  if [[ -f "$INSTALLED_EXE" && -f "$marker" ]]; then
     return 0
   fi
-
-  echo "Laver manuel clean install til: $PP_INSTALL_DIR"
-  mkdir -p "$PP_INSTALL_DIR"
-
-  # Kopiér spilfilerne én for én, men udelad gamle Windows/Win32s systemfiler.
-  # Hvis de ligger ved siden af PPTP.EXE, shadow'er de Wine's egne DLL'er og giver
-  # c000007b / "Importing dlls ... failed".
+  log "Laver clean runtime-install til: $INSTALL_DIR"
+  rm -rf "$INSTALL_DIR.tmp"
+  mkdir -p "$INSTALL_DIR.tmp"
   while IFS= read -r -d '' src; do
     local name
     name="$(basename "$src")"
-    case "${name^^}" in
-      VERSION.DLL|COMDLG32.DLL|WINSPOOL.DRV|SHELL32.DLL|COMCTL32.DLL|LZ32.DLL|NETAPI32.DLL|RICHED32.DLL|WINMM.DLL|WINMM16.DLL|OLECLI.DLL|OLECLI32.DLL|OLESVR32.DLL|W32S.386|W32SCOMB.DLL|W32SKRNL.DLL|W32SYS.DLL|WIN32S.EXE|WIN32S16.DLL|WING.DLL|WING32.DLL|WINGDE.DLL|WINGDIB.DRV|WINHLP32.EXE)
-        echo "Udelader gammel systemfil: $name"
-        ;;
-      *)
-        cp -a "$src" "$PP_INSTALL_DIR/"
-        ;;
-    esac
-  done < <(find "$PP_EXTRACT_DIR/INSTALL" -mindepth 1 -maxdepth 1 -print0)
+    if is_old_system_file "$name"; then
+      log "Udelader gammel systemfil: $name"
+      continue
+    fi
+    cp -a "$src" "$INSTALL_DIR.tmp/"
+  done < <(find "$CDROM_DIR/INSTALL" -mindepth 1 -maxdepth 1 -print0)
 
-  # Nogle versioner leder efter disse datafiler i CD-roden.
+  # Disse root-filer findes også/kun i CD-roden og bliver slået op af spillet.
   for f in ALLSONGS.PTP PPTP.ORB LICENSE.TXT README.WRI; do
-    [[ -e "$PP_EXTRACT_DIR/$f" ]] && cp -f "$PP_EXTRACT_DIR/$f" "$PP_INSTALL_DIR/"
+    [[ -e "$CDROM_DIR/$f" ]] && cp -f "$CDROM_DIR/$f" "$INSTALL_DIR.tmp/"
   done
-
+  [[ -f "$INSTALL_DIR.tmp/PPTP.EXE" ]] || fatal "Clean install mangler PPTP.EXE"
+  rm -rf "$INSTALL_DIR"
+  mv "$INSTALL_DIR.tmp" "$INSTALL_DIR"
   touch "$marker"
 }
 
+extract_cdrom
 repair_broken_prefix_if_needed
-initialize_wine_prefix
+init_prefix
 setup_cdrom_drive
 
-if [[ "$PP_PREPARE_ONLY" == "1" ]]; then
-  echo "PREPARE ONLY OK"
-  echo "ISO udpakket: $PP_EXTRACT_DIR"
-  echo "CD-ROM mapping: ${PP_CD_DRIVE}: -> $PP_EXTRACT_DIR"
-  echo "Launch target: $main_exe"
-  exit 0
-fi
-
-if [[ "$PP_INSTALL_ONLY" == "1" ]]; then
+if [[ "$MODE" == "prepare" ]]; then
   manual_install_game
-  echo "INSTALL ONLY OK"
-  echo "Installeret exe: $PP_INSTALLED_EXE"
+  log "PREPARE OK"
+  log "CD-ROM: $CDROM_DIR"
+  log "Installeret exe: $INSTALLED_EXE"
   exit 0
 fi
 
-case "$PP_LAUNCH_MODE" in
-  cdexe)
-    cd "$PP_EXTRACT_DIR/INSTALL"
-    wine_launcher="$main_exe"
+case "$MODE" in
+  game|installed)
+    manual_install_game
+    cd "$INSTALL_DIR"
+    TARGET='C:\Program Files\Pink Panther\PPTP.EXE'
+    ;;
+  cdgame|cdexe)
+    cd "$CDROM_DIR/INSTALL"
+    TARGET="${CD_DRIVE^^}:\\INSTALL\\PPTP.EXE"
     ;;
   teaser)
-    cd "$PP_EXTRACT_DIR"
-    wine_launcher="$PP_EXTRACT_DIR/TEASER.EXE"
+    cd "$CDROM_DIR"
+    TARGET="${CD_DRIVE^^}:\\TEASER.EXE"
     ;;
   setup)
-    cd "$PP_EXTRACT_DIR"
-    wine_launcher="$PP_EXTRACT_DIR/SETUP.EXE"
-    ;;
-  installed)
-    manual_install_game
-    cd "$PP_INSTALL_DIR"
-    wine_launcher='C:\Program Files\Pink Panther\PPTP.EXE'
+    cd "$CDROM_DIR"
+    TARGET="${CD_DRIVE^^}:\\SETUP.EXE"
     ;;
   *)
-    echo "Ukendt PP_LAUNCH_MODE=$PP_LAUNCH_MODE (brug: cdexe, teaser, setup, installed)" >&2
-    exit 4
+    fatal "Ukendt PP_MODE: $MODE"
     ;;
 esac
 
-if [[ "$PP_VIRTUAL_DESKTOP" == "1" ]]; then
-  "$PP_WINE_BIN" explorer "/desktop=$PP_DESKTOP_NAME,$PP_DESKTOP_SIZE" "$wine_launcher"
+log "Starter mode=$MODE target=$TARGET"
+if [[ "$VIRTUAL_DESKTOP" == "1" ]]; then
+  "$WINE_BIN" explorer "/desktop=$DESKTOP_NAME,$DESKTOP_SIZE" "$TARGET"
 else
-  "$PP_WINE_BIN" "$wine_launcher"
+  "$WINE_BIN" "$TARGET"
 fi
-# Vent så Lutris ikke tror, at spillet er færdigt for tidligt.
-"$PP_WINE_BIN" wineserver -w 2>/dev/null || wineserver -w 2>/dev/null || true
+# Behold processen under Lutris, hvis Wine launcher-vinduet returnerer tidligt.
+"$WINE_BIN" wineserver -w 2>/dev/null || wineserver -w 2>/dev/null || true

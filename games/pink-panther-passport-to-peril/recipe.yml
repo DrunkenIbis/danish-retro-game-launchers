@@ -1,32 +1,65 @@
 id: "pink-panther-passport-to-peril"
-title: "Pink Panther: Passport to Peril"
+title: "Den Lyserøde Panter på hemmelig mission i udlandet"
+alternate_titles:
+  - "The Pink Panther: Passport to Peril"
+  - "Pink Panther: Passport to Peril (DK)"
 runner: "wine"
-status: "migrated-from-local-working-folder"
+status: "installer-and-launcher-verified"
 
 repository_policy: "recipe-only; no game files included"
 
 sources:
   references:
-    - name: "Internet Archive search"
-      url: "https://archive.org/search?query=Pink+Panther:+Passport+to+Peril"
-      note: "Reference/search link only. Verify legal status yourself."
-    - name: "Second-hand / original media"
+    - name: "Internet Archive item/file"
+      url: "https://archive.org/download/DenLyserodePanterpahemmeligmissioniudlandet/PANTER.iso"
+      note: "Reference-download for the Danish ISO. Verify legal status yourself."
+    - name: "Original media"
       url: ""
       note: "Use your own legally obtained copy."
 
 game_files:
   required:
-    - filename: "TODO"
-      type: "original game media"
-      sha256: "TODO"
-      note: "Place under ~/retro-game-files/pink-panther-passport-to-peril/ or local/sources/pink-panther-passport-to-peril/."
+    - filename: "PANTER.iso"
+      type: "ISO 9660 CD-ROM image"
+      volume_label: "PANTER"
+      sha256: "b4ec3365a5066fbc840ec4d77c4b394258cb574f3621f9bfc976c497ec40d18d"
+      source_url: "https://archive.org/download/DenLyserodePanterpahemmeligmissioniudlandet/PANTER.iso"
+      note: "Place under local/sources/pink-panther-passport-to-peril/PANTER.iso, set PP_ISO, or run install.sh --download."
+  validation_paths:
+    - "AUTORUN.INF"
+    - "TEASER.EXE"
+    - "SETUP.EXE"
+    - "INSTALL/PPTP.EXE"
+    - "INSTALL/PPTP.BRO"
+    - "INSTALL/PPTP.HLP"
+    - "INSTALL/ALLSONGS.PTP"
+    - "ALLSONGS.PTP"
+    - "PPTP.ORB"
 
 paths:
   source_dir: "local/sources/pink-panther-passport-to-peril"
   runtime_dir: "local/runtime/pink-panther-passport-to-peril"
 
+compatibility:
+  wine_binary_preference: "wine32, then wine"
+  winearch: "win32"
+  windows_version: "win98"
+  cd_drive: "D:"
+  cd_label: "PANTER"
+  virtual_desktop: "PinkPanther,640x480"
+  launch_target: "C:\\Program Files\\Pink Panther\\PPTP.EXE"
+  clean_install: true
+  excluded_legacy_system_files:
+    - "VERSION.DLL"
+    - "COMDLG32.DLL"
+    - "SHELL32.DLL"
+    - "WINSPOOL.DRV"
+    - "WinG/Win32s DLLs and drivers"
+
 launch:
+  installer: "install.sh"
   wrapper: "launch.sh"
   lutris: "lutris.yml"
+  default_mode: "PP_MODE=game"
 
 migrated_from: "/home/test/lutris_game_scripts_Pink_panter"

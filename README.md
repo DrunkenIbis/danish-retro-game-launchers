@@ -75,7 +75,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Magnus & Myggen: Leg og Lær | — | ✅ | ✅ |
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |
 | Magnus & Myggen: Skumlesens Skygge/Hævn | — | ✅ | — |
-| Pink Panther: Passport to Peril | — | ✅ | — |
+| Den Lyserøde Panter: På hemmelig mission i udlandet / Passport to Peril | ✅ | ✅ | — |
 | Pyrus | — | ✅ | — |
 | Uden at prale, det er Harry | ✅ | ✅ | ✅ |
 | Yo! Joe! Beat the Ghosts | — | ✅ | — |

@@ -1,0 +1,55 @@
+id: "overboard"
+title: "Overboard! / Shipwreckers!"
+runner: "wine"
+status: "wine-launcher-verified-but-blocked-by-original-cd-validator"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Archive.org ZIP containing BIN/CUE reference"
+      url: "https://archive.org/download/overboard_202506/OVERBOARD.zip"
+      files:
+        - "OVERBOARD.zip"
+      note: "install.sh downloads this ZIP, extracts OVERBOARD.bin/OVERBOARD.cue, converts only the first MODE2/2352 data track to ISO, and validates the launcher files. Verify legal status yourself."
+    - name: "Original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "OVERBOARD.zip"
+      type: "zip-contained-bin-cue"
+      note: "Place under local/sources/overboard/, set OVERBOARD_ZIP, or run install.sh --download."
+    - filename: "OVERBOARD.iso"
+      type: "converted-data-track-iso"
+      note: "Ignored local artifact created from track 1 of OVERBOARD.bin/OVERBOARD.cue. Volume label: OVERBOARD."
+
+media:
+  cue:
+    data_track: "TRACK 01 MODE2/2352"
+    audio_tracks: "TRACK 02+ AUDIO"
+    data_end: "TRACK 02 INDEX 00"
+    conversion: "copy bytes 24..2071 from each 2352-byte sector up to the start of TRACK 02, then patch ISO9660 volume-space-size to the converted data-sector count"
+
+paths:
+  source_dir: "local/sources/overboard"
+  runtime_dir: "local/runtime/overboard"
+
+setup:
+  installer: "install.sh"
+  modes:
+    - "existing converted ISO or ZIP"
+    - "download OVERBOARD.zip from archive.org reference URL"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+  default_mode: "game"
+  executable: "OB.EXE"
+  notes:
+    - "AUTORUN.INF opens AUTORUN.EXE, but the reliable recipe starts OB.EXE directly from the mapped CD root."
+    - "Wine prefix is win32/win98 by default."
+    - "Default launch uses a Wine virtual desktop so fullscreen black-screen + hidden dialog cases stay debuggable."
+    - "The converted data-track ISO still triggers the built-in 'Overboard! CD Validator' dialog ('OVERBOARD! CD NOT PRESENT'). A true mixed-mode CD emulation path is still needed."
+    - "The data-only ISO does not preserve the original CD audio tracks."

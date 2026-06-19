@@ -229,8 +229,12 @@ iso_installer_validate_image() {
   fi
 
   iso_installer_log "Validerer ISO-indhold tidligt..."
-  local list_file required missing=0
-  list_file="$(mktemp)"
+  local list_file required missing=0 list_dir
+  list_dir="$(dirname "$image")"
+  if [[ ! -d "$list_dir" || ! -w "$list_dir" ]]; then
+    list_dir="/var/tmp"
+  fi
+  list_file="$(mktemp -p "$list_dir" .iso-installer-paths.XXXXXX)"
   if ! iso_installer_list_image_paths "$image" > "$list_file"; then
     rm -f "$list_file"
     iso_installer_fatal "Image kunne ikke læses af 7z: $image"

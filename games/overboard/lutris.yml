@@ -1,0 +1,23 @@
+name: Overboard! / Shipwreckers!
+slug: overboard
+version: Local ZIP BIN-CUE Wine wrapper
+runner: linux
+game_slug: overboard
+script:
+  game:
+    exe: ./launch.sh
+    working_dir: .
+  installer:
+    - chmodx: ./install.sh
+    - chmodx: ./launch.sh
+  system:
+    gamemode: false
+    gamescope: false
+    env:
+      OVERBOARD_MODE: game
+      OVERBOARD_CD_DRIVE: d
+      OVERBOARD_FORCE_WIN32: "1"
+      OVERBOARD_WINVER: win98
+      OVERBOARD_VIRTUAL_DESKTOP: "1"
+      OVERBOARD_MEDIA_MODE: cuebin
+  install_complete_text: Overboard!/Shipwreckers! er tilføjet. Kør install.sh første gang for at hente/importere ZIP med BIN/CUE, gemme de originale mixed-mode filer og validere den konverterede data-track ISO.

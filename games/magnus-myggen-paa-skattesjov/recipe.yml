@@ -1,0 +1,54 @@
+id: "magnus-myggen-paa-skattesjov"
+title: "Magnus & Myggen: På Skattesjov"
+runner: "wine"
+status: "blocked-superstarter-trial-expired"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Archive.org BIN/CUE reference"
+      url: "https://archive.org/download/magnus-myggen-paa-skattesjov/"
+      files:
+        - "SS12DK.bin"
+        - "SS12DK.cue"
+      note: "install.sh can download these files and convert the MODE2/2352 data track to ISO. Verify legal status yourself."
+    - name: "Original media"
+      url: ""
+      note: "Use your own legally obtained copy; install.sh can import a physical CD/DVD to ISO."
+
+game_files:
+  required:
+    - filename: "SS12DK.bin"
+      type: "bin-cue-track"
+      sha256: "8f3182a528cc5b9946e97f9bfc5456e7e55a3d986d7b63dbc28222c90bded561"
+      note: "Place under local/sources/magnus-myggen-paa-skattesjov/, set MM8_BIN, or run install.sh."
+    - filename: "SS12DK.cue"
+      type: "cue-sheet"
+      sha256: "0876120b6bbf90d5885499a57a5e43856c8e2ae359eb5094bd056678233f9951"
+      note: "Single data track: TRACK 01 MODE2/2352."
+    - filename: "SS12DK.iso"
+      type: "converted-cdrom-image"
+      sha256: "generated-locally-from-bin-cue"
+      note: "Ignored runtime/source artifact created by install.sh or launch.sh. Volume label: SS12DK."
+
+paths:
+  source_dir: "local/sources/magnus-myggen-paa-skattesjov"
+  runtime_dir: "local/runtime/magnus-myggen-paa-skattesjov"
+
+setup:
+  installer: "install.sh"
+  modes:
+    - "existing converted ISO or BIN/CUE"
+    - "download SS12DK.bin + SS12DK.cue from archive.org reference URL"
+    - "import physical CD/DVD with dd"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+  default_mode: "game"
+  executable: "mm8main.exe"
+  notes:
+    - "AUTORUN.INF opens LAUNCHER.EXE, but the recipe bypasses InstallShield and manually extracts Files_All_DK/mm8main.exe plus mydlg.cxt and Files_All/xtras from DATA1.CAB."
+    - "Wine prefix is win32/win98 by default."
+    - "The Director projector starts and loads resources, but the tested archive.org media shows an expired SuperStarter/trial modal instead of playable gameplay."

@@ -1,0 +1,20 @@
+name: Magnus & Myggen - Paa Skattesjov
+slug: magnus-myggen-paa-skattesjov
+version: Local BIN-CUE Wine wrapper
+runner: linux
+game_slug: magnus-myggen-paa-skattesjov
+script:
+  game:
+    exe: ./launch.sh
+    working_dir: .
+  installer:
+    - chmodx: ./install.sh
+    - chmodx: ./launch.sh
+  system:
+    gamemode: false
+    gamescope: false
+    env:
+      MM8_MODE: game
+      MM8_DESKTOP_SIZE: 800x600
+      MM8_VIRTUAL_DESKTOP: "0"
+  install_complete_text: Magnus & Myggen På Skattesjov er tilføjet. Kør install.sh første gang for at hente/importere BIN/CUE og validere image-indholdet.

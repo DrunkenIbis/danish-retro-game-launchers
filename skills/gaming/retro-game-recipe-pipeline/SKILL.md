@@ -64,6 +64,9 @@ Do not use for:
 4. **Act on actual evidence.**
    - Inspect image contents, `AUTORUN.INF`, executable types, and logs.
    - Do not guess the launcher path from filename alone.
+   - If a prior attempt already created a broken ad-hoc launcher or downloaded the
+     ISO into the wrong current-working-directory, locate the real ISO on disk
+     first and migrate it into `local/sources/<game-id>/` before debugging Wine.
 
 5. **Keep the repo clean.**
    - Check `git status --short` before and after each phase.
@@ -123,6 +126,17 @@ Look for:
 - Inno Setup, InstallShield, Win16 NE, PE32, DOS MZ, DOS/4GW
 - large resource files and split installer payloads (`setup-*.bin`, `DATA1.CAB`)
 
+Atomic Bomberman-style reminder for smaller models:
+
+- if the disc root already contains a plausible game EXE (for example `BM95.EXE`)
+  plus the full data tree, test that direct CD-root executable before inventing a
+  separate hard-disk installer flow
+- read `CFG.INI` and `strings` from the candidate EXE to see whether it expects
+  relative `data/...` paths or a current-directory CD launch context
+- if `AUTORUN.INF` only points to a shell launcher but `file`/`strings` show a
+  real PE32 game executable in the root, prefer validating that real executable
+  path directly under Wine
+
 ## Phase 1: Installer Script
 
 Goal: `install.sh` can acquire/import media and validate required files.
@@ -174,6 +188,40 @@ Then implement the hook in the per-game `install.sh`. Keep it small and specific
 to the media format. For MODE2/2352 BIN/CUE, convert each 2352-byte sector to a
 2048-byte ISO payload using bytes `24..2071`. For MODE1/2352, inspect and use
 the appropriate payload offset before copying from another game.
+
+For a ZIP that contains a BIN/CUE, do **not** treat the ZIP as the final ISO and
+do **not** run `mkisofs` on the BIN. First unzip the CUE and inspect it. If the
+CUE is a mixed-mode disc (`TRACK 01 MODE2/2352` followed by `TRACK 02 AUDIO`),
+only track 1 is the PC data track. Parse `TRACK 02 INDEX 00` (or `INDEX 01` as a
+fallback) as the end sector, copy only those MODE2 payload sectors (`24..2071`),
+and patch the ISO9660 primary/supplementary descriptor volume-space-size to the
+converted data-sector count. Without that patch, `7z` may list files but exit
+nonzero with `Unexpected end of archive` because the original descriptor still
+claims the full mixed-mode disc size including audio tracks.
+
+Important compatibility boundary from Overboard!/Shipwreckers!: a correct
+data-track ISO conversion plus a correct Wine `D:` volume label may still be
+insufficient for launch. Overboard reached `D:\\OB.EXE`, but the built-in
+`Overboard! CD Validator` still showed `OVERBOARD! CD NOT PRESENT` even when
+`vol d:` reported the right `OVERBOARD` label and the recipe was tested both as
+an extracted `d:` directory and as a loop-mounted ISO with `d:: -> /dev/loop0`.
+When that happens, treat it as evidence that the title probably wants true
+mixed-mode CD emulation (audio TOC/original-disc semantics), not more random
+path/registry churn and not a success just because an `OB.EXE` window/process
+exists. Overboard also showed that a bounded `wine32 cmd /c "cd /d d:\\ &&
+OB.EXE"` run may even exit `0` while still being blocked by the CD validator,
+while `./launch.sh` or `wine32 start /exec explorer /desktop=... D:\\OB.EXE`
+may exit `1` with `mcicda`/`d:.vxd` fixmes from the same root problem. So exit
+status alone is not enough either.
+
+Also note two debugging hygiene lessons from that case:
+- if `/tmp` is crowded with old AppImage mounts/extractions, a helper pipeline
+  like `7z ... | awk > $(mktemp)` can fail with a misleading `Disk quota
+  exceeded`; prefer creating temporary validation files beside the image or
+  under `/var/tmp`
+- when launching a CD-root Windows game through `wine cmd`, `cd /d` must target
+  the directory/root (`D:\\`), not the full executable path, or Wine cmd will
+  fail with `Directory name invalid.`
 
 Installer verification:
 
@@ -247,15 +295,21 @@ A Wine launcher should normally:
 5. set label/registry details needed for CD checks
 6. launch the final EXE in a virtual desktop when old graphics need it
 
-Expose modes:
+# Atomic Bomberman (1997) - Specifikke krav til AppImage-build
+## Vigtige hensyn ved AppImage Build
+1.  **Wine Backend:** Skal altid bruge `wine32` og sætte Wine Windows version til `win98`.
+2.  **CD Mapping & Label:** CD-roden skal mappes som et drevletter (f.eks. `D:`), og det originale volumenlabel (`BOMBRMAN`) SKAL bevares i `.windows-label` for at sikre korrekt genkendelse.
+3.  **Launcher Exe:** Det korrekte spil-EXE er `BM95.EXE`, ikke et generisk `AUTORUN.EXE`.
+4.  **AppImage Entry Point:** Den interne launcher skal køre direkte `D:\\BM95.EXE` for at sikre, at den korrekte kontekst og stier (inklusive det virtuelle skrivebord) aktiveres fra starten.
 
-```sh
-GAME_MODE=game ./launch.sh      # default
-GAME_MODE=setup ./launch.sh     # visible setup
-GAME_MODE=cdmenu ./launch.sh    # CD menu fallback
-GAME_MODE=prepare ./launch.sh   # prepare runtime without opening a window
-GAME_MODE=kill ./launch.sh      # stop prefix wineserver
-```
+Atomic Bomberman-specifikt AppImage flow:
+*   **Prærequisit:** Kør `./install.sh --download --no-launch` FØRST.
+*   **Build Step:** Build scriptet skal bruge de nyligt oprettede paths (local/sources, local/runtime).
+
+## Atomic Bomberman AppImage Workflow
+1.  **Sync Runtime:** Kopier indhold fra `$RUNTIME_DIR/cdrom` og `$RUNTIME_DIR/wineprefix32`.
+2.  **Seed Launcher:** Skriv `appimage-launch.sh`, der kalder den eksisterende, forberedte `launch.sh` ved at sætte de korrekte miljøvariabler (`AB_WINEPREFIX`, `AB_CDROM_DIR`, osv.).
+3.  **Verification Target:** Bekræftelse af det visuelle output skal være **Memory Model Selection Screen** (i stedet for kun Wine Window eller Success exit code).
 
 For AppImage compatibility, `prepare` is important: it lets the AppImage builder
 seed a working prefix without starting the game window.
@@ -458,6 +512,13 @@ Only mark ✅ when the script exists and has been tested in its phase.
 9. **Providing no-CD patches.**
    Stay on compatibility: correct drive mapping, labels, registry, launch
    context, original media. Do not provide patch bytes or crack instructions.
+
+10. **Looping on BIN/CUE mounting.**
+    In restricted containers there may be no `/dev/loop*`, and a raw BIN from a
+    mixed-mode CUE is not an ISO. Do not spend time on `mount -o loop`, `losetup`,
+    or `mkisofs` after the CUE says `MODE1/2352` or `MODE2/2352`. Convert the
+    data-track sector payload into an ISO artifact under `local/sources/<game>/`
+    and validate that with `7z`/`isoinfo` before writing the Wine/DOSBox wrapper.
 
 ## Verification Checklist
 

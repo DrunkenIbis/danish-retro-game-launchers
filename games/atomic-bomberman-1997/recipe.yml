@@ -1,0 +1,55 @@
+id: "atomic-bomberman-1997"
+title: "Atomic Bomberman"
+alternate_titles:
+  - "Atomic Bomberman (1997)"
+runner: "wine"
+status: "launcher-verified-reaches-memory-model-dialog"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Internet Archive item/file"
+      url: "https://archive.org/download/atomic-bomberman_202504/Atomic%20Bomberman.ISO"
+      note: "Reference-download for the ISO. Verify legal status yourself."
+    - name: "Original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "Atomic Bomberman.ISO"
+      type: "ISO 9660 CD-ROM image"
+      volume_label: "BOMBRMAN"
+      source_url: "https://archive.org/download/atomic-bomberman_202504/Atomic%20Bomberman.ISO"
+      note: "Place under local/sources/atomic-bomberman-1997/Atomic Bomberman.ISO, set AB_ISO, or run install.sh --download."
+  validation_paths:
+    - "AUTORUN.INF"
+    - "AUTORUN.EXE"
+    - "BM95.EXE"
+    - "CFG.INI"
+    - "DATA/ANI/MASTER.ALI"
+    - "DATA/RES/TITLE.PCX"
+    - "DATA/RES/SOUNDLST.RES"
+    - "DATA/SCHEMES/BASIC.SCH"
+
+paths:
+  source_dir: "local/sources/atomic-bomberman-1997"
+  runtime_dir: "local/runtime/atomic-bomberman-1997"
+
+compatibility:
+  wine_binary_preference: "wine32, then wine"
+  winearch: "win32"
+  windows_version: "win98"
+  cd_drive: "D:"
+  cd_label: "BOMBRMAN"
+  virtual_desktop: "AtomicBomberman,800x600"
+  launch_target: "D:\\BM95.EXE"
+  notes:
+    - "Game launches directly from the extracted CD root; no separate hard-disk install step was required for validation."
+    - "Validated by reaching the in-game memory-model chooser rather than a Wine setup window or installer shell."
+
+launch:
+  installer: "install.sh"
+  wrapper: "launch.sh"
+  default_mode: "AB_MODE=game"

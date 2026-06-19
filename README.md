@@ -67,6 +67,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 
 | Game | Installer script | Launch script | AppImage script |
 |---|---:|---:|---:|
+| Atomic Bomberman (1997) | ✅ | ✅ main menu verified | ✅ main menu verified |
 | Battle Beast | — | ✅ | — |
 | Den Lyserøde Panter: Hokus Pokus Panter | ✅ | ⚠️ Visible Wine game scene; manual playthrough not verified | ✅ |
 | Det Magiske Jordbær | ✅ | ✅ | ✅ |

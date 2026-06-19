@@ -112,14 +112,16 @@ De samme forklaringer står som kommentarer i `launch.sh`, fordi launcheren er d
 
 ## Første start
 
-Ved første start kan spillet vise en dansk dialog med Pink Panther-figuren:
+Launcheren pre-seeder spillets egen `ShowChangeDisplayConfigWarning=0`, så den gamle
+"Ændrer skærmopsætning" / 640x480, 256 farver-dialog normalt ikke vises ved nye
+Wine-prefixer eller AppImage-state.
 
-```text
-Ændrer skærmopsætning
-Den bedste skærmopsætning er 640x480, 256 farver. Ønsker du opsætningen ændret?
-```
+Hvis du kører en ældre AppImage eller en state-dir der allerede blev oprettet før
+rettelsen, kan dialogen stadig dukke op én gang. Sæt i så fald flueben i `Vis ikke
+denne besked igen` og klik `Ja`, eller ryd AppImage-state og rebuild med den nye
+`launch.sh`.
 
-Klik `Ja`. I testen fortsatte spillet derefter fra prompten til faktisk Pink Panther-spilindhold/intro, ikke kun et tomt Wine-vindue.
+I den oprindelige test fortsatte spillet efter prompten til faktisk Pink Panther-spilindhold/intro, ikke kun et tomt Wine-vindue.
 
 ## Verificeret ISO-indhold
 
@@ -139,3 +141,23 @@ PPTP.ORB
 ## Lutris
 
 `lutris.yml` bruger Linux-runneren og kalder `./launch.sh`, så alle kompatibilitetsvalg ligger ét sted. Importér den som lokal install script i Lutris, eller kør wrapperen direkte.
+
+## AppImage
+
+`extras/build_appimage.sh` bygger en Wine-bundlet AppDir/AppImage med samme fælles `scripts/wine-appimage-builder.sh` helper som de andre Wine-baserede recipes.
+
+Typisk flow:
+
+```sh
+./games/pink-panther-passport-to-peril/install.sh --download --no-launch
+PP_MODE=prepare ./games/pink-panther-passport-to-peril/launch.sh
+./games/pink-panther-passport-to-peril/extras/build_appimage.sh
+```
+
+Kun AppDir-verifikation uden endelig AppImage:
+
+```sh
+./games/pink-panther-passport-to-peril/extras/build_appimage.sh --appdir-only
+```
+
+AppImage-buildet pakker den udpakkede CD og en seedet Wine-prefix. Ved første AppImage-start kopieres prefixen til `~/.local/share/pink-panther-passport-to-peril/`, og `launch.sh` genskaber den mutable clean install derfra.

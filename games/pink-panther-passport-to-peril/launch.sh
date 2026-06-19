@@ -197,6 +197,18 @@ setup_cdrom_drive() {
   fi
 }
 
+suppress_display_warning() {
+  # Første start kan vise spillets egen "Ændrer skærmopsætning" dialog.
+  # Det er ikke en Wine-fejl; spillet gemmer "Vis ikke denne besked igen" her.
+  # Pre-seed værdien så AppImage/ny prefix starter direkte i spillet.
+  local key='HKCU\Software\Wanderlust\Den Lyserøde Panter på Hemmelig mission i udlandet\Warnings'
+  if command -v timeout >/dev/null 2>&1; then
+    timeout 15s "$WINE_BIN" reg add "$key" /v ShowChangeDisplayConfigWarning /t REG_DWORD /d 0 /f >/dev/null 2>&1 || true
+  else
+    "$WINE_BIN" reg add "$key" /v ShowChangeDisplayConfigWarning /t REG_DWORD /d 0 /f >/dev/null 2>&1 || true
+  fi
+}
+
 is_old_system_file() {
   case "${1^^}" in
     COMCTL32.DLL|COMDLG32.DLL|CRTDLL.DLL|LZ32.DLL|NETAPI32.DLL|OLECLI.DLL|OLECLI32.DLL|OLESVR32.DLL|RICHED32.DLL|SHELL32.DLL|VERSION.DLL|WINMM.DLL|WINMM16.DLL|WINSPOOL.DRV|WSOCK32.DLL|WINHLP32.EXE|WIN32S.EXE|W32S.386|W32SCOMB.DLL|W32SKRNL.DLL|W32SYS.DLL|WIN32S16.DLL|WING.DLL|WING32.DLL|WINGDE.DLL|WINGDIB.DRV|WINGPAL.WND)
@@ -237,6 +249,7 @@ extract_cdrom
 repair_broken_prefix_if_needed
 init_prefix
 setup_cdrom_drive
+suppress_display_warning
 
 if [[ "$MODE" == "prepare" ]]; then
   manual_install_game

@@ -60,6 +60,7 @@ launch:
   installer: "install.sh"
   wrapper: "launch.sh"
   lutris: "lutris.yml"
+  appimage_builder: "extras/build_appimage.sh"
   default_mode: "PP_MODE=game"
 
 migrated_from: "/home/test/lutris_game_scripts_Pink_panter"

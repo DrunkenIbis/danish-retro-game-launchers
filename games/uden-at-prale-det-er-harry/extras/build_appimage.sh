@@ -114,6 +114,11 @@ mkdir -p "$APP_STATE_DIR"
     mkdir -p "$WINEPREFIX/drive_c/Harry/movies"
     cp -a "$HERE/game/wineprefix/drive_c/Harry/movies/." "$WINEPREFIX/drive_c/Harry/movies/"
   fi
+  if [[ -d "$HERE/game/wineprefix/drive_c/Harry/movies.original-iv32-backup" ]]; then
+    rm -rf "$WINEPREFIX/drive_c/Harry/movies.original-iv32-backup"
+    mkdir -p "$WINEPREFIX/drive_c/Harry/movies.original-iv32-backup"
+    cp -a "$HERE/game/wineprefix/drive_c/Harry/movies.original-iv32-backup/." "$WINEPREFIX/drive_c/Harry/movies.original-iv32-backup/"
+  fi
   if [[ ! -f "$STATE_CDROM/CDmenu.exe" ]]; then
     rm -rf "$STATE_CDROM"
     mkdir -p "$STATE_CDROM"

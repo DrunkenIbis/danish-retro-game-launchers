@@ -81,6 +81,32 @@ map_cd_drive() {
   "$WINE_BIN" reg add 'HKCU\Software\Wine' /v Version /t REG_SZ /d win98 /f >/dev/null 2>&1 || true
 }
 
+ensure_video_mci_config() {
+  local system_ini="$WINEPREFIX/drive_c/windows/system.ini"
+
+  # Existing AppImage state directories can come from an older seeded prefix
+  # where Wine's MCI AVI registration was missing. Then Director can find the
+  # MSVC AVI file but Wine MCI reports the file format as unsupported. Refresh
+  # the relevant registrations on every launch; the commands are idempotent.
+  "$WINE_BIN" reg add 'HKLM\Software\Microsoft\Windows NT\CurrentVersion\MCI Extensions' /v avi /t REG_SZ /d AVIVideo /f >/dev/null
+  "$WINE_BIN" reg add 'HKLM\Software\Microsoft\Windows NT\CurrentVersion\MCI32' /v AVIVideo /t REG_SZ /d mciavi32.dll /f >/dev/null
+
+  mkdir -p "$(dirname "$system_ini")"
+  touch "$system_ini"
+  if ! grep -qi '^\[mci\]' "$system_ini"; then
+    printf '[mci]\r\n' >> "$system_ini"
+  fi
+  if ! grep -qi '^avivideo=mciavi32\.dll' "$system_ini"; then
+    printf 'avivideo=mciavi32.dll\r\n' >> "$system_ini"
+  fi
+  if ! grep -qi '^\[drivers32\]' "$system_ini"; then
+    printf '[drivers32]\r\n' >> "$system_ini"
+  fi
+  if ! grep -qi '^vidc\.msvc=msvidc32\.dll' "$system_ini"; then
+    printf 'vidc.msvc=msvidc32.dll\r\n' >> "$system_ini"
+  fi
+}
+
 seed_original_iv32_backup_if_needed() {
   local backup_movies_dir="$GAME_DIR/movies.original-iv32-backup"
   local backup_source="${HARRY_IV32_BACKUP_SOURCE:-}"
@@ -231,6 +257,7 @@ main() {
     extract_cdrom_if_needed
     init_prefix_if_needed
     map_cd_drive
+    ensure_video_mci_config
     case "$MODE" in
       setup|install|cdmenu|menu) : ;;
       prepare|game|installed) install_game_if_needed ;;

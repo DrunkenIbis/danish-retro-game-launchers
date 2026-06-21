@@ -95,6 +95,8 @@ Outputs are ignored by Git:
 
 The AppImage bundles the extracted CD-ROM, a prepared Wine prefix with `C:\Harry`, and a copied Wine runtime. On first run it copies the prefix and CD-ROM data to `~/.local/share/uden-at-prale-det-er-harry/` so Wine can update drive mappings and the `HARRY` CD label even though the AppImage itself is read-only.
 
+The launcher now regenerates every AVI in `movies/` from the backup copy and transcodes them to Microsoft Video 1 before launch. The longer 400x224 cutscene family (`intro_scene_new_1.avi`, `cutscene_*.avi`, and `outro.avi`) is also normalized to 400x216, because Director/Wine MCI can still report `intro_scene_new_1.avi` as an unsupported digital-video file when the MSVC transcode preserves the original 400x224 frame. This keeps Director Player on a format/geometry it can play inside the bundled Wine runtime and avoids the ticket/intro playback errors.
+
 Only distribute an AppImage made this way if you have the right to distribute the bundled game data.
 
 ## Reference links

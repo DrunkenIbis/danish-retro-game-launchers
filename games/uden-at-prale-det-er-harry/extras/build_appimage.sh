@@ -19,6 +19,8 @@ OUTPUT_APPIMAGE="${OUTPUT_APPIMAGE:-$DIST_DIR/${PROJECT_NAME}-${ARCH}.AppImage}"
 STATE_DIR_BASENAME="$PROJECT_NAME"
 PREFIX_SEED_REL="game/wineprefix"
 INTERNAL_LAUNCHER_REL="game/appimage-launch.sh"
+IV32_BACKUP_SOURCE_DEFAULT="$REPO_ROOT/../lutris_game_scripts_uden_at_prale_harry/wineprefix_ge/drive_c/Harry/movies.original-iv32-backup"
+IV32_BACKUP_SOURCE="${HARRY_IV32_BACKUP_SOURCE:-$IV32_BACKUP_SOURCE_DEFAULT}"
 
 SOURCE_BASE="${RETRO_GAME_SOURCE_DIR:-$REPO_ROOT/local/sources}"
 RUNTIME_BASE="${RETRO_GAME_RUNTIME_DIR:-$REPO_ROOT/local/runtime}"
@@ -77,12 +79,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 prepare_harry_runtime() {
-  if [[ -f "$CDROM_DIR/CDmenu.exe" && -x "$PREFIX_DIR/drive_c/Harry/harry.exe" ]]; then
-    return 0
+  if [[ ! -f "$CDROM_DIR/CDmenu.exe" || ! -x "$PREFIX_DIR/drive_c/Harry/harry.exe" ]]; then
+    [[ -f "$ISO_PATH" ]] || wine_appimage_fatal "Runtime mangler og ISO blev ikke fundet: $ISO_PATH. Kør ./install.sh --download --no-launch først."
   fi
-  [[ -f "$ISO_PATH" ]] || wine_appimage_fatal "Runtime mangler og ISO blev ikke fundet: $ISO_PATH. Kør ./install.sh --download --no-launch først."
   wine_appimage_log "Forbereder Harry runtime via launch.sh prepare"
-  HARRY_ISO="$ISO_PATH" HARRY_RUNTIME_DIR="$RUNTIME_DIR" HARRY_WINEPREFIX="$PREFIX_DIR" \
+  HARRY_ISO="$ISO_PATH" HARRY_RUNTIME_DIR="$RUNTIME_DIR" HARRY_WINEPREFIX="$PREFIX_DIR" HARRY_IV32_BACKUP_SOURCE="$IV32_BACKUP_SOURCE" \
     HARRY_MODE=prepare "$GAME_DIR/launch.sh"
 }
 
@@ -108,6 +109,11 @@ CDROM_LOCK="$APP_STATE_DIR/.cdrom-copy.lock"
 mkdir -p "$APP_STATE_DIR"
 (
   flock 8
+  if [[ -d "$HERE/game/wineprefix/drive_c/Harry/movies" ]]; then
+    rm -rf "$WINEPREFIX/drive_c/Harry/movies"
+    mkdir -p "$WINEPREFIX/drive_c/Harry/movies"
+    cp -a "$HERE/game/wineprefix/drive_c/Harry/movies/." "$WINEPREFIX/drive_c/Harry/movies/"
+  fi
   if [[ ! -f "$STATE_CDROM/CDmenu.exe" ]]; then
     rm -rf "$STATE_CDROM"
     mkdir -p "$STATE_CDROM"
@@ -118,6 +124,7 @@ export HARRY_RUNTIME_DIR="$APP_STATE_DIR/runtime"
 export HARRY_WINEPREFIX="$WINEPREFIX"
 export HARRY_CDROM_DIR="$STATE_CDROM"
 export HARRY_ISO="$HERE/game/uden-at-prale-det-er-harry.iso"
+export HARRY_IV32_BACKUP_SOURCE="$HERE/game/wineprefix/drive_c/Harry/movies.original-iv32-backup"
 export HARRY_WINE="${WINE_BIN:?WINE_BIN not set}"
 export HARRY_WINESERVER="${WINE_BIN:?WINE_BIN not set}"
 export HARRY_AUTO_INSTALL=0
@@ -134,6 +141,26 @@ validate_harry_inputs() {
   [[ -f "$CDROM_DIR/CDmenu.exe" ]] || wine_appimage_fatal "Mangler CDmenu.exe i $CDROM_DIR"
   [[ -f "$CDROM_DIR/setup.exe" ]] || wine_appimage_fatal "Mangler setup.exe i $CDROM_DIR"
   [[ -x "$PREFIX_DIR/drive_c/Harry/harry.exe" ]] || wine_appimage_fatal "Mangler installed harry.exe i $PREFIX_DIR"
+  if command -v ffprobe >/dev/null 2>&1; then
+    local movies_dir="$PREFIX_DIR/drive_c/Harry/movies"
+    local movie codec_name dims checked_any=0 base
+    [[ -d "$movies_dir" ]] || wine_appimage_fatal "Mangler movies-mappe i $movies_dir"
+    shopt -s nullglob
+    for movie in "$movies_dir"/*.avi; do
+      checked_any=1
+      base="$(basename "$movie")"
+      codec_name="$(ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of csv=p=0 "$movie" 2>/dev/null || true)"
+      [[ "$codec_name" == "msvideo1" ]] || wine_appimage_fatal "Movie codec er ikke Microsoft Video 1: $movie ($codec_name)"
+      dims="$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x "$movie" 2>/dev/null || true)"
+      case "$base" in
+        intro_scene_new_1.avi|cutscene_1.avi|cutscene_2.avi|cutscene_3.avi|outro.avi)
+          [[ "$dims" == "400x216" ]] || wine_appimage_fatal "Movie dimension er ikke Director/MCI-kompatibel: $movie ($dims, forventede 400x216)"
+          ;;
+      esac
+    done
+    shopt -u nullglob
+    [[ "$checked_any" == 1 ]] || wine_appimage_fatal "Ingen AVI-filer fundet i $movies_dir"
+  fi
 }
 
 main() {

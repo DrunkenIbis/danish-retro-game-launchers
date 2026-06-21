@@ -352,7 +352,20 @@ wine_appimage_build_appimage() {
     fi
     tool_runner="$extracted"
   fi
-  ARCH="$ARCH" "$tool_runner" "$APPDIR" "$OUTPUT_APPIMAGE"
+
+  mkdir -p "$DIST_DIR"
+  local tmp_output
+  tmp_output="$(mktemp --tmpdir="$DIST_DIR" ".${PROJECT_NAME}-${ARCH}.AppImage.XXXXXX")"
+  rm -f "$tmp_output"
+
+  cleanup_tmp_output() {
+    rm -f "$tmp_output"
+  }
+  trap cleanup_tmp_output RETURN
+
+  ARCH="$ARCH" "$tool_runner" "$APPDIR" "$tmp_output"
+  mv -f "$tmp_output" "$OUTPUT_APPIMAGE"
+  trap - RETURN
   wine_appimage_log "Færdig: $OUTPUT_APPIMAGE"
 }
 

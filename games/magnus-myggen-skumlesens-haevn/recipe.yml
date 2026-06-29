@@ -1,0 +1,62 @@
+id: "magnus-myggen-skumlesens-haevn"
+title: "Magnus & Myggen: Skumlesens Hævn"
+runner: "wine"
+status: "blocked-trial-expired"
+
+repository_policy: "recipe-only; no game files included"
+
+sources:
+  references:
+    - name: "Archive.org BIN/CUE reference"
+      url: "https://archive.org/download/magnus-myggen-skumlesens-haevn/"
+      files:
+        - "M322DK.bin"
+        - "M322DK.cue"
+      note: "install.sh can download these files and convert the MODE1/2352 data track to ISO. Verify legal status yourself."
+    - name: "Original media"
+      url: ""
+      note: "Use your own legally obtained copy; install.sh can import a physical CD/DVD to ISO."
+
+game_files:
+  required:
+    - filename: "M322DK.bin"
+      type: "bin-cue-track"
+      sha256: "554a0254eb9992cb528ec6fb249f61d9f6e9995074e67e547c64461dee23f4ff"
+      note: "Place under local/sources/magnus-myggen-skumlesens-haevn/, set MM3_BIN, or run install.sh."
+    - filename: "M322DK.cue"
+      type: "cue-sheet"
+      sha256: "1d27ec277b6f86db495b84ac466ee0d74857f5e23eb73cdf02d2ddcd1963cbad"
+      note: "Single data track: TRACK 01 MODE1/2352."
+    - filename: "M322DK.iso"
+      type: "converted-cdrom-image"
+      sha256: "generated-locally-from-bin-cue"
+      note: "Ignored source/runtime artifact created by install.sh or launch.sh. Volume label: M322DK."
+
+paths:
+  source_dir: "local/sources/magnus-myggen-skumlesens-haevn"
+  runtime_dir: "local/runtime/magnus-myggen-skumlesens-haevn"
+
+metadata:
+  publisher_developer: "Ivanoff Interactive"
+  year: 1998
+  language: "Danish"
+  platform: "Windows PC CD-ROM"
+  media_type: "BIN/CUE CD-ROM image"
+  requirements: "Pentium/120 MHz, 64 MB RAM, Windows 98/XP/Vista/7, DirectX-compatible sound/video, 800x600, 16-bit colors"
+
+setup:
+  installer: "install.sh"
+  modes:
+    - "existing converted ISO or BIN/CUE"
+    - "download M322DK.bin + M322DK.cue from archive.org reference URL"
+    - "import physical CD/DVD with dd"
+
+launch:
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+  default_mode: "game"
+  executable: "mm3run.exe"
+  notes:
+    - "AUTORUN.INF opens LAUNCHER.EXE, but the wrapper bypasses old InstallShield by manually extracting appfiles/mm3run.exe, scripts, DK resources, and music DAT files from DATA1.CAB/DATA2.CAB."
+    - "Wine prefix is win32/win98 by default and runs in an 800x600 virtual desktop."
+    - "The tested archive.org media starts the game process and displays a game-owned modal: 'This trial game has expired.' This is documented as a licence/trial gate, not as working gameplay."

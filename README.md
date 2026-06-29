@@ -77,7 +77,8 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |
 | Magnus & Myggen: Leg og Lær | ✅ | ⚠️ crash fixed, then blocked by CD-check dialog | ✅ |
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |
-| Magnus & Myggen: Skumlesens Skygge/Hævn | — | ✅ | — |
+| Magnus & Myggen: Skumlesens Hævn | ✅ | ⚠️ starts but blocked by trial-expired modal | — |
+| Magnus & Myggen: Skumlesens Skygge | — | ✅ | — |
 | Overboard! / Shipwreckers! | ✅ | ⚠️ Installer/launcher verified, but Wine still hits original-CD validator (`OVERBOARD! CD NOT PRESENT`) | — |
 | Den Lyserøde Panter: På hemmelig mission i udlandet / Passport to Peril | ✅ | ✅ | — |
 | Pyrus | — | ✅ | — |

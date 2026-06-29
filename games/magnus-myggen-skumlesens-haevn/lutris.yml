@@ -1,0 +1,20 @@
+name: Magnus & Myggen - Skumlesens Haevn
+slug: magnus-myggen-skumlesens-haevn
+version: Local BIN-CUE Wine wrapper
+runner: linux
+game_slug: magnus-myggen-skumlesens-haevn
+script:
+  game:
+    exe: ./launch.sh
+    working_dir: .
+  installer:
+    - chmodx: ./install.sh
+    - chmodx: ./launch.sh
+  system:
+    gamemode: false
+    gamescope: false
+    env:
+      MM3_MODE: game
+      MM3_DESKTOP_SIZE: 800x600
+      MM3_VIRTUAL_DESKTOP: "1"
+  install_complete_text: Magnus & Myggen Skumlesens Hævn er tilføjet. Kør install.sh første gang for at hente/importere BIN/CUE og validere image-indholdet.

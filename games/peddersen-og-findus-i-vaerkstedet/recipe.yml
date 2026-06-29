@@ -1,0 +1,80 @@
+id: "peddersen-og-findus-i-vaerkstedet"
+title: "Peddersen og Findus i værkstedet"
+alternate_titles:
+  - "Findus1"
+  - "Pettersson och Findus i snickarbon"
+runner: "wine"
+status: "working-gameplay-verified"
+
+repository_policy: "recipe-only; no game files included"
+
+metadata:
+  publisher: "Gammafon"
+  year: "unknown (disc files observed from 2003)"
+  language: "Danish / Nordic"
+  platform: "Windows PC CD-ROM"
+  description: "Børnespil baseret på Sven Nordqvists Peddersen og Findus-univers. Spillet foregår i Peddersens værksted med små aktiviteter, opgaver og interaktive scener for børn."
+
+sources:
+  references:
+    - name: "Internet Archive item/file"
+      url: "https://archive.org/download/peddersen-og-findus-i-vaerkstedet_202201/Peddersen%20og%20Findus%20i%20v%C3%A6rkstedet.iso"
+      note: "Reference-download for ISO'en. Verify legal status yourself."
+    - name: "Original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "Peddersen-og-Findus-i-vaerkstedet.iso"
+      type: "ISO 9660 CD-ROM image"
+      volume_label: "FINDUS1"
+      sha256: "9d1d255889adf1ccd94252b04b31dba566258c4c682f605aea6fe12571d9d1c4"
+      source_url: "https://archive.org/download/peddersen-og-findus-i-vaerkstedet_202201/Peddersen%20og%20Findus%20i%20v%C3%A6rkstedet.iso"
+      note: "Place under local/sources/peddersen-og-findus-i-vaerkstedet/Peddersen-og-Findus-i-vaerkstedet.iso, set FINDUS1_ISO, or run install.sh --download."
+  validation_paths:
+    - "autorun.inf"
+    - "autorun/Autorun.exe"
+    - "autorun/autorun.ini"
+    - "Installér Findus1.exe"
+    - "DATA/Findus1.exe"
+    - "DATA/Findus1.ini"
+    - "DATA/Indstillinger.exe"
+    - "DATA/Xtras/DirectOS.x32"
+    - "DATA/Xtras/DirectSound.x32"
+    - "Media/start.dxr"
+    - "Media/gammafon.dxr"
+    - "Media/garden.dxr"
+    - "Media/Cast/shared.cxt"
+
+paths:
+  source_dir: "local/sources/peddersen-og-findus-i-vaerkstedet"
+  runtime_dir: "local/runtime/peddersen-og-findus-i-vaerkstedet"
+
+compatibility:
+  wine_binary_preference: "wine32, then wine"
+  winearch: "win32"
+  windows_version: "win98"
+  cd_drive: "D:"
+  cd_label: "FINDUS1"
+  virtual_desktop: "Findus1,800x600"
+  launch_target: "C:\\Program Files\\Findus1\\Findus1.exe"
+  manual_install: true
+  registry:
+    - key: "HKLM\\Software\\Gammafon\\Findus1"
+      value: "(Default)"
+      data: "C:\\Program Files\\Findus1\\Findus1.exe"
+
+launch:
+  installer: "install.sh"
+  wrapper: "launch.sh"
+  lutris: "lutris.yml"
+  appimage_builder: "extras/build_appimage.sh"
+  default_mode: "FINDUS1_MODE=game"
+
+verification:
+  - "install.sh --existing --no-launch validates the downloaded ISO."
+  - "FINDUS1_MODE=prepare creates a win32 Wine prefix, maps D:, copies DATA/ + Media/, and writes the Gammafon registry key."
+  - "Direct D:\\DATA\\Findus1.exe without manual install was tested and shows the Danish dialog 'Findus1 skal installeres først.'"
+  - "Installed launch reached the title screen, then an interactive farm/workshop scene after keyboard/mouse input; this is actual gameplay beyond splash/process existence."
+  - "AppImage built at extras/dist/peddersen-og-findus-i-vaerkstedet-x86_64.AppImage (558712000 bytes) and smoke-tested from a fresh XDG_DATA_HOME; process paths showed /tmp/.mount_pedder... and bundled Wine, then reached the same interactive farm/workshop scene."

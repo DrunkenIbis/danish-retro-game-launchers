@@ -1,0 +1,32 @@
+name: 'Peddersen og Findus i værkstedet'
+game_slug: peddersen-og-findus-i-vaerkstedet
+version: Local ISO recipe wrapper
+slug: peddersen-og-findus-i-vaerkstedet-local-iso-recipe-wrapper
+runner: linux
+script:
+  game:
+    exe: ./launch.sh
+    working_dir: .
+  system:
+    env:
+      FINDUS1_MODE: game
+      FINDUS1_FORCE_WIN32: '1'
+      FINDUS1_CD_DRIVE: d
+      FINDUS1_CD_LABEL: FINDUS1
+      FINDUS1_VIRTUAL_DESKTOP: '1'
+      FINDUS1_DESKTOP_SIZE: '800x600'
+      FINDUS1_DESKTOP_NAME: Findus1
+      FINDUS1_WINEDEBUG: '-all'
+    disable_runtime: false
+    gamescope: false
+    gamemode: false
+  installer:
+    - chmodx: ./launch.sh
+    - chmodx: ./install.sh
+    - execute:
+        file: ./launch.sh
+        working_dir: .
+        env:
+          FINDUS1_MODE: prepare
+          FINDUS1_WINEDEBUG: '-all'
+  install_complete_text: Peddersen og Findus i værkstedet er tilføjet. Installer-fasen forbereder Wine-prefixen, kopierer DATA/ + Media/ til en manuel runtime-install og skriver Gammafon registry-nøglen. Start derefter spillet fra Lutris.

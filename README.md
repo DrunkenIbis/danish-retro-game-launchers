@@ -80,6 +80,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Magnus & Myggen: Skumlesens Hævn | ✅ | ⚠️ starts but blocked by trial-expired modal | — |
 | Magnus & Myggen: Skumlesens Skygge | — | ✅ | — |
 | Overboard! / Shipwreckers! | ✅ | ⚠️ Installer/launcher verified, but Wine still hits original-CD validator (`OVERBOARD! CD NOT PRESENT`) | — |
+| Peddersen og Findus i værkstedet | ✅ | ✅ gameplay verified | ✅ AppImage smoke-tested |
 | Den Lyserøde Panter: På hemmelig mission i udlandet / Passport to Peril | ✅ | ✅ | — |
 | Pyrus | — | ✅ | — |
 | Uden at prale, det er Harry | ✅ | ✅ | ✅ |

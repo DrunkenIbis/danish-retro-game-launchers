@@ -75,7 +75,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Global Operations | ✅ | ⚠️ blocked by SafeDisc/SecDrv before gameplay | — |
 | Gys på Regneslottet | — | ✅ | — |
 | Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |
-| Magnus & Myggen: Leg og Lær | — | ✅ | ✅ |
+| Magnus & Myggen: Leg og Lær | ✅ | ⚠️ crash fixed, then blocked by CD-check dialog | ✅ |
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |
 | Magnus & Myggen: Skumlesens Skygge/Hævn | — | ✅ | — |
 | Overboard! / Shipwreckers! | ✅ | ⚠️ Installer/launcher verified, but Wine still hits original-CD validator (`OVERBOARD! CD NOT PRESENT`) | — |

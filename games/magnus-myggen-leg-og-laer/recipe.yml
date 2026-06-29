@@ -1,7 +1,7 @@
 id: "magnus-myggen-leg-og-laer"
 title: "Magnus & Myggen: Leg og Lær"
 runner: "wine/winevdm"
-status: "migrated-from-local-working-folder"
+status: "starts-crash-fixed-cd-check-blocked"
 
 repository_policy: "recipe-only; no game files included"
 
@@ -16,10 +16,10 @@ sources:
 
 game_files:
   required:
-    - filename: "TODO"
-      type: "original game media"
-      sha256: "TODO"
-      note: "Place under ~/retro-game-files/magnus-myggen-leg-og-laer/ or local/sources/magnus-myggen-leg-og-laer/."
+    - filename: "Magnus-Myggen-Leg-og-Laer.iso"
+      type: "original game media ISO"
+      sha256: "1441d68207182611fa60a359ae2cb6363ae9664a8a794617110c1b556972d889"
+      note: "Place under local/sources/magnus-myggen-leg-og-laer/ or import from original CD with install.sh --cd."
 
 paths:
   source_dir: "local/sources/magnus-myggen-leg-og-laer"
@@ -27,6 +27,7 @@ paths:
 
 launch:
   wrapper: "launch.sh"
+  installer: "install.sh"
   lutris: "lutris.yml"
 
 migrated_from: "/home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer"

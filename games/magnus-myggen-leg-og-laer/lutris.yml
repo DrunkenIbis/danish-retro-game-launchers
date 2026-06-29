@@ -1,43 +1,38 @@
-game:
-  exe: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer/magnus_myggen_leg_og_laer_launch.sh
-  working_dir: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer
-game_slug: magnus-myggen-leg-og-laer
 name: "Magnus & Myggen: Leg og Lær"
+game_slug: magnus-myggen-leg-og-laer
+slug: magnus-myggen-leg-og-laer-local
+version: "Local recipe launcher"
+runner: linux
+
 script:
   game:
-    exe: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer/magnus_myggen_leg_og_laer_launch.sh
-    working_dir: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer
+    exe: ./launch.sh
+    working_dir: /home/test/danish-retro-game-launchers/games/magnus-myggen-leg-og-laer
   installer:
-  - chmodx: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer/magnus_myggen_leg_og_laer_launch.sh
+    - chmodx: ./launch.sh
+    - chmodx: ./install.sh
   system:
     env:
-      MM1_CD_DIR: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer/cdrom
-      MM1_CENTER_WINDOW: '0'
-      MM1_DESKTOP_NAME: MagnusMyggenLegOgLaer
-      MM1_DESKTOP_SIZE: 640x480
-      MM1_ISO_PATH: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer/Magnus-Myggen-Leg-og-Laer.iso
-      MM1_MODE: installed
-      MM1_NO_VIRTUAL_DESKTOP: '0'
+      MM1_MODE: game
+      MM1_EXE_HEAP: '0x2400'
+      MM1_NO_VIRTUAL_DESKTOP: '1'
       MM1_USE_LOOP_CDROM: '1'
       MM1_WINVER: win98
-      MM1_WINEPREFIX: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer/wineprefix32
       WINEDEBUG: '-all'
     gamemode: false
     gamescope: false
-slug: magnus-myggen-leg-og-laer-local
+
+game:
+  exe: ./launch.sh
+  working_dir: /home/test/danish-retro-game-launchers/games/magnus-myggen-leg-og-laer
+
 system:
   env:
-    MM1_CD_DIR: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer/cdrom
-    MM1_CENTER_WINDOW: '0'
-    MM1_DESKTOP_NAME: MagnusMyggenLegOgLaer
-    MM1_DESKTOP_SIZE: 640x480
-    MM1_ISO_PATH: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer/Magnus-Myggen-Leg-og-Laer.iso
-    MM1_MODE: installed
-    MM1_NO_VIRTUAL_DESKTOP: '0'
+    MM1_MODE: game
+    MM1_EXE_HEAP: '0x2400'
+    MM1_NO_VIRTUAL_DESKTOP: '1'
     MM1_USE_LOOP_CDROM: '1'
     MM1_WINVER: win98
-    MM1_WINEPREFIX: /home/test/lutris_game_scripts_Magnus_Myggen_Leg_og_Laer/wineprefix32
     WINEDEBUG: '-all'
   gamemode: false
   gamescope: false
-version: "Installed launch + bundled-Wine-safe default"

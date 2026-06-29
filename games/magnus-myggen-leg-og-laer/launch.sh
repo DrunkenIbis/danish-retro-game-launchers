@@ -2,11 +2,17 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ISO_PATH="${MM1_ISO_PATH:-$SCRIPT_DIR/Magnus-Myggen-Leg-og-Laer.iso}"
-CD_DIR="${MM1_CD_DIR:-$SCRIPT_DIR/cdrom}"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+GAME_ID="magnus-myggen-leg-og-laer"
+SOURCE_BASE="${RETRO_GAME_SOURCE_DIR:-$REPO_ROOT/local/sources}"
+RUNTIME_BASE="${RETRO_GAME_RUNTIME_DIR:-$REPO_ROOT/local/runtime}"
+SOURCE_DIR="${MM1_SOURCE_DIR:-$SOURCE_BASE/$GAME_ID}"
+RUNTIME_DIR="${MM1_RUNTIME_DIR:-$RUNTIME_BASE/$GAME_ID}"
+ISO_PATH="${MM1_ISO_PATH:-$SOURCE_DIR/Magnus-Myggen-Leg-og-Laer.iso}"
+CD_DIR="${MM1_CD_DIR:-$RUNTIME_DIR/cdrom}"
 LOOP_DEVICE=""
 USE_LOOP_CDROM="${MM1_USE_LOOP_CDROM:-1}"
-PREFIX="${WINEPREFIX:-${MM1_WINEPREFIX:-$SCRIPT_DIR/wineprefix32}}"
+PREFIX="${WINEPREFIX:-${MM1_WINEPREFIX:-$RUNTIME_DIR/wineprefix32}}"
 WINE_BIN="${MM1_WINE_BIN:-}"
 CD_DRIVE="${MM1_CD_DRIVE:-d}"
 DESKTOP_SIZE="${MM1_DESKTOP_SIZE:-640x480}"
@@ -15,10 +21,11 @@ CENTER_WINDOW="${MM1_CENTER_WINDOW:-1}"
 SAVE_DIR="${MM1_SAVE_DIR:-$PREFIX/drive_c/MAGNUS}"
 INSTALL_DIR="${MM1_INSTALL_DIR:-$PREFIX/drive_c/MAGNUS}"
 WINVER="${MM1_WINVER:-win98}"
-MODE="${MM1_MODE:-game}"   # game (= installed stable default), cdgame (= direct CD), installed, setup, stavedit, vfwsetup
+MODE="${MM1_MODE:-game}"   # game (= patched installed copy), cdgame (= direct CD diagnostic), setup, stavedit, vfwsetup
+EXE_HEAP="${MM1_EXE_HEAP:-0x2400}"
 DRY_RUN="${MM1_DRY_RUN:-0}"
 NO_VIRTUAL_DESKTOP="${MM1_NO_VIRTUAL_DESKTOP:-1}"
-LOCK_FILE="${MM1_LOCK_FILE:-$SCRIPT_DIR/.mm1-launch.lock}"
+LOCK_FILE="${MM1_LOCK_FILE:-$RUNTIME_DIR/.mm1-launch.lock}"
 
 log() { printf '[MM1] %s\n' "$*"; }
 fatal() { printf '[MM1] ERROR: %s\n' "$*" >&2; exit 1; }
@@ -104,7 +111,7 @@ prepare_prefix() {
   [[ -f "$PREFIX/system.reg" ]] || fatal "Wine-prefix blev ikke initialiseret korrekt: $PREFIX"
   prepare_installed_copy
   # MMSYS.DLL hotpatch er fjernet: patchen blokerer Win16 memory allocation
-  # og spillet virker kun korrekt via D:\MAGNUS.EXE (cdgame mode) uden patch.
+  # og spillet virker stabilt via C:\MAGNUS\MAGNUS.EXE med MAGNUS.EXE heap-fix.
   mkdir -p "$PREFIX/dosdevices"
   rm -f "$PREFIX/dosdevices/${CD_DRIVE}:"
   ln -sfn "$CD_DIR" "$PREFIX/dosdevices/${CD_DRIVE}:"
@@ -117,6 +124,8 @@ prepare_prefix() {
   fi
   "$wine" reg add 'HKCU\Software\Wine' /v Version /d "$WINVER" /f >/dev/null 2>&1 || true
   "$wine" reg add 'HKCU\Software\Wine\Drives' /v "${CD_DRIVE}:" /d cdrom /f >/dev/null 2>&1 || true
+  repair_mci_avi_registration "$wine"
+  write_wine_ini_files
   write_magnus_ini
 }
 
@@ -126,9 +135,11 @@ prepare_installed_copy() {
     mkdir -p "$INSTALL_DIR"
     # Copy the Win16 runtime pieces locally, like the original installer would.
     # Large media/resources may still be read from the real CD-ROM D:.
-    cp -f "$SCRIPT_DIR/cdrom"/*.{EXE,DLL,DXR,ICO,HLP,INI,WRI,TXT} "$INSTALL_DIR/" 2>/dev/null || true
+    cp -f "$CD_DIR"/*.{EXE,DLL,DXR,ICO,HLP,INI,WRI,TXT} "$INSTALL_DIR/" 2>/dev/null || true
+    chmod -R u+rwX "$INSTALL_DIR"
   fi
   [[ -f "$INSTALL_DIR/MAGNUS.EXE" ]] || fatal "Kunne ikke oprette installeret kopi: $INSTALL_DIR/MAGNUS.EXE"
+  chmod -R u+rwX "$INSTALL_DIR"
   patch_magnus_exe_heap
 }
 
@@ -138,70 +149,72 @@ patch_magnus_exe_heap() {
   # VIGTIGT: +0x0c må ikke patches; det gør GUI EXE'en til en DLL og Wine
   # ender med blank Explorer/"Bad EXE format". Den oprindelige heap ved +0x10
   # er 0x0100, hvilket er for lille til Director 4's DXR/resource loading.
-  # Fix: Sæt initial heap til 0x8000 (32768 bytes), som ligger under
-  # automatic data-segmentets ekstra plads (~0x82c0). 0xb000 er for højt
-  # for denne NE og kan give "OPTLOAD -- Error loading module".
+  # Fix: Sæt initial heap konservativt. 0x8000/0xb000 kan give
+  # "OPTLOAD -- Error loading module" på Wine 11, mens 0x2400 starter og
+  # overlever ESC-skip testen uden page fault.
   local target="$INSTALL_DIR/MAGNUS.EXE"
   [[ -f "$target" ]] || return 0
   python3 - "$target" <<'PY'
 from pathlib import Path
-import struct, sys
+import os, struct, sys
 
 p = Path(sys.argv[1])
 data = bytearray(p.read_bytes())
 ne_off = struct.unpack_from('<H', data, 0x3c)[0]
 if data[ne_off:ne_off+2] != b'NE':
     sys.exit(0)
+target_heap = int(os.environ.get('MM1_EXE_HEAP', '0x8000'), 0)
+if target_heap <= 0:
+    sys.exit(0)
 # NE header layout: +0x0c is FLAGS, +0x10 is initial local heap size.
 # Do NOT write +0x0c: that turns this GUI EXE into a DLL and Wine shows
 # "Bad EXE format" / blank Explorer desktop.
 heap_off = ne_off + 0x10
 current = struct.unpack_from('<H', data, heap_off)[0]
-target_heap = 0x8000
-if current < target_heap:
+if current != target_heap:
     struct.pack_into('<H', data, heap_off, target_heap)
     p.write_bytes(bytes(data))
     print(f"[MM1] MAGNUS.EXE init_heap: 0x{current:04x} -> 0x{target_heap:04x}")
 PY
 }
 
-patch_installed_mmsys() {
-  # Wine 11 can still trip over the original Win16 MMSYS helper logic when the
-  # installed copy is launched from C:. Patch only the installed C:\MAGNUS copy
-  # and keep the bundled CD/ISO copy untouched.
-  local target="$INSTALL_DIR/MMSYS.DLL"
-  local source="$SCRIPT_DIR/cdrom/MMSYS.DLL"
-  [[ -f "$source" ]] || fatal "Mangler original MMSYS.DLL på CD'en"
-  mkdir -p "$INSTALL_DIR"
-  python3 - "$target" "$source" <<'PY'
-from pathlib import Path
-import sys
+write_wine_ini_files() {
+  # The known-good Wine prefix for this Win16 Director title contains these
+  # legacy Windows ini files. A fresh Wine 11 prefix may omit them; keep them in
+  # generated runtime state instead of depending on stale external leftovers.
+  mkdir -p "$PREFIX/drive_c/windows"
+  cat > "$PREFIX/drive_c/windows/system.ini" <<'EOF'
+[386Enh]
+MinSP=4096
+MaxBPs=512
+device=
 
-target = Path(sys.argv[1])
-source = Path(sys.argv[2])
-orig = source.read_bytes()
+[NonWindowsApp]
+CommandEnvSize=8192
 
-if not target.exists() or target.stat().st_size != len(orig):
-    target.write_bytes(orig)
+[memory]
+EOF
+  cat > "$PREFIX/drive_c/windows/win.ini" <<'EOF'
+[Desktop]
+Wallpaper=(None)
+Pattern=(None)
 
-b = bytearray(target.read_bytes())
-seg = 0x600
-patches = {
-    0x0002: bytes.fromhex('31c0ca0400'),
-    0x0160: bytes.fromhex('b80100ca0200'),
-    0x022f: bytes.fromhex('31c0ca0200'),
-    0x0355: bytes.fromhex('31c0cb'),
-    0x03b7: bytes.fromhex('31c0cb'),
+[memory]
+ConventionalMemory=640
+
+[windows]
+load=
+run=
+EOF
 }
-changed = False
-for off, data in patches.items():
-    at = seg + off
-    if b[at:at+len(data)] != data:
-        b[at:at+len(data)] = data
-        changed = True
-if changed:
-    target.write_bytes(b)
-PY
+
+repair_mci_avi_registration() {
+  local wine="$1"
+  # Director 4 asks Win16 MCI for AVIVIDEO during intro/scene transitions. Fresh
+  # Wine 11 prefixes can miss the extension/type mapping, which shows up as:
+  #   MCI_LoadMciDriver Couldn't load driver for type L"AVIVIDEO".
+  "$wine" reg add 'HKLM\Software\Microsoft\Windows NT\CurrentVersion\MCI Extensions' /v avi /d AVIVideo /f >/dev/null 2>&1 || true
+  "$wine" reg add 'HKLM\Software\Microsoft\Windows NT\CurrentVersion\MCI' /v AVIVideo /d mciavi32.dll /f >/dev/null 2>&1 || true
 }
 
 write_magnus_ini() {
@@ -362,6 +375,7 @@ main() {
     log "PREFIX=$PREFIX"
     log "WINE=$wine"
     log "MODE=$MODE"
+    log "EXE_HEAP=$EXE_HEAP"
     log "DESKTOP=${DESKTOP_NAME},${DESKTOP_SIZE}"
     log "CENTER_WINDOW=$CENTER_WINDOW"
     return 0

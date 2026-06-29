@@ -1,0 +1,56 @@
+id: "galactic-warrior-rats"
+title: "Galactic Warrior Rats"
+runner: "dosbox-staging"
+status: "launcher-verified; gameplay start visually confirmed by user"
+
+repository_policy: "recipe-only; no game files included"
+
+metadata:
+  developer: "Mikev Design"
+  publisher: "Summit Software"
+  year: 1993
+  language: "English"
+  platform: "MS-DOS"
+  genre: "Platformer"
+  players: "Single-player"
+  description: "Platform game where the player controls one of three mutated laboratory rats (Einstein, Newton or Darwin), navigates labyrinthine levels, upgrades a biosphere vehicle and fights robots to save planet Smeaton Five."
+
+sources:
+  references:
+    - name: "Archive.org direct 7z reference"
+      url: "https://archive.org/download/003318-GalacticWarriorRats/003318_galactic_warrior_rats.7z"
+      note: "Used by install.sh when the user chooses download. Verify legal status yourself."
+    - name: "Second-hand / original media"
+      url: ""
+      note: "Use your own legally obtained copy if you have one."
+
+game_files:
+  required:
+    - filename: "003318_galactic_warrior_rats.7z"
+      type: "7z archive containing a 1.44 MB MS-DOS floppy image"
+      sha256: "44e67d11a9b7cd76f5553b3cbe6d618f64108cee05b0e26114632ad1e11ce4d1"
+      note: "Place under local/sources/galactic-warrior-rats/, set GWR_ARCHIVE, or run install.sh to download/import."
+
+paths:
+  source_dir: "local/sources/galactic-warrior-rats"
+  runtime_dir: "local/runtime/galactic-warrior-rats"
+
+setup:
+  installer: "install.sh"
+  modes:
+    - "existing 7z archive"
+    - "download from archive.org reference URL"
+    - "copy a local 7z archive via --archive PATH"
+  extracted_media:
+    - "003318_galactic_warrior_rats/disk1.img"
+  setup_program: "none found in archive"
+
+launch:
+  wrapper: "launch.sh"
+  dosbox_config: "dosbox.conf"
+  executable: "GWR.COM"
+  note: "GWR.COM is the launcher stub; strings show it looks for GWR.EXE and reports 'Cannot find file GWR.EXE'. GWR.EXE is the packed game payload."
+
+verification:
+  dosbox: "DOSBox-Staging 0.82.2 Flatpak"
+  status: "install.sh validated/extracted the 7z+floppy image; launch.sh starts GWR.COM in DOSBox-Staging. Agent screenshots verified the intro, title/programming credits, hangar/shop interface and keyboard navigation/action (arrow keys and X). User visually confirmed that this looked like the expected working state. Agent did not independently document a first side-scrolling level screenshot before final handoff."

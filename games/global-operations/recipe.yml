@@ -1,0 +1,91 @@
+id: "global-operations"
+title: "Global Operations"
+alternate_titles:
+  - "Global Operations (Europe)"
+runner: "wine"
+status: "blocked-safedisc-secdrv-under-wine"
+
+repository_policy: "recipe-only; no game files included"
+
+metadata:
+  developer: "Barking Dog Studios"
+  publishers:
+    - "Crave Entertainment"
+    - "Electronic Arts"
+  year: 2002
+  languages:
+    - "English"
+    - "French"
+    - "German"
+  platform: "Microsoft Windows"
+  engine: "LithTech Talon"
+  genre: "First-person shooter"
+
+sources:
+  references:
+    - name: "Internet Archive item/file"
+      url: "https://archive.org/download/GlobalOperationsEuropeEnFrDe/Global%20Operations%20%28Europe%29%20%28En%2CFr%2CDe%29.zip"
+      note: "Reference ZIP containing a BIN/CUE Windows CD-ROM image. Verify legal status yourself."
+    - name: "Original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "Global Operations (Europe) (En,Fr,De).zip"
+      type: "ZIP containing single-track MODE1/2352 BIN/CUE"
+      source_url: "https://archive.org/download/GlobalOperationsEuropeEnFrDe/Global%20Operations%20%28Europe%29%20%28En%2CFr%2CDe%29.zip"
+    - filename: "Global Operations (Europe) (En,Fr,De).iso"
+      type: "Converted ISO 9660 data image"
+      volume_label: "GLOBALOPS"
+      note: "Created by install.sh from the ZIP's MODE1/2352 BIN/CUE by taking bytes 16..2063 from each 2352-byte sector."
+  validation_paths:
+    - "AUTORUN.INF"
+    - "AutoRun.exe"
+    - "globalops.exe"
+    - "secdrv.sys"
+    - "Setup/Setup.exe"
+    - "Setup/Setup.ini"
+    - "Setup/GAME/Engine.REZ"
+    - "Setup/GAME/mss32.dll"
+    - "Setup/GAME/Smackw32.dll"
+    - "Setup/GAME/goserver.exe"
+    - "ReadMe/readme_eng.txt"
+
+paths:
+  source_dir: "local/sources/global-operations"
+  runtime_dir: "local/runtime/global-operations"
+
+compatibility:
+  wine_binary_preference: "wine32, then wine"
+  winearch: "win32"
+  windows_version: "winxp"
+  cd_drive: "D:"
+  cd_label: "GLOBALOPS"
+  virtual_desktop: "GlobalOperations,1024x768"
+  launch_target: "C:\\GlobalOps/manual runtime copy/globalops.exe"
+  drm:
+    type: "SafeDisc 2 / SecDrv"
+    status: "blocks launch under Wine on this machine"
+  notes:
+    - "AUTORUN.INF points to AutoRun.exe; the actual game executable on the disc is globalops.exe."
+    - "The CD contains secdrv.sys and the executable repeatedly opens \\.\\SecDrv under Wine; that is the verified blocker."
+    - "The launcher copies Setup/GAME plus globalops.exe into a writable runtime install tree so mss32.dll and Engine.REZ are in the executable working directory before testing the DRM boundary."
+    - "Direct3D 8 fixes such as dgVoodoo2/d3d8to9 may help once a lawful DRM-free executable or otherwise compatible retail build is available, but they do not solve the current SafeDisc driver blocker."
+    - "GameSpy online services are gone; PCGamingWiki says online play needs 333networks. Only singleplayer startup was tested here, and gameplay could not be verified due to SafeDisc."
+
+launch:
+  installer: "install.sh"
+  wrapper: "launch.sh"
+  default_mode: "GO_MODE=game"
+  modes:
+    - "game"
+    - "cdgame"
+    - "autorun"
+    - "setup"
+    - "prepare"
+    - "kill"
+
+appimage:
+  status: "not-created"
+  reason: "AppImage packaging was not pursued because the base Wine recipe is blocked before gameplay by SafeDisc/SecDrv. Packaging the same blocked executable would only reproduce the DRM blocker."

@@ -1,0 +1,25 @@
+name: Global Operations
+slug: global-operations
+version: Local ZIP BIN-CUE Wine wrapper
+runner: linux
+game_slug: global-operations
+script:
+  game:
+    exe: ./launch.sh
+    working_dir: .
+  installer:
+    - chmodx: ./install.sh
+    - chmodx: ./launch.sh
+  system:
+    gamemode: false
+    gamescope: false
+    env:
+      GO_MODE: game
+      GO_CD_DRIVE: d
+      GO_FORCE_WIN32: "1"
+      GO_WINVER: winxp
+      GO_VIRTUAL_DESKTOP: "1"
+  install_complete_text: >-
+    Global Operations er tilføjet. Kør install.sh første gang for at hente/importere ZIP'en,
+    udpakke BIN/CUE, konvertere MODE1/2352 data-track til ISO og validere CD-indholdet.
+    Bemærk: denne retail-build er aktuelt blokeret af SafeDisc/SecDrv under Wine.

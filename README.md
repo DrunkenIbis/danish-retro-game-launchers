@@ -72,6 +72,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Den Lyserøde Panter: Hokus Pokus Panter | ✅ | ⚠️ Visible Wine game scene; manual playthrough not verified | ✅ |
 | Det Magiske Jordbær | ✅ | ✅ | ✅ |
 | Galactic Warrior Rats | ✅ | ✅ hangar/shop verified; user visually confirmed expected working state | — |
+| Global Operations | ✅ | ⚠️ blocked by SafeDisc/SecDrv before gameplay | — |
 | Gys på Regneslottet | — | ✅ | — |
 | Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |
 | Magnus & Myggen: Leg og Lær | — | ✅ | ✅ |

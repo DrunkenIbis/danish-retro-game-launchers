@@ -87,7 +87,7 @@ Useful tuning overrides:
 ```sh
 GYS_CPU_CYCLES=35000 ./games/gys-paa-regneslottet/launch.sh
 GYS_SDL_AUDIODRIVER=pipewire ./games/gys-paa-regneslottet/launch.sh
-GYS_MIXER_RATE=48000 GYS_MIXER_BLOCKSIZE=2048 GYS_MIXER_PREBUFFER=80 ./games/gys-paa-regneslottet/launch.sh
+GYS_CPU_CYCLES=45000 GYS_MIXER_BLOCKSIZE=4096 GYS_MIXER_PREBUFFER=120 ./games/gys-paa-regneslottet/launch.sh
 ```
 
 Default audio/timing currently intentionally follows the supplied YouTube/original-bundle reference more closely than the earlier PipeWire tuning. In the generated config these are inherited or adapted from the bundled config:
@@ -98,10 +98,12 @@ Default audio/timing currently intentionally follows the supplied YouTube/origin
 - `memsize=16`
 - `core=auto`
 - `cputype=486`
-- `cycles=40000` in the bundled-config copy, because the original `cycles=auto` made DOSBox-Staging switch to max cycles and the program exited quickly
+- `cycles=50000` in the bundled-config copy, because the original `cycles=auto` made DOSBox-Staging switch to max cycles and the program exited quickly, while 40000 still sounded slightly slow for the user
 - `rate=44100`
-- `blocksize=1024`
-- `prebuffer=20`
+- `blocksize=2048`
+- `prebuffer=80`
+- Sound Blaster 2.0 (`sbtype=sb2`, `A220 I7 D1`) to match the bundled Windows `sndblst2.drv` / Creative Labs Sound Blaster 1.5 driver
+- unused GUS, MIDI, NE2000, and Voodoo devices disabled to reduce emulation overhead
 
 ## Launcher evidence
 
@@ -126,6 +128,7 @@ D: local/runtime/gys-paa-regneslottet/.../SYSTEM/DOSBOX/CDROM/CDROM.iso
 - The game requires Windows 3.1/95 VGA 256 colours. The launcher keeps the runtime Windows tree on `SVGA256.DRV` / `VDDSVGA.386` / `VGADIB.3GR`, sets the DOSBox window to 640x480, and seeds WinG's bundled-good `SVGA256.DRV640x480x8...=2` profile. This targets the WinG display-driver dialogs shown when WinG has a bad/stale profile.
 - `unzip` can return status 1 because of a local/central filename mismatch for `NETV’RK.GRP`. The installer/launcher treats that as non-fatal only after the required game files are present.
 - The first validation used 48 kHz/PipeWire settings and the user reported bad/stuttering audio. The current launcher switches to PulseAudio and 44.1 kHz settings matching the YouTube reference stream and original bundled DOSBox config more closely.
+- After gameplay improved, the user still reported crackle and slightly slow audio. The current default retune uses larger 2048/80 audio buffering, 50000 cycles, and a simpler SB2 path instead of the default SB16/GUS/MIDI-heavy bundled profile.
 
 ## Verification performed 2026-06-30
 

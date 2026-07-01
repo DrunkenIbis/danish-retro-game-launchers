@@ -39,17 +39,18 @@ launch:
   dosbox:
     config_source: "local/sources/gys-paa-regneslottet/Gys_Paa_Regneslottet/Gys På Regneslottet/SYSTEM/DOSBOX/dosbox.conf"
     generated_config: "local/runtime/gys-paa-regneslottet/gys-paa-regneslottet.conf"
-    config_policy: "use bundled DOSBox-SVN/Daum config as base; adapt only 640x480 windowed startup, repo-local autoexec, memsize, cputype and cycles for DOSBox-Staging"
+    config_policy: "use bundled DOSBox-SVN/Daum config as base; adapt only 640x480 windowed startup, repo-local autoexec, memory/CPU, Sound Blaster, and WinG values for DOSBox-Staging"
     windowresolution: "640x480"
     machine: "svga_et4000"
     cpu_core: "auto"
     cpu_type: "486"
-    cycles: 40000
+    cycles: 50000
     mixer_rate: 44100
-    mixer_blocksize: 1024
-    mixer_prebuffer: 20
+    mixer_blocksize: 2048
+    mixer_prebuffer: 80
     sdl_audiodriver: "pulse"
     midi: "none"
+    soundblaster: "sb2 at A220 I7 D1, matching the bundled Windows sndblst2.drv / Creative Labs Sound Blaster 1.5 driver"
     voodoo: false
     ne2000: false
 
@@ -58,6 +59,7 @@ compatibility_notes:
   - "unzip can return status 1 because of a local/central filename mismatch for NETV’RK.GRP; installer/launcher accepts that only after required files are present."
   - "User requested a pure DOSBox path using the bundled dosbox.conf. launch.sh now copies the bundled DOSBox-SVN/Daum config as the generated runtime config and patches only the autoexec/window/memsize/cputype/cycles values needed for repo-local DOSBox-Staging launch. Human listening recheck still recommended."
   - "Runtime Windows 3.1 video is forced to Super VGA 640x480/256 colours (SVGA256.DRV, VDDSVGA.386, VGADIB.3GR, Tseng ET4000) and WinG is seeded with the bundled-good SVGA256 640x480x8 profile value 2 to avoid WinG display-driver dialogs."
+  - "Audio was retuned after user reported crackle and slightly slow playback: DOSBox now defaults to 50000 cycles, larger 2048/80 mixer buffering, disables unused GUS/MIDI/NE2000/Voodoo devices, and emulates SB2 at A220 I7 D1 to match the bundled Windows Sound Blaster 1.5 driver."
 
 verification:
   last_checked: "2026-06-30"

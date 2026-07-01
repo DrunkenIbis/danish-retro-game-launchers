@@ -115,6 +115,11 @@ text = re.sub(
     lambda match: match.group(1) + 'display.drv=Super VGA (640x480, 256 farver)',
     text,
 )
+if re.search(r'(?im)^\[sndblst\.drv\]\s*$', text):
+    text = re.sub(r'(?im)^port=.*$', 'port=220', text)
+    text = re.sub(r'(?im)^int=.*$', 'int=7', text)
+    if not re.search(r'(?im)^dmachannel=', text):
+        text = re.sub(r'(?im)^(\[sndblst\.drv\]\s*)', r'\1dmachannel=1\r\n', text)
 system_ini.write_bytes(text.encode('latin-1'))
 
 text = win_ini.read_bytes().decode('latin-1')
@@ -151,7 +156,19 @@ text = re.sub(r'(?im)^fullscreen\s*=.*$', 'fullscreen=false', text)
 text = re.sub(r'(?im)^windowresolution\s*=.*$', 'windowresolution=' + os.environ.get('GYS_WINDOWRES', '640x480'), text)
 text = re.sub(r'(?im)^memsize\s*=.*$', 'memsize=16', text)
 text = re.sub(r'(?im)^cputype\s*=.*$', 'cputype=486', text)
-text = re.sub(r'(?im)^cycles\s*=.*$', 'cycles=40000', text)
+text = re.sub(r'(?im)^cycles\s*=.*$', 'cycles=' + os.environ.get('GYS_CPU_CYCLES', '50000'), text)
+text = re.sub(r'(?im)^blocksize\s*=.*$', 'blocksize=' + os.environ.get('GYS_MIXER_BLOCKSIZE', '2048'), text)
+text = re.sub(r'(?im)^prebuffer\s*=.*$', 'prebuffer=' + os.environ.get('GYS_MIXER_PREBUFFER', '80'), text)
+text = re.sub(r'(?im)^mpu401\s*=.*$', 'mpu401=none', text)
+text = re.sub(r'(?im)^mididevice\s*=.*$', 'mididevice=none', text)
+text = re.sub(r'(?im)^sbtype\s*=.*$', 'sbtype=sb2', text)
+text = re.sub(r'(?im)^sbbase\s*=.*$', 'sbbase=220', text)
+text = re.sub(r'(?im)^irq\s*=.*$', 'irq=7', text, count=1)
+text = re.sub(r'(?im)^dma\s*=.*$', 'dma=1', text, count=1)
+text = re.sub(r'(?im)^hdma\s*=.*$', 'hdma=5', text)
+text = re.sub(r'(?im)^gus\s*=.*$', 'gus=false', text)
+text = re.sub(r'(?im)^voodoo\s*=.*$', 'voodoo=false', text)
+text = re.sub(r'(?im)^ne2000\s*=.*$', 'ne2000=false', text)
 
 autoexec = """[autoexec]
 # Runtime wrapper block generated from the bundled game config.
@@ -167,6 +184,18 @@ if re.search(r'(?im)^\[autoexec\]\s*$', text):
     text = re.sub(r'(?ims)^\[autoexec\]\s*.*\Z', lambda _match: autoexec, text)
 else:
     text = text.rstrip() + '\n\n' + autoexec
+
+# DOSBox-Staging uses newer section names for devices that the bundled
+# DOSBox-SVN/Daum config leaves enabled by default. Disable unused devices here
+# to reduce host overhead while keeping the title on the Windows SB 1.5 driver.
+text = text.rstrip() + """
+
+[voodoo]
+voodoo = false
+
+[ethernet]
+ne2000 = false
+"""
 
 dst.write_text(text, encoding='latin-1', newline='')
 PY

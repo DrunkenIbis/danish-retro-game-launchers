@@ -73,7 +73,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Det Magiske Jordbær | ✅ | ✅ | ✅ |
 | Galactic Warrior Rats | ✅ | ✅ hangar/shop verified; user visually confirmed expected working state | — |
 | Global Operations | ✅ | ⚠️ blocked by SafeDisc/SecDrv before gameplay | — |
-| Gys på Regneslottet | — | ✅ | — |
+| Gys på Regneslottet | ✅ | ⚠️ launch smoke verified; audio retuned toward YouTube reference, needs user listening/gameplay confirmation | — |
 | Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |
 | Magnus & Myggen: Leg og Lær | ✅ | ⚠️ crash fixed, then blocked by CD-check dialog | ✅ |
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |

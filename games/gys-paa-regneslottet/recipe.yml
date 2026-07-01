@@ -1,7 +1,7 @@
 id: "gys-paa-regneslottet"
 title: "Gys på Regneslottet"
 runner: "dosbox-staging"
-status: "migrated-from-local-working-folder"
+status: "launch-smoke-verified; audio-retuned; gameplay/user-audio recheck pending"
 
 repository_policy: "recipe-only; no game files included"
 
@@ -16,10 +16,11 @@ sources:
 
 game_files:
   required:
-    - filename: "TODO"
-      type: "original game media"
-      sha256: "TODO"
-      note: "Place under ~/retro-game-files/gys-paa-regneslottet/ or local/sources/gys-paa-regneslottet/."
+    - filename: "Gys_Paa_Regneslottet.zip"
+      type: "Windows 3.x game bundle with DOSBox tree and CDROM.iso"
+      sha256: "0930e6961d89ac25638124812e0ad1637cb1cf97c0cc0229f937e5850461a0d2"
+      size: 62693702
+      note: "Place under local/sources/gys-paa-regneslottet/ or import with ./install.sh --archive PATH."
 
 paths:
   source_dir: "local/sources/gys-paa-regneslottet"
@@ -27,6 +28,58 @@ paths:
 
 launch:
   wrapper: "launch.sh"
-  lutris: "lutris.yml"
+  install: "install.sh"
+  lutris_installer: "lutris.yml"
+  lutris_game_config: "extras/gys-pa-regneslottet.lutris-game.yml"
+  target: "Windows 3.x in DOSBox-Staging"
+  command: "win c:\\gilisoft\\gys_cd\\wnewaddd.exe /CFG:c:\\gilisoft\\gys_cd\\wnewadd.ini /startdir:d:\\dansk"
+  mounts:
+    c: "runtime dosbox tree GAME/"
+    d: "runtime dosbox tree CDROM/CDROM.iso"
+  dosbox:
+    config_source: "local/sources/gys-paa-regneslottet/Gys_Paa_Regneslottet/Gys På Regneslottet/SYSTEM/DOSBOX/dosbox.conf"
+    generated_config: "local/runtime/gys-paa-regneslottet/gys-paa-regneslottet.conf"
+    config_policy: "use bundled DOSBox-SVN/Daum config as base; adapt only 640x480 windowed startup, repo-local autoexec, memsize, cputype and cycles for DOSBox-Staging"
+    windowresolution: "640x480"
+    machine: "svga_et4000"
+    cpu_core: "auto"
+    cpu_type: "486"
+    cycles: 40000
+    mixer_rate: 44100
+    mixer_blocksize: 1024
+    mixer_prebuffer: 20
+    sdl_audiodriver: "pulse"
+    midi: "none"
+    voodoo: false
+    ne2000: false
+
+compatibility_notes:
+  - "The bundled PROGMAN.INI references an unused Danish network group; launch.sh removes the Group3/Order reference and stale NETVÆRK/NETV’RK group files at runtime."
+  - "unzip can return status 1 because of a local/central filename mismatch for NETV’RK.GRP; installer/launcher accepts that only after required files are present."
+  - "User requested a pure DOSBox path using the bundled dosbox.conf. launch.sh now copies the bundled DOSBox-SVN/Daum config as the generated runtime config and patches only the autoexec/window/memsize/cputype/cycles values needed for repo-local DOSBox-Staging launch. Human listening recheck still recommended."
+  - "Runtime Windows 3.1 video is forced to Super VGA 640x480/256 colours (SVGA256.DRV, VDDSVGA.386, VGADIB.3GR, Tseng ET4000) and WinG is seeded with the bundled-good SVGA256 640x480x8 profile value 2 to avoid WinG display-driver dialogs."
+
+verification:
+  last_checked: "2026-06-30"
+  commands:
+    - "bash -n games/gys-paa-regneslottet/install.sh games/gys-paa-regneslottet/launch.sh"
+    - "./games/gys-paa-regneslottet/install.sh --existing --no-launch"
+    - "GYS_DRY_RUN=1 ./games/gys-paa-regneslottet/launch.sh"
+    - "timeout 25s ./games/gys-paa-regneslottet/launch.sh"
+    - "python3 yaml.safe_load(...) for recipe/lutris YAML"
+  evidence:
+    - "DOSBox-Staging 0.82.2 loaded generated config derived from the bundled dosbox.conf."
+    - "C: mounted runtime GAME; D: imgmounted CDROM.iso."
+    - "CDAUDIO initialized at 44100 Hz."
+    - "Windows/game entered SVGA 640x480 256-colour mode 2Eh and remained running until timeout SIGTERM."
+    - "Bundled DOSBox-SVN/Daum config contains many legacy options that DOSBox-Staging logs as invalid/deprecated; they are ignored, while the required mounts/audio/video path still reaches SVGA mode 2Eh."
+  gaps:
+    - "No automated screenshot/gameplay capture succeeded in this Wayland session."
+    - "Post-tuning audio quality needs user listening confirmation."
+    - "No AppImage script exists yet for this title."
+
+appimage:
+  status: "not implemented"
+  assessment: "Feasible by adapting the repo's DOSBox-Staging AppImage pattern, bundling the prepared Windows 3.x GAME tree, CDROM.iso, generated config, and official DOSBox-Staging runtime. Not built in this pass because the launch/audio validation still needs a human listening recheck."
 
 migrated_from: "/home/test/lutris_game_scripts_Regneslottet"

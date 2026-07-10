@@ -1,0 +1,93 @@
+id: "gold-and-glory-the-road-to-el-dorado"
+title: "Gold and Glory: The Road to El Dorado"
+alternate_titles:
+  - "The Road to El Dorado: Gold and Glory"
+  - "El Dorado"
+runner: "wine"
+status: "user-confirmed-working-windowed-launcher-gameplay-followup-pending"
+
+repository_policy: "recipe-only; no game files included"
+
+metadata:
+  developer: "Revolution Software"
+  publisher: "Ubisoft / Light & Shadow Production"
+  year: 2000
+  platform: "Microsoft Windows"
+  engine: "ICB"
+  genre: "Adventure / cinematic camera / point-and-select"
+  languages:
+    - English
+    - French
+    - German
+    - Italian
+    - Spanish
+    - Polish
+
+sources:
+  references:
+    - name: "Internet Archive item/file"
+      url: "https://archive.org/download/edc2000/ED_CD.iso"
+      note: "Reference-download for the ISO. Verify legal status yourself."
+    - name: "Original media"
+      url: ""
+      note: "Use your own legally obtained copy."
+
+game_files:
+  required:
+    - filename: "ED_CD.iso"
+      type: "ISO 9660 CD-ROM image"
+      volume_label: "ED_CD"
+      source_url: "https://archive.org/download/edc2000/ED_CD.iso"
+      note: "Place under local/sources/gold-and-glory-the-road-to-el-dorado/ED_CD.iso, set GGED_ISO, or run install.sh --download."
+  validation_paths:
+    - "autorun.inf"
+    - "setup.exe"
+    - "Setup2.exe"
+    - "engine/eldorado.ini"
+    - "engine/linc/engine.exe"
+    - "engine/linc/binkw32.dll"
+    - "engine/linc/gfxlib.dll"
+    - "engine/linc/readme.txt"
+    - "g/music.clu"
+    - "g/samples.clu"
+    - "g/speech.clu"
+    - "gmovies/intro.bik"
+    - "movies/m01final.bik"
+
+paths:
+  source_dir: "local/sources/gold-and-glory-the-road-to-el-dorado"
+  runtime_dir: "local/runtime/gold-and-glory-the-road-to-el-dorado"
+
+compatibility:
+  wine_binary_preference: "local Wine-GE 8-26, then wine32, then wine"
+  winearch: "win32"
+  windows_version: "win98"
+  cd_drive: "D:"
+  cd_label: "ED_CD"
+  cd_backend: "loop-mounted ISO through udisksctl; Wine d: maps the mountpoint and d:: maps the loop block device"
+  launch_target: "D:\\engine\\linc\\engine.exe"
+  installed_target: "C:\\ElDorado\\engine\\linc\\engine.exe"
+  config_file: "engine/eldorado.ini"
+  savegames: "engine/linc/saves/"
+  notes:
+    - "AUTORUN.INF points to setup.exe; the actual game executable is engine/linc/engine.exe."
+    - "An extracted-directory Wine CD mapping reaches an in-game 'Please insert El Dorado CD' dialog even when vol d: reports ED_CD."
+    - "The default loop-backed ISO mapping passes that dialog and reaches the Light & Shadow Production splash screen; gameplay remains unverified."
+    - "Wine-GE 8-26 plus Wine Explorer desktop at 640x480 is user-confirmed working; Wine-GE D:: maps the readable ISO file while D: remains the loop-mounted disc."
+    - "System Wine Explorer desktop was unusable on this host; the default Wine-GE Explorer desktop is user-confirmed working."
+    - "Manual C:\\ElDorado installed-copy mode starts engine.exe but raised Wine debugger/program-error evidence during testing."
+    - "Known upstream compatibility risk: Direct3D 7 / ICB invisible 3D models on modern systems; not cleared by this recipe."
+
+launch:
+  installer: "install.sh"
+  wrapper: "launch.sh"
+  default_mode: "GGED_MODE=cdgame"
+  alternate_modes:
+    - "GGED_MODE=installed"
+    - "GGED_MODE=setup"
+    - "GGED_MODE=prepare"
+    - "GGED_MODE=kill"
+
+appimage:
+  status: "not attempted / not realistic until native launcher reaches verified gameplay"
+  blocker: "Launcher has not been proven playable beyond engine window/process; packaging would only bundle an unverified Wine/D3D/CD-check state."

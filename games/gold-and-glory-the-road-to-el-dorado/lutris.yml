@@ -1,0 +1,21 @@
+name: "Gold and Glory: The Road to El Dorado"
+slug: "gold-and-glory-the-road-to-el-dorado"
+game_slug: "gold-and-glory-the-road-to-el-dorado"
+version: "local-recipe"
+runner: "linux"
+
+script:
+  game:
+    exe: "$GAMEDIR/launch.sh"
+  installer:
+    - chmodx: "$GAMEDIR/launch.sh"
+    - chmodx: "$GAMEDIR/install.sh"
+  system:
+    disable_runtime: false
+    gamemode: false
+    gamescope: false
+    env:
+      GGED_MODE: "cdgame"
+      GGED_VIRTUAL_DESKTOP: "1"
+      GGED_DESKTOP_SIZE: "640x480"
+      GGED_CENTER_WINDOW: "1"

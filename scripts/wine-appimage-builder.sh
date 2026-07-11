@@ -46,6 +46,9 @@ wine_appimage_validate_base_tools() {
 }
 
 wine_appimage_reset_dirs() {
+  if [[ -d "$APPDIR" ]]; then
+    chmod -R u+rwX "$APPDIR" 2>/dev/null || true
+  fi
   rm -rf "$APPDIR"
   mkdir -p "$APPDIR/usr/bin" "$APPDIR/usr/lib" "$APPDIR/usr/lib64" \
            "$APPDIR/usr/share/applications" \

@@ -183,42 +183,11 @@ The remaining failure may be one or more of:
 - Installed vs CD-root context differences in where `engine/eldorado.ini`, Bink files, and mission cluster data are resolved.
 - Less likely but still possible: Wine CD-ROM drive-type semantics beyond the visible `vol d:`/label checks.
 
-## Next debugging steps
+## Current follow-up risks
 
-1. **Install Wine-GE 9.11.4** (LTS version with DirectDraw/Direct3D fixes):
-   ```bash
-   cd "$GGED_RUNTIME_DIR" && \
-     export RETRO_GAME_WINEGE_DIR="$REPO_ROOT/local/winege" && \
-     ./install-winege.sh --download  # Or --existing/--cd for physical media
-   ```
-
-2. **Run via Wine-GE launcher** (bypasses Staging DirectDraw bugs):
-   ```bash
-   cd "$GGED_RUNTIME_DIR/installed" && \
-     export GGED_WINE="winege64" WINEARCH=win32 && \
-     ./launch.sh
-   ```
-
-3. **Wine-GE environment** (automatically sets up with Windows 98 compatibility):
-   - `WINEDLLOVERRIDES="mscoree=n,d;vcruntime=d"` — disable MS core/VC runtime checks
-   - `WINEDEBUG="+seh,+ddraw,+d3d,+file,+mscoree"` — debug filter for ICB/DirectDraw rendering
-   - `WINEARCH=win32` — 32-bit compatibility for engine.exe (Win98 NE executables)
-
-4. **No-CD simulation** (optional workaround for CD-check bypass):
-   ```bash
-   export GGED_NO_CD=1 ./launch.sh
-   # Simulates ED_CD volume label via virtual drive mapping, avoiding GetVolumeInformationA check
-   ```
-
-5. Test with debug logging: `GGED_WINEDEBUG="+seh,+ddraw,+d3d,+file,+mscoree" ./launch.sh`
-
-6. If intro/movie hangs before gameplay, skip Bink files temporarily in ignored runtime.
-
-7. Only after gameplay is verified (no c0000005 crash), implement AppImage packaging.
-
-## AppImage decision
-
-AppImage was deliberately not implemented. The launcher is not gameplay-verified, and installed mode currently crashes with `c0000005`. Packaging this now would create a misleading AppImage that can only reproduce a blocked state.
+- Manual installed-copy mode is still diagnostic and may hit the old Wine 11 `c0000005` path; the working path is direct CD-context through Wine-GE Explorer desktop.
+- Known upstream compatibility risk remains: Direct3D 7 / ICB invisible 3D models on modern systems. The launcher and AppImage are smoke-tested, but longer gameplay should still check this.
+- `install-winege.sh` is obsolete and not part of the working path; the launcher uses `local/runners/wine-ge-8-26/bin/wine` directly.
 
 ## 2026-07-10: verified CD-ROM media fix
 
@@ -239,3 +208,24 @@ The system Wine 11 Staging runner only produced a fullscreen DirectDraw mode, an
 The verified launcher defaults are Wine-GE plus `GGED_VIRTUAL_DESKTOP=1`, `GGED_DESKTOP_SIZE=640x480`, and centering of `GoldGlory - Wine desktop`. Wine-GE needs a readable `D::`: mapping it to `/dev/loopN` produces `Read access denied ... FS volume label and serial are not available`, so the launcher maps `D::` to the original readable ISO file while keeping `D:` mapped to the loop-mounted disc. The user confirmed this path now works as intended.
 
 Wine Explorer can return before the game exits; `launch.sh` therefore waits for the selected runner's `wineserver -w` before cleanup, so the ISO is not unmounted while `engine.exe` is still running. The lock also records the wrapper PID so `GGED_MODE=kill` can recover from a Ctrl-Z-suspended launcher.
+
+## 2026-07-11: AppImage packaging
+
+Before packaging, `install.sh --existing --no-launch` was verified against the existing ISO. A fresh bounded normal-launch smoke test then showed `GoldGlory - Wine desktop`, Wine-GE `wineserver`, `explorer.exe`, `cmd`, and `engine.exe`.
+
+`extras/build_appimage.sh` now declares the AppImage build. It bundles:
+
+- `ED_CD.iso`
+- `center_window.py` and `launch.sh`
+- the prepared `wine-ge-prefix` seed
+- local Wine-GE 8-26 under `game/wine-ge/`
+
+The first full AppImage smoke failed because `udisksctl loop-setup` tried to open `/tmp/.mount_*/game/ED_CD.iso` read-write and the AppImage mount is read-only. The internal AppImage launcher now copies the ISO to writable XDG state before setting `GGED_ISO`, then the normal loop-backed CD-ROM path works.
+
+Verified final smoke evidence for `local/appimage-dist/gold-and-glory-the-road-to-el-dorado/gold-and-glory-the-road-to-el-dorado-x86_64.AppImage`:
+
+- artifact size: 1,389,237,440 bytes
+- extracted AppImage contains root `.desktop`, `.DirIcon`, hicolor icon, bundled ISO, Wine-GE and seed prefix
+- runtime processes came from `/tmp/.mount_*/game/wine-ge/bin/`
+- `GoldGlory - Wine desktop` appeared and `engine.exe` was running
+- bounded timeout exit `124` is expected because the game remains open

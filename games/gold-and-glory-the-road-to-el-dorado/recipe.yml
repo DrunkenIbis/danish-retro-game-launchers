@@ -4,7 +4,7 @@ alternate_titles:
   - "The Road to El Dorado: Gold and Glory"
   - "El Dorado"
 runner: "wine"
-status: "user-confirmed-working-windowed-launcher-gameplay-followup-pending"
+status: "user-confirmed-working-windowed-launcher-appimage-smoke-tested"
 
 repository_policy: "recipe-only; no game files included"
 
@@ -89,5 +89,10 @@ launch:
     - "GGED_MODE=kill"
 
 appimage:
-  status: "not attempted / not realistic until native launcher reaches verified gameplay"
-  blocker: "Launcher has not been proven playable beyond engine window/process; packaging would only bundle an unverified Wine/D3D/CD-check state."
+  status: "built and smoke-tested"
+  script: "extras/build_appimage.sh"
+  output: "local/appimage-dist/gold-and-glory-the-road-to-el-dorado/gold-and-glory-the-road-to-el-dorado-x86_64.AppImage"
+  notes:
+    - "Bundles ED_CD.iso, the prepared Wine-GE prefix seed, and local Wine-GE 8-26 under the AppDir."
+    - "Copies ED_CD.iso from the read-only AppImage mount to writable XDG state before udisksctl loop-setup."
+    - "Smoke test verified /tmp/.mount_* Wine-GE wineserver/explorer.exe/engine.exe process paths and a GoldGlory - Wine desktop window."

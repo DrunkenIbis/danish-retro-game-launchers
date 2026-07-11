@@ -1,6 +1,6 @@
 # Gold and Glory: The Road to El Dorado (Windows, 2000)
 
-Status: user-confirmed working launcher; gameplay/AppImage follow-up pending
+Status: user-confirmed working launcher; AppImage smoke-tested
 Runner: local Wine-GE 8-26 preferred; `wine32` fallback
 Source: ISO CD image (`ED_CD`, Windows CD-ROM)
 
@@ -25,6 +25,9 @@ Default private paths:
 local/sources/gold-and-glory-the-road-to-el-dorado/ED_CD.iso
 local/runtime/gold-and-glory-the-road-to-el-dorado/cdrom/
 local/runtime/gold-and-glory-the-road-to-el-dorado/wineprefix32/
+local/runtime/gold-and-glory-the-road-to-el-dorado/wine-ge-prefix/
+local/runners/wine-ge-8-26/
+local/appimage-dist/gold-and-glory-the-road-to-el-dorado/gold-and-glory-the-road-to-el-dorado-x86_64.AppImage
 ```
 
 Override examples:
@@ -62,12 +65,12 @@ GGED_MODE=kill ./launch.sh
 
 The default launcher:
 
-- loop-mounts the original ISO through `udisksctl`, maps its mountpoint as Wine `D:`, and maps the loop device as `D::`
-- prefers `wine32`
-- initializes a dedicated win32 Wine prefix
+- loop-mounts the original ISO through `udisksctl`, maps its mountpoint as Wine `D:`, and maps `D::` to the readable ISO when using Wine-GE
+- prefers local Wine-GE 8-26, then falls back to `wine32`/`wine`
+- initializes a dedicated Wine-GE prefix by default
 - sets Wine Windows version to `win98`
 - maps the loop-mounted original ISO as Wine drive `D:` with volume label `ED_CD`
-- starts the real game executable from the CD context: `D:\\engine\\linc\\engine.exe`
+- starts the real game executable from the CD context inside a centered `640x480` Wine Explorer desktop: `D:\\engine\\linc\\engine.exe`
 
 `GGED_CD_BACKEND=loop` is the default because the game's CD detector rejects an extracted-directory mapping even when `vol d:` reports `ED_CD`. Use `GGED_CD_BACKEND=extract` only as a diagnostic fallback; it reproduces the in-game “Please insert El Dorado CD” prompt. The loop device and mount are removed when the launcher exits or is interrupted.
 
@@ -108,12 +111,18 @@ Do not mark this game as working until a real interactive in-game scene is visib
 
 ## AppImage status
 
-AppImage packaging is not realistic yet. The repo's Wine AppImage flow should package only a known-good launcher/runtime. For this game, the native Wine launcher is blocked before verified gameplay, and `GGED_MODE=installed` currently reaches a Wine `c0000005` program-error/debugger state. Building an AppImage now would only bundle an unverified broken/blocked Wine state.
+AppImage packaging is implemented in `extras/build_appimage.sh` and uses `scripts/wine-appimage-builder.sh` plus the verified local Wine-GE runner.
 
-Next best AppImage step after native gameplay is proven:
+Build:
 
-1. Run `GGED_MODE=prepare ./launch.sh` successfully.
-2. Confirm actual gameplay through `./launch.sh`.
-3. Add `extras/build_appimage.sh` using `scripts/wine-appimage-builder.sh`.
-4. Bundle `cdrom/` plus a prepared prefix.
-5. Smoke-test the AppDir/AppImage and verify that Wine process paths come from the AppDir/AppImage, not host-only assumptions.
+```sh
+./extras/build_appimage.sh
+```
+
+Verified artifact:
+
+```text
+local/appimage-dist/gold-and-glory-the-road-to-el-dorado/gold-and-glory-the-road-to-el-dorado-x86_64.AppImage
+```
+
+The AppImage smoke test used a fresh `XDG_DATA_HOME`, copied the ISO to writable per-user state before `udisksctl loop-setup`, launched Wine from `/tmp/.mount_*/game/wine-ge/bin/`, and reached a `GoldGlory - Wine desktop` window with `engine.exe` running. A timeout exit is expected for the bounded smoke test because the game remains open.

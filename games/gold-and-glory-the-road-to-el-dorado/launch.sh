@@ -173,7 +173,7 @@ prepare_prefix() {
     # Wine-GE tries to read d:: directly. The udisks-created /dev/loopN is not
     # readable by this user, while the original ISO is; use it as the backing
     # device only for the local Wine-GE runner.
-    if [[ "$wine" == "$LOCAL_WINE_GE" && -r "$ISO_PATH" ]]; then
+    if [[ "$wine" == "$LOCAL_WINE_GE" || "${GGED_WINE_GE:-0}" == "1" ]] && [[ -r "$ISO_PATH" ]]; then
       cd_device_path="$ISO_PATH"
     fi
     ln -s "$cd_device_path" "$PREFIX/dosdevices/${CD_DRIVE}::"

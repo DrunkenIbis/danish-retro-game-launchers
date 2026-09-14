@@ -1,0 +1,12 @@
+id: magnus-myggen-mysteriet-om-det-talende-solur
+title: "Magnus & Myggen: Mysteriet om det talende solur"
+platform: Windows
+runner: wine32
+status: user-confirmed-working
+media: M630DA.bin
+cue: M630DA.cue
+mode: MODE1/2352
+sha256_bin: 10204a3cb9b9a2229d956de12ad9497b8845097ea4750522337569587bf048a4
+sha256_cue: 8b8ca840931487d9cd6919cc2ec3dc698bf3d50a3e331733ef8415920526cba0
+installer: original-InstallShield
+executable: mm6.exe

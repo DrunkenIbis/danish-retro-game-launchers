@@ -78,6 +78,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Harald Hårdtand: Kampen om de rene tænder | ✅ | ✅ first-level movement/shooting verified; user-confirmed working | ✅ bundled DOSBox; gameplay verified; fresh/default-state tests exited normally (0) |
 | Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |
 | Magnus & Myggen: Leg og Lær | ✅ | ⚠️ crash fixed, then blocked by CD-check dialog | ✅ |
+| Magnus & Myggen: Mysteriet om det talende solur | ✅ original setup completed | ✅ user-confirmed working; clean launcher exit | — |
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |
 | Magnus & Myggen: Skumlesens Hævn | ✅ | ⚠️ starts but blocked by trial-expired modal | — |
 | Magnus & Myggen: Skumlesens Skygge | — | ✅ | — |

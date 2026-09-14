@@ -1,11 +1,64 @@
 # Magnus & Myggen: Skumlesens Hævn
 
-Status: user-confirmed working from the physical M322DK CD using its original installer (2026-09-14). The older manual-extraction branch remains historical/blocked.
+Status: user-confirmed working both from the original physical CD and from a local CD copy with the disc ejected (2026-09-14). The older manual-extraction branch remains historical/blocked.
 Runner: Wine-GE Proton 7-43, dedicated win32/win98 prefix
 
 This directory contains only the compatibility recipe. It does not contain the BIN/CUE files, converted ISO, extracted game files, Wine prefix, logs, screenshots, or other runtime artifacts.
 
-## Recommended: original physical CD
+## Særlige ting der fik den CD-frie version til at virke
+
+1. **Original installation frem for manuel CAB-udpakning.** Den tidligere manuelt opbyggede installation viste en prøvetidsfejl. Vi kørte i stedet CD’ens originale installer i en ren Wine-prefix og bevarede hele den installerede tilstand. Der blev ikke opfundet registreringsværdier eller ændret i spillets EXE.
+2. **Wine-GE Proton 7-43, win32 og Windows 98.** Denne kombination gennemførte installationen. Setup blev startet direkte fra CD-mappen, ikke gennem Wine Explorer virtual desktop. Normal installation blev valgt, og CD’ens gamle DirectX-installation blev fravalgt. Wine initialiseres med `WINEDLLOVERRIDES='mscoree,mshtml='`.
+3. **Konkrete InstallShield-mappestier.** Den gamle installer kunne læse `%SystemDrive%` bogstaveligt. I den dedikerede prefix sættes `HKLM\Software\Microsoft\Windows\CurrentVersion` værdierne `ProgramFilesDir` og `CommonFilesDir` som `REG_SZ` til henholdsvis `C:\Program Files` og `C:\Program Files\Common Files`. Det fjernede stifejlen; Wine-GE og direkte setup var stadig nødvendige i det verificerede forløb.
+4. **Spillet startes fra sin installerede mappe.** Målet er `C:\Program Files\IVANOFF Interactive\Skumlesens hævn\mm3run.exe`, med samme mappe som arbejdsmappe. SuperStarter, som installeringen åbner, er en butiksfrontend og bruges ikke til spilstart.
+5. **Den fungerende prefix kopieres separat.** Efter at Wine var afsluttet, blev hele originalinstallationen kopieret til `local/runtime/mm3-local-copy/prefix-ge`. Den fysiske CD-version blev ikke overskrevet. Kopierne har hver deres saves og indstillinger.
+6. **CD-data ligger lokalt på E:.** En ISO blev læst fra egen CD og checksumkontrolleret. Dens filer blev udpakket lokalt. Den nye launcher peger E: på denne mappe og fjerner gamle D:/D::/E::-links til det fysiske drev i testkopien. Den behøver hverken fysisk CD, loop-mount eller ændringer af kopibeskyttelsen.
+7. **Det rigtige Wine-serverprogram bruges.** Launcheren bruger Wine-GE’s tilhørende `wineserver`, afventer afslutning også ved fejl og har en lås mod samtidige lokale starter.
+
+“Standalone” betyder her **spilbar uden fysisk CD**. Wine-GE-runneren, den klargjorte prefix og lokale CD-data skal stadig findes på maskinen. Det er endnu ikke en AppImage eller en verificeret portabel pakke til andre computere.
+
+### Verificering
+
+- CD’en blev afmonteret og skubbet ud; Linux rapporterede åben skuffe (`CDS_TRAY_OPEN`).
+- Første rum blev visuelt verificeret både ved direkte start og gennem den gemte `local_copy.sh`.
+- Brugeren bekræftede: “spillet virkede perfekt”.
+- Både den direkte CD-frie test og den gemte launcher afsluttede normalt med exitkode 0.
+- Ni regressionstests består samlet: syv for fysisk CD og to for lokal kopi. Et uafhængigt review fandt ingen blokerende fejl.
+- Den installerede EXE’s SHA256 er identisk i begge prefix-kopier. Ingen spilfiler, ISO’er eller Wine-prefixes medfølger i Git.
+
+## Play without the physical CD
+
+The local-copy branch was tested with the CD ejected (Linux CD-ROM status `CDS_TRAY_OPEN`) and the physical mount absent. It reached the first room; the user confirmed “spillet virkede perfekt”. The original installed executable is unchanged. No protection or registration changes were needed.
+
+```sh
+./local_copy.sh game
+./local_copy.sh kill
+./local_copy.sh dry-run
+```
+
+This uses a separate prefix under `local/runtime/mm3-local-copy/prefix-ge` and extracted local CD data under `local/runtime/mm3-local-copy/cdrom`. It maps only local data to E: and removes stale D:/D::/E:: CD mappings from this copy. The physical-CD prefix is preserved. Saves in the two prefixes are independent after copying.
+
+Private backup made directly from the original CD:
+
+- File: `local/sources/mm3-physical-cd/M322DK.iso`
+- Size: 298741760 bytes
+- SHA256: `80907afb3136a6bfe02d3046d6a1e949c7c776a3b447ce326c04b54e0f61f4d9`
+- Matching `.iso.sha256` file verified with `sha256sum -c`.
+
+To recreate the separate local copy from an already completed original installation, close the physical-CD game first. From the repository root, with the target prefix absent:
+
+```sh
+WINEPREFIX="$PWD/local/runtime/mm3-physical-cd/prefix-ge" local/cache/mm3-physical-cd/runner/lutris-GE-Proton7-43-x86_64/bin/wineserver -w
+mkdir -p local/runtime/mm3-local-copy
+# Do not run the copy command over an existing target prefix.
+test ! -e local/runtime/mm3-local-copy/prefix-ge && cp -a --reflink=auto local/runtime/mm3-physical-cd/prefix-ge local/runtime/mm3-local-copy/prefix-ge
+7z x -y -olocal/runtime/mm3-local-copy/cdrom local/sources/mm3-physical-cd/M322DK.iso
+games/magnus-myggen-skumlesens-haevn/local_copy.sh game
+```
+
+The launcher intentionally requires this prepared installation rather than attempting a manual CAB installation. Override `MM3_LOCAL_RUNTIME` or `MM3_LOCAL_WINE` only for a separate prepared local-copy runtime/runner. Do not point it at the physical-CD prefix.
+
+## Original physical CD (installation and fallback)
 
 The original CD at `/run/media/test/M322DK` (`/dev/sr0`) was installed normally into a fresh, separate prefix. Direct launch of the installed `mm3run.exe` reached the intro and the first room; the user confirmed “spillet virkede perfekt”. No executable patches or fabricated registration values were used.
 
@@ -199,7 +252,7 @@ Import `lutris.yml` as a local Lutris install script/config. The wrapper remains
 
 ## AppImage status
 
-Not built or verified yet. The original physical-CD installation is now user-confirmed working. Packaging must preserve the original installer-created prefix and use the verified Wine runner; whether the physical CD can be replaced by a bundled data image has not been tested. Do not package the older manual-extraction/modified runtime as the working version.
+Not built or verified yet. The original physical-CD installation is now user-confirmed working. Packaging must preserve the original installer-created prefix and use the verified Wine runner; local extracted CD data now works with the CD ejected, but AppImage packaging itself remains untested. Do not package the older manual-extraction/modified runtime as the working version.
 
 ## Reference link
 

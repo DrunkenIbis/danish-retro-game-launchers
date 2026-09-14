@@ -1,0 +1,10 @@
+id: harald-haardtand
+title: "Harald Hårdtand: Kampen om de rene tænder"
+platform: DOS
+runner: dosbox-staging
+status: user-confirmed-working
+archive: HaraldHaardtand.zip
+archive_sha256: 67ffd957bbd8e76b9c9e918af2c73730d345f3f733b7b89eb8709d091582d006
+executable: HARALD.EXE
+cpu_cycles: 6000
+appimage: not-yet-packaged

@@ -43,6 +43,15 @@ Writable state: `${XDG_DATA_HOME:-$HOME/.local/share}/harald-haardtand/game/`. A
 
 Verification: final AppImage extracted and icon/desktop paths audited; bundled runtime reached actual first-level gameplay with movement and shooting. Three regression tests pass, including writable state and highscore preservation. User confirmation above applies to the original launcher; the AppImage has agent-verified gameplay, not a full playthrough. Build provenance and SHA256 accompany the local artifact. No media or AppImage is committed.
 
+### Completed AppImage test runs
+
+Both GUI test runs completed normally with exit code 0:
+
+- Fresh isolated state: `XDG_DATA_HOME=local/tmp/harald-appimage-fresh` (resolved to an absolute repository path during the test).
+- Normal user state: `~/.local/share/harald-haardtand/`.
+
+Gameplay was visually verified in both runs. Logs are kept outside Git in `local/runtime/harald-haardtand/logs/appimage-fresh.log` and `appimage-default.log`. These checks establish successful tested sessions and normal shutdown, not a complete playthrough.
+
 ## References
 
 - https://danskedosklassikere.blogspot.com/2016/01/harald-hardtand.html

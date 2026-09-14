@@ -112,6 +112,53 @@ NtCreateFile name="\\??\SecDrv" -> c00000cb / c0000034
 
 Because the SafeDisc driver path is unavailable under Wine, gameplay was not verified. Do not mark this recipe as working until a lawful DRM-free executable/official re-release/compatible build is supplied and an actual mission loads past menus/splash screens.
 
+## Isolated original-installer SecDrv experiment
+
+The normal `launch.sh` runtime is intentionally kept separate from this diagnostic path. These scripts use only `local/runtime/global-operations-secdrv-probe/`:
+
+```sh
+./install_secdrv_probe.sh --prepare
+./install_secdrv_probe.sh           # original D:\Setup\Setup.exe
+./install_secdrv_probe.sh --status  # checks SecDrv service and driver file
+./launch_secdrv_probe.sh            # installed EXE plus SafeDisc/SecDrv trace
+```
+
+The probe creates a fresh 32-bit Wine prefix in `win2k` mode, maps the original extracted CD as `D:`, starts the unmodified InstallShield installer, then checks both `HKLM\SYSTEM\CurrentControlSet\Services\SecDrv` and `C:\windows\system32\drivers\SECDRV.SYS`. It does not copy or register `SECDRV.SYS` itself.
+
+Current result on the system Wine 11 Staging host: the original InstallShield 6 installer does not reach its visible wizard. Its trace ends at `err:ole:start_rpcss Failed to open RpcSs service`; neither the SecDrv service nor the driver file is created. This is an installer/Wine-service blocker before the existing SafeDisc test, not evidence that SecDrv is installed or working.
+
+A second isolated test used the downloaded `lutris-GE-Proton7-43-x86_64` runner (Wine Staging 7.0). It successfully installed and started `IKernel.exe`, so it cleared the prior `0x80` engine-install error. But after more than two minutes its `Global Operations Setup` window remained an empty blue shell: no wizard, installed `globalops.exe`, SecDrv service, or driver file was created. The original `launch.sh` route remains the canonical recipe and remains blocked at SafeDisc.
+
+## Recheck 2026-09-14
+
+The current retail path was retested under system Wine 11.0 Staging in a copied
+prefix, without changing the canonical installation. A 20-second bounded trace
+again repeatedly failed to open `\\.\SecDrv` (`c00000cb`/`c0000034`). No
+playable game was reached. The prefix's RpcSs warning is also still present.
+
+The official **US 2.0 patch** was obtained from The Patches Scrolls:
+https://www.patches-scrolls.de/patch/1849/7/44279/download
+
+`glopsus2_0.zip`, 11,881,330 bytes, SHA-256:
+`0bf519f3a10abbe587534152d772219f70efc95f4f4b59f4b1f4fae96c75c552`
+
+Its unmodified application payload was extracted and overlaid only onto a
+separate diagnostic tree. An 18-second trace of its executable still produced
+repeated SecDrv failures. This is NOT a verified complete patch installation,
+proof of US/EU patch compatibility, or a DRM-free update. The normal game files
+remain unchanged. Both tests were explicitly stopped and their copied-prefix
+Wine server cleaned up.
+
+Private evidence: `local/runtime/global-operations-check/logs/`.
+Patch archive/extraction: `local/cache/global-operations/`.
+The manual `Setup/GAME + globalops.exe` tree is only a startup diagnostic tree,
+not a complete installed game: the original InstallShield CAB lists 1717 entries,
+including additional game data. After a compatible startup path is available,
+the full installation must also be established before claiming gameplay.
+
+No graphics/audio tuning or AppImage was added: neither fixes this pre-game
+protection dependency. Existing original-installer experiments are preserved.
+
 ## Patches and compatibility fixes investigated
 
 - SafeDisc 2 / disc check: present and currently blocks Wine startup. PCGamingWiki notes this SafeDisc version does not work on Windows 10/11 and is disabled by default on Windows Vista/7/8/8.1 when Microsoft KB3086255 is installed; Wine shows the same class of blocker as repeated `\\.\SecDrv` probes.

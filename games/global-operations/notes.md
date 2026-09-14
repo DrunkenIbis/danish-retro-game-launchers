@@ -1,5 +1,30 @@
 # Global Operations - notes
 
+## 2026-09-14 isolated retail / official patch recheck
+
+- Copied the existing prefix to `local/runtime/global-operations-check/prefix`;
+  canonical CD and installed tree were only read. No other game's processes or
+  prefixes were stopped.
+- Retail Wine 11.0 Staging trace: timeout 20s, exit 124, recurring `\\.\SecDrv`
+  lookup failure (`c00000cb`, then `c0000034`), with RpcSs warning. Copied-prefix
+  wineserver stopped afterward.
+- Retrieved official US 2.0 patch from Patches Scrolls item 44279 using its normal
+  download.php/get.php cookie flow. ZIP SHA-256
+  `0bf519f3a10abbe587534152d772219f70efc95f4f4b59f4b1f4fae96c75c552`.
+- 7z exposes the patch's embedded CAB; unshield extracts Default_File_Group.
+  Local unshield requires `LD_LIBRARY_PATH=/home/test/.local/pkg/unshield-rpm/usr/lib64`.
+  Only the diagnostic copy received this unchanged patch payload.
+- Patch executable test: timeout 18s, exit 124, recurring SecDrv failure as before;
+  no menu/mission. Not a successful patch installation or US/EU compatibility
+  verdict. The original game/prefix and existing probe scripts are unchanged.
+- Original installer CAB lists 1717 entries; the canonical manual startup tree
+  does not contain a full install. Treat that as a subsequent setup gap, not the
+  cause of the observed SecDrv failures.
+- Logs: `local/runtime/global-operations-check/logs/retail-launch.log`,
+  `official-patch20-launch.log`, `original-cab-list.txt`.
+- No AppImage, performance changes, commit or executable modification.
+
+
 ## Media inspection
 
 - Source URL: `https://archive.org/download/GlobalOperationsEuropeEnFrDe/Global%20Operations%20%28Europe%29%20%28En%2CFr%2CDe%29.zip`
@@ -97,9 +122,23 @@ This is not considered working. The wrapper is useful because it reproducibly pr
 - Winetricks/components: no required winetricks component was proven before the SafeDisc blocker. Bundled Miles/Smacker DLLs must be in the executable directory.
 - Multiplayer: GameSpy is shut down; PCGamingWiki says 333networks is the replacement path. No multiplayer verification was possible.
 
+## Original-installer / SecDrv experiment (2026-07-12)
+
+- Added separate `install_secdrv_probe.sh`, `launch_secdrv_probe.sh`, and `secdrv-probe-common.sh`. Their only default mutable root is `local/runtime/global-operations-secdrv-probe/`; they do not reuse `local/runtime/global-operations/`.
+- The probe extracts a private CD tree, makes a fresh 32-bit Wine prefix with `win2k`, maps it as `D:`/`GLOBALOPS`, runs the unmodified `D:\Setup\Setup.exe`, and then reports both `HKLM\SYSTEM\CurrentControlSet\Services\SecDrv` and `C:\windows\system32\drivers\SECDRV.SYS` before it can trace the installed game.
+- Fresh status before setup: `SecDrv` registry key absent and `SECDRV.SYS` absent from the prefix, while `vol d:` reports `GLOBALOPS` and `dir d:\globalops.exe` succeeds.
+- Original Setup.exe was run in the isolated prefix. Wine 11 Staging logged `err:ole:start_rpcss Failed to open RpcSs service`; InstallShield showed only a blank Wine desktop/hung before its wizard and did not install a game, a SecDrv service, or a driver file. The bounded run was stopped and Wine was cleaned up.
+- An explicit `wineboot -u` service trace also could not open `RpcSs`. The Fedora Wine packages contain `rpcss.exe`, but the new prefix has no `HKLM\SYSTEM\CurrentControlSet\Services\RpcSs` registration. Therefore this route currently has a Wine service/old InstallShield blocker before it can test the Proton-style SecDrv-install hypothesis.
+- A separate `lutris-GE-Proton7-43-x86_64` runner was downloaded from its published release, SHA-512 verified, and used only with `local/runtime/global-operations-secdrv-ge7-probe/`. It identifies as Wine Staging 7.0. This runner did install and start `C:\Program Files\Common Files\InstallShield\Engine\6\Intel 32\IKernel.exe`, which proves the old installer got past the previous `0x80` iKernel installation error.
+- The GE-Proton7 experiment still did not reach a usable installer wizard: after more than two minutes the `Global Operations Setup` virtual-desktop window remained an empty blue shell. No installed `globalops.exe`, `SecDrv` service, or `SECDRV.SYS` driver file was created. The run was intentionally stopped and its runner-specific Wine server was cleaned up.
+- The probe resolves a sibling `wineserver` for a supplied custom Wine binary, so `GO_SECDRV_WINE_BIN` does not accidentally control its prefix with the host Wine server.
+- The scripts force InstallShield's legacy relative temporary engine extraction into the ignored experiment root rather than the tracked `games/global-operations/` directory.
+
 ## Next best tests
 
-1. Test a lawful DRM-free or official patched executable, keeping `Setup/GAME` DLL/resource files as the working directory.
-2. If startup reaches video/D3D, test built-in Wine D3D8 first, then `d3d8to9`, then dgVoodoo2 only if there are rendering/performance/Vsync issues.
-3. Verify actual singleplayer gameplay by loading into a mission, not by menu/splash/process evidence.
-4. Only after gameplay works, add an AppImage builder via the shared Wine AppImage helper and verify the AppImage to the same in-mission point.
+1. Repeat the isolated original-installer probe with a Wine runner that can start `RpcSs`/InstallShield 6 (for example a verified older Wine/Proton build), still without copying or registering `SECDRV.SYS` manually.
+2. If that installer creates both the service and `C:\windows\system32\drivers\SECDRV.SYS`, trace the original installed `globalops.exe` with the authentic `D:` mapping and assess the next SafeDisc/CD-authentication result.
+3. Test a lawful DRM-free or official patched executable, keeping `Setup/GAME` DLL/resource files as the working directory.
+4. If startup reaches video/D3D, test built-in Wine D3D8 first, then `d3d8to9`, then dgVoodoo2 only if there are rendering/performance/Vsync issues.
+5. Verify actual singleplayer gameplay by loading into a mission, not by menu/splash/process evidence.
+6. Only after gameplay works, add an AppImage builder via the shared Wine AppImage helper and verify the AppImage to the same in-mission point.

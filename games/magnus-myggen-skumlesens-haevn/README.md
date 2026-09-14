@@ -1,11 +1,40 @@
 # Magnus & Myggen: Skumlesens Hævn
 
-Status: blocked after runtime starts: the tested media opens a trial-expired dialog instead of gameplay  
-Runner: Wine, manual InstallShield CAB extraction from BIN/CUE media
+Status: user-confirmed working from the physical M322DK CD using its original installer (2026-09-14). The older manual-extraction branch remains historical/blocked.
+Runner: Wine-GE Proton 7-43, dedicated win32/win98 prefix
 
 This directory contains only the compatibility recipe. It does not contain the BIN/CUE files, converted ISO, extracted game files, Wine prefix, logs, screenshots, or other runtime artifacts.
 
-## Current blocker
+## Recommended: original physical CD
+
+The original CD at `/run/media/test/M322DK` (`/dev/sr0`) was installed normally into a fresh, separate prefix. Direct launch of the installed `mm3run.exe` reached the intro and the first room; the user confirmed “spillet virkede perfekt”. No executable patches or fabricated registration values were used.
+
+From this directory:
+
+```sh
+./physical_cd.sh dry-run
+./physical_cd.sh setup   # first installation only; choose Normal, leave old DirectX unchecked
+./physical_cd.sh game    # subsequent launches, with the CD inserted and mounted
+./physical_cd.sh kill    # stop only this physical-CD prefix
+```
+
+The wrapper uses the locally downloaded, upstream SHA512-verified Wine-GE `GE-Proton7-43` runner under `local/cache/mm3-physical-cd/runner/lutris-GE-Proton7-43-x86_64`. It does not automatically download Wine. Upstream release: https://github.com/GloriousEggroll/wine-ge-custom/releases/tag/GE-Proton7-43
+
+Private installed state is under `local/runtime/mm3-physical-cd/prefix-ge`. The original installer creates `C:\Program Files\IVANOFF Interactive\Skumlesens hævn\mm3run.exe`. Keep this prefix: it contains original installed state and saved settings. `E:` maps to the mounted CD and `E::` to the physical device; Wine reports volume `M322DK`.
+
+Override paths with `MM3_PHYSICAL_CD`, `MM3_PHYSICAL_DEVICE`, `MM3_PHYSICAL_RUNTIME`, and `MM3_PHYSICAL_WINE`.
+
+Installer findings:
+
+- Wine 11 initially failed because this InstallShield treated `%SystemDrive%` literally in `CommonFilesDir`/`ProgramFilesDir`. Concrete `REG_SZ` paths removed that dialog but did not complete setup under Wine 11.
+- Wine-GE 7-43 in a fresh win32/win98 prefix, running `setup.exe` directly rather than through Explorer virtual desktop, completed the original installation.
+- The installer opens SuperStarter at the end; that shop frontend is not the game. Launch the installed `mm3run.exe` directly.
+- The physical-CD branch never runs the older local `patch_mm3run*` or `launch_fix*` experiments. Existing edits to the old launcher were preserved.
+- The previous trial-expired error came from a manual-install test and did not establish that a correctly installed original CD was unusable.
+
+Evidence: `local/runtime/mm3-physical-cd/logs/`, including `final-0x1c00009.png` (installer completion), `game-after-intro.png` (first room), and `game-original-installed.log`. Original installed executable SHA256: `129e744fa1ed563771732ca99d245973cf2b4cf87213c532d2000f96a4078262`.
+
+## Historical manual-extraction blocker
 
 The launcher can convert the archive.org BIN/CUE image, extract the InstallShield payload, build a local runtime tree, and start the real game executable (`mm3run.exe`) in a Wine 800x600 virtual desktop.
 
@@ -170,7 +199,7 @@ Import `lutris.yml` as a local Lutris install script/config. The wrapper remains
 
 ## AppImage status
 
-Not implemented for this title yet. The direct Wine recipe is blocked by the trial-expired modal before gameplay, so packaging the same runtime as an AppImage would only preserve a known-blocked state. Next best AppImage step is to revisit packaging only after lawful media/state reaches real gameplay through `launch.sh`.
+Not built or verified yet. The original physical-CD installation is now user-confirmed working. Packaging must preserve the original installer-created prefix and use the verified Wine runner; whether the physical CD can be replaced by a bundled data image has not been tested. Do not package the older manual-extraction/modified runtime as the working version.
 
 ## Reference link
 

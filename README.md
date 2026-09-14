@@ -80,7 +80,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Magnus & Myggen: Leg og Lær | ✅ | ⚠️ crash fixed, then blocked by CD-check dialog | ✅ |
 | Magnus & Myggen: Mysteriet om det talende solur | ✅ original setup completed | ✅ user-confirmed working; clean launcher exit | ✅ bundled Wine/menu verified; full AppImage gameplay not yet confirmed |
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |
-| Magnus & Myggen: Skumlesens Hævn | ✅ | ⚠️ starts but blocked by trial-expired modal | — |
+| Magnus & Myggen: Skumlesens Hævn | ✅ | ✅ Original fysisk CD + Wine-GE, brugerbekræftet | — |
 | Magnus & Myggen: Skumlesens Skygge | — | ✅ | — |
 | Overboard! / Shipwreckers! | ✅ | ⚠️ Installer/launcher verified, but Wine still hits original-CD validator (`OVERBOARD! CD NOT PRESENT`) | — |
 | Peddersen og Findus i værkstedet | ✅ | ✅ gameplay verified | ✅ AppImage smoke-tested |

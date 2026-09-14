@@ -1,7 +1,7 @@
 id: "magnus-myggen-skumlesens-haevn"
 title: "Magnus & Myggen: Skumlesens Hævn"
 runner: "wine"
-status: "blocked-trial-expired"
+status: "working-physical-cd-user-confirmed"
 
 repository_policy: "recipe-only; no game files included"
 
@@ -45,18 +45,22 @@ metadata:
   requirements: "Pentium/120 MHz, 64 MB RAM, Windows 98/XP/Vista/7, DirectX-compatible sound/video, 800x600, 16-bit colors"
 
 setup:
-  installer: "install.sh"
+  installer: "physical_cd.sh setup"
+  historical_source_acquisition: "install.sh"
   modes:
     - "existing converted ISO or BIN/CUE"
     - "download M322DK.bin + M322DK.cue from archive.org reference URL"
     - "import physical CD/DVD with dd"
 
 launch:
-  wrapper: "launch.sh"
+  wrapper: "physical_cd.sh"
+  historical_wrapper: "launch.sh"
   lutris: "lutris.yml"
   default_mode: "game"
   executable: "mm3run.exe"
   notes:
+    - "Recommended path: physical_cd.sh setup/game with original M322DK physical CD and Wine-GE 7-43 win32/win98; user confirmed perfect gameplay on 2026-09-14."
+    - "The notes below describe only the historical manual-extraction branch, not the working original installation."
     - "AUTORUN.INF opens LAUNCHER.EXE, but the wrapper bypasses old InstallShield by manually extracting appfiles/mm3run.exe, scripts, DK resources, and music DAT files from DATA1.CAB/DATA2.CAB."
     - "Wine prefix is win32/win98 by default and runs in an 800x600 virtual desktop."
     - "The tested archive.org media starts the game process and displays a game-owned modal: 'This trial game has expired.' This is documented as a licence/trial gate, not as working gameplay."

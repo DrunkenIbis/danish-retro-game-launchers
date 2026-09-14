@@ -1,7 +1,7 @@
 id: "gys-paa-regneslottet"
 title: "Gys på Regneslottet"
 runner: "dosbox-staging"
-status: "launch-smoke-verified; audio-retuned; gameplay/user-audio recheck pending"
+status: "working; user-confirmed gameplay/audio improvement with normal/15000"
 
 repository_policy: "recipe-only; no game files included"
 
@@ -39,12 +39,12 @@ launch:
   dosbox:
     config_source: "local/sources/gys-paa-regneslottet/Gys_Paa_Regneslottet/Gys På Regneslottet/SYSTEM/DOSBOX/dosbox.conf"
     generated_config: "local/runtime/gys-paa-regneslottet/gys-paa-regneslottet.conf"
-    config_policy: "use bundled DOSBox-SVN/Daum config as base; adapt only 640x480 windowed startup, repo-local autoexec, memory/CPU, Sound Blaster, and WinG values for DOSBox-Staging"
+    config_policy: "generate a clean DOSBox-Staging-native config derived from the bundled DOSBox-SVN/Daum profile; keep only the proven SVGA, CPU, Sound Blaster, and repo-local autoexec values to avoid legacy invalid/deprecated config warnings"
     windowresolution: "640x480"
     machine: "svga_et4000"
-    cpu_core: "auto"
+    cpu_core: "normal"
     cpu_type: "486"
-    cycles: 50000
+    cycles: 15000
     mixer_rate: 44100
     mixer_blocksize: 2048
     mixer_prebuffer: 80
@@ -57,9 +57,10 @@ launch:
 compatibility_notes:
   - "The bundled PROGMAN.INI references an unused Danish network group; launch.sh removes the Group3/Order reference and stale NETVÆRK/NETV’RK group files at runtime."
   - "unzip can return status 1 because of a local/central filename mismatch for NETV’RK.GRP; installer/launcher accepts that only after required files are present."
-  - "User requested a pure DOSBox path using the bundled dosbox.conf. launch.sh now copies the bundled DOSBox-SVN/Daum config as the generated runtime config and patches only the autoexec/window/memsize/cputype/cycles values needed for repo-local DOSBox-Staging launch. Human listening recheck still recommended."
+  - "User requested a pure DOSBox path using the bundled dosbox.conf. launch.sh now uses that bundled DOSBox-SVN/Daum config as the compatibility profile, but writes a clean Staging-native generated config with only the repo-local autoexec/window/memory/CPU/audio values needed for DOSBox-Staging launch. Human listening recheck still recommended."
   - "Runtime Windows 3.1 video is forced to Super VGA 640x480/256 colours (SVGA256.DRV, VDDSVGA.386, VGADIB.3GR, Tseng ET4000) and WinG is seeded with the bundled-good SVGA256 640x480x8 profile value 2 to avoid WinG display-driver dialogs."
   - "Audio was retuned after user reported crackle and slightly slow playback: DOSBox now defaults to 50000 cycles, larger 2048/80 mixer buffering, disables unused GUS/MIDI/NE2000/Voodoo devices, and emulates SB2 at A220 I7 D1 to match the bundled Windows Sound Blaster 1.5 driver."
+  - "The generated runtime config is now Staging-native instead of a direct patched copy of the legacy DOSBox-SVN/Daum config, eliminating the invalid/deprecated CONFIG log spam while preserving the working launch path."
 
 verification:
   last_checked: "2026-06-30"
@@ -70,11 +71,11 @@ verification:
     - "timeout 25s ./games/gys-paa-regneslottet/launch.sh"
     - "python3 yaml.safe_load(...) for recipe/lutris YAML"
   evidence:
-    - "DOSBox-Staging 0.82.2 loaded generated config derived from the bundled dosbox.conf."
+    - "DOSBox-Staging 0.82.2 loaded a clean generated Staging-native config derived from the bundled dosbox.conf profile."
     - "C: mounted runtime GAME; D: imgmounted CDROM.iso."
     - "CDAUDIO initialized at 44100 Hz."
     - "Windows/game entered SVGA 640x480 256-colour mode 2Eh and remained running until timeout SIGTERM."
-    - "Bundled DOSBox-SVN/Daum config contains many legacy options that DOSBox-Staging logs as invalid/deprecated; they are ignored, while the required mounts/audio/video path still reaches SVGA mode 2Eh."
+    - "Generated config no longer emits invalid/deprecated CONFIG warnings in bounded launch verification."
   gaps:
     - "No automated screenshot/gameplay capture succeeded in this Wayland session."
     - "Post-tuning audio quality needs user listening confirmation."

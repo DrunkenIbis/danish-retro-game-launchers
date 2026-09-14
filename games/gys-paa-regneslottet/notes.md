@@ -1,5 +1,21 @@
 # Notes
 
+## User confirmation 2026-09-14
+
+User reports that the updated launcher works very well. Promote the canonical DOSBox path to user-confirmed working, including the reported audio improvement. Forced-stop paging warnings remain a separate diagnostic caveat.
+
+## 2026-09-14: measured CPU headroom and Staging 0.83 mounts
+
+- The live Flatpak is Staging 0.83.0. Original `MOUNT C .\GAME` fails with `Image file not found`; changing only host-side separators to `./GAME` starts Windows. Guest C:\ paths remain unchanged.
+- Compared normal/50000 and normal/15000 at the title/introduction: process CPU usage was about 98.5% versus 55–58%. New source default: normal/15000, overridable with GYS_CPU_CORE and GYS_CPU_CYCLES. Audio remains Pulse/44100/2048/80/SB2.
+- X11 capture required Flatpak `--socket=x11 --nosocket=wayland --env=SDL_VIDEODRIVER=x11`; SDL_VIDEODRIVER alone was insufficient because the app grants only fallback-x11 by default.
+- Screenshots verified title, instructions, castle entrance, and difficulty selection. Keyboard Return progressed these screens. No completed puzzle or full gameplay test; listening quality remains unconfirmed.
+- Private logs: `local/runtime/gys-paa-regneslottet/logs/`. The two 12-second monitor recordings are from different moments and do NOT prove removal of audio glitches. PipeWire's sampled ERR counters were zero.
+- Final canonical launcher tested on default Wayland: Windows 3.11 and 640x480 SVGA reached; timeout returned 124. Both auto and normal tests can emit `Pagefault didn't correct page` on forced termination. This is a remaining shutdown issue, not evidence the game spontaneously crashed.
+- Two generator regression tests pass (host mount paths; CPU defaults/overrides), bash syntax and scoped git diff whitespace checks pass. Existing unrelated edits preserved; no commit or packaging.
+- 0.83 still reports deprecated legacy window/shader/IMGMOUNT options. These are not treated as the audio root cause. AppImage remains deferred pending listening/full gameplay.
+
+
 Migrated from: `/home/test/lutris_game_scripts_Regneslottet`
 
 Only top-level recipe files were moved. Runtime folders, ISOs, BIN/CUE images, extracted discs, Wine prefixes, logs, screenshots, bundled runners and installed game assets are intentionally kept out of this Git-ready recipe tree.

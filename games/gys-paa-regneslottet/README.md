@@ -1,6 +1,6 @@
 # Gys på Regneslottet
 
-Status: repo-local pure DOSBox launcher smoke-verified with the game-bundled DOSBox config as base; needs final human listening/gameplay confirmation.
+Status: working — user confirmed on 2026-09-14 that the game runs very well after the CPU/audio-stutter fix. Agent visual verification reached difficulty selection; no complete playthrough is claimed.
 Runner: DOSBox-Staging running the bundled Windows 3.x game tree.
 
 This directory contains only the compatibility recipe. It does not contain the game archive, extracted runtime, logs, screenshots, or AppImage output.
@@ -66,23 +66,55 @@ Verification so far: a bounded smoke test shows `winevdm.exe` running with
 `C:\GILISOFT\GYS_CD\WNEWADDD.EXE`. This is process/launcher evidence only;
 visible gameplay and audio quality still need manual confirmation.
 
-The launcher now uses the DOSBox config shipped with the game as its source:
+The launcher now uses the DOSBox config shipped with the game as its compatibility source/profile:
 
 ```text
 local/sources/gys-paa-regneslottet/Gys_Paa_Regneslottet/Gys På Regneslottet/SYSTEM/DOSBOX/dosbox.conf
 ```
 
-At runtime it writes an ignored adapted copy to:
+At runtime it writes an ignored clean DOSBox-Staging-native config to:
 
 ```text
 local/runtime/gys-paa-regneslottet/gys-paa-regneslottet.conf
 ```
 
-Only wrapper-safe changes are applied: 640x480 windowed startup, the repo-local
-`[autoexec]` mount/start block, DOSBox-Staging-compatible memory/CPU values,
-and a runtime Windows 3.1 video self-heal for the 256-colour Super VGA driver.
+The bundled config is DOSBox-SVN/Daum-era and produces many invalid/deprecated
+options on DOSBox-Staging 0.82.x, so the wrapper no longer copies it verbatim.
+Instead it generates a minimal Staging-native config that preserves the proven
+640x480 SVGA ET4000, CPU, Sound Blaster, and repo-local `[autoexec]` values,
+plus the runtime Windows 3.1 video self-heal for the 256-colour Super VGA driver.
 
-Useful tuning overrides:
+## Current CPU/audio tuning (2026-09-14)
+
+The current default is `core=normal`, `cpu_cycles=15000`. The previous 50000
+setting saturated a host CPU core (about 98%); normal/15000 measured about
+55–58% in the introduction. This leaves scheduling headroom instead of
+increasing an already large audio buffer. PulseAudio, 44100 Hz, 2048/80 and
+SB2 remain unchanged. `cpu_cycles_protected=auto` inherits the fixed cycles;
+it does not mean maximum speed in Staging's modern configuration.
+
+Host mount paths now use `./GAME` and `./CDROM/CDROM.iso`. The previous
+`.\GAME` path failed with `MOUNT: Image file not found` in Staging 0.83.
+
+For a reversible comparison (close the previous instance first):
+
+```sh
+GYS_CPU_CORE=normal GYS_CPU_CYCLES=20000 ./games/gys-paa-regneslottet/launch.sh
+# Previous CPU settings, for diagnosis only:
+GYS_CPU_CORE=auto GYS_CPU_CYCLES=50000 ./games/gys-paa-regneslottet/launch.sh
+python3 games/gys-paa-regneslottet/extras/test_config.py
+```
+
+Visual verification used the Flatpak X11 socket explicitly; normal launches
+still use the desktop's default video backend. Audio recordings and logs are
+private under `local/runtime/gys-paa-regneslottet/logs/`. Recordings from different
+moments are diagnostic samples, not a controlled proof of glitch-free sound.
+Both auto-core and the final normal-core Wayland test emitted a paging abort
+when terminated by timeout. Do not equate that with a proven in-game crash.
+
+The older tuning history below is retained as historical evidence, not current defaults.
+
+Useful historical tuning overrides:
 
 ```sh
 GYS_CPU_CYCLES=35000 ./games/gys-paa-regneslottet/launch.sh
@@ -129,6 +161,7 @@ D: local/runtime/gys-paa-regneslottet/.../SYSTEM/DOSBOX/CDROM/CDROM.iso
 - `unzip` can return status 1 because of a local/central filename mismatch for `NETV’RK.GRP`. The installer/launcher treats that as non-fatal only after the required game files are present.
 - The first validation used 48 kHz/PipeWire settings and the user reported bad/stuttering audio. The current launcher switches to PulseAudio and 44.1 kHz settings matching the YouTube reference stream and original bundled DOSBox config more closely.
 - After gameplay improved, the user still reported crackle and slightly slow audio. The current default retune uses larger 2048/80 audio buffering, 50000 cycles, and a simpler SB2 path instead of the default SB16/GUS/MIDI-heavy bundled profile.
+- The bundled DOSBox-SVN/Daum config emitted hundreds of invalid/deprecated config warnings in DOSBox-Staging. The launcher now emits a clean Staging-native runtime config; bounded verification confirmed no `CONFIG: Invalid` or `CONFIG: Deprecated` lines while still reaching SVGA mode 2Eh.
 
 ## Verification performed 2026-06-30
 
@@ -144,9 +177,9 @@ python3 -c 'import yaml; yaml.safe_load(...)'
 
 Observed evidence from the final smoke test:
 
-- DOSBox-Staging 0.82.2 loaded the generated config derived from the bundled `dosbox.conf`.
+- DOSBox-Staging 0.82.2 loaded the generated clean Staging-native config derived from the bundled `dosbox.conf` profile.
 - SDL initialized with Wayland video and PulseAudio audio.
-- Mixer initialized at 44100 Hz with a 1024 sample frame buffer.
+- Mixer initialized at 44100 Hz with a 2048 sample frame buffer.
 - `C:` mounted the runtime `GAME` tree.
 - `D:` imgmounted `CDROM.iso`.
 - CDAUDIO operated at 44100 Hz without resampling.

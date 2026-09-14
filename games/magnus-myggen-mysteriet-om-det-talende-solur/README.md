@@ -43,6 +43,8 @@ At play time it uses bundled Wine, not host Wine. It still needs host Bash/coreu
 
 Verification: all six regression tests pass, including nonzero Wine exit, INT/TERM cleanup, save preservation and pinned-tool validation. The launcher now always waits for its bundled wineserver before releasing the package; extracted final metadata, original icon and Wine NLS data checked. Fresh-state AppImage reached the game-selection menu, and `/proc` confirmed that the game runs from the AppImage's bundled Wine. This is not a separate user-confirmed AppImage playthrough; the user-confirmed working status at the top refers to the recipe launcher.
 
+The final rebuilt isolated-state AppImage test and the earlier normal-state AppImage test both subsequently exited normally with code 0. This confirms clean termination of those sessions, not additional gameplay verification.
+
 ## Sources
 
 - https://archive.org/download/magnus-myggen-mysteriet-om-det-talende-solur/M630DA.bin

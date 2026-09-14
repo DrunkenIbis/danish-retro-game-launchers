@@ -1,196 +1,140 @@
 # Gys på Regneslottet
 
-Status: working — user confirmed on 2026-09-14 that the game runs very well after the CPU/audio-stutter fix. Agent visual verification reached difficulty selection; no complete playthrough is claimed.
-Runner: DOSBox-Staging running the bundled Windows 3.x game tree.
+Status: **working, user-confirmed on 2026-09-14**. The user confirmed that the
+CPU/audio-stutter fix works very well and subsequently confirmed that the
+AppImage test looked correct. Agent screenshots verify an actual arithmetic game scene in the final
+AppImage with default user state, not a complete playthrough.
 
-This directory contains only the compatibility recipe. It does not contain the game archive, extracted runtime, logs, screenshots, or AppImage output.
+Runner: DOSBox-Staging 0.83 with the game's bundled Windows 3.11 installation.
+This recipe contains no game media, Windows installation, emulator binary or
+AppImage artifact. Private local builds contain those files; do not publish them
+without the relevant redistribution rights.
 
-## Bring your own game files
+## Install and run the recipe
 
-Use a legally obtained copy of:
+Bring your own legally obtained `Gys_Paa_Regneslottet.zip`:
 
-```text
-Gys_Paa_Regneslottet.zip
-sha256: 0930e6961d89ac25638124812e0ad1637cb1cf97c0cc0229f937e5850461a0d2
-size:   62,693,702 bytes
-```
+- Size: 62,693,702 bytes
+- SHA-256: `0930e6961d89ac25638124812e0ad1637cb1cf97c0cc0229f937e5850461a0d2`
+- Default source: `local/sources/gys-paa-regneslottet/Gys_Paa_Regneslottet.zip`
 
-Place it in:
-
-```text
-local/sources/gys-paa-regneslottet/Gys_Paa_Regneslottet.zip
-```
-
-or import it with `install.sh --archive`.
-
-## Install/import
+From the repository root:
 
 ```sh
 ./games/gys-paa-regneslottet/install.sh --archive /path/to/Gys_Paa_Regneslottet.zip --no-launch
-# or, after the archive is already in local/sources/gys-paa-regneslottet/
-./games/gys-paa-regneslottet/install.sh --existing --no-launch
-```
-
-The installer writes only to ignored private paths:
-
-```text
-local/sources/gys-paa-regneslottet/
-local/runtime/gys-paa-regneslottet/
-```
-
-## Run
-
-```sh
 ./games/gys-paa-regneslottet/launch.sh
 ```
 
-## Experimental Wine 95 launcher
+The launcher extracts to `local/runtime/gys-paa-regneslottet/`, repairs the
+bundled Windows video/WinG profile and removes its unused network Program
+Manager group. It starts:
 
-There is also a separate experimental Wine path that does not replace the
-canonical DOSBox launcher:
+```text
+WIN C:\GILISOFT\GYS_CD\WNEWADDD.EXE /CFG:C:\GILISOFT\GYS_CD\WNEWADD.INI /startdir:D:\DANSK
+```
+
+C: is the writable Windows/game tree; D: is the original bundled CDROM.iso.
+Host mounts use POSIX paths (`./GAME`, `./CDROM/CDROM.iso`); the old `.\GAME`
+form failed with `Image file not found` on Staging 0.83.
+
+## Audio and CPU fix
+
+Current tested defaults:
+
+- CPU: `core=normal`, `cputype=486`, `cpu_cycles=15000`
+- `cpu_cycles_protected=auto` inherits this fixed cycle value, not max speed
+- PulseAudio output; 44100 Hz, blocksize 2048, prebuffer 80
+- Sound Blaster 2.0, A220 I7 D1, matching the bundled Windows sound driver
+- ET4000 SVGA, 16 MB memory, 640×480 window
+- Unused GUS, MIDI output, NE2000 and Voodoo disabled
+
+The previous 50000-cycle setting used about 98% of one host CPU core. The
+normal/15000 test used about 55–58%, leaving scheduling headroom. The audio
+buffer and sample rate were not changed in this fix. The user confirmed the
+result, rather than audio quality being inferred from logs alone.
+
+Optional recipe overrides (close the previous game first):
 
 ```sh
-./games/gys-paa-regneslottet/launch_wine95.sh
-```
-
-It creates a private 32-bit Wine prefix under
-`local/runtime/gys-paa-regneslottet/wine95/`, sets Wine's reported Windows
-version to `win95`, extracts `CDROM.iso` to a mapped `D:` drive, copies the
-preinstalled `GILISOFT\GYS_CD` tree to `C:`, and starts the Win16 launcher with:
-
-```text
-wine32 start /exec explorer /desktop=GysWine95,1024x768 C:\GILISOFT\GYS_CD\WNEWADDD.EXE /CFG:C:\GILISOFT\GYS_CD\WNEWADD.INI /startdir:D:\DANSK
-```
-
-Verification so far: a bounded smoke test shows `winevdm.exe` running with
-`C:\GILISOFT\GYS_CD\WNEWADDD.EXE`. This is process/launcher evidence only;
-visible gameplay and audio quality still need manual confirmation.
-
-The launcher now uses the DOSBox config shipped with the game as its compatibility source/profile:
-
-```text
-local/sources/gys-paa-regneslottet/Gys_Paa_Regneslottet/Gys På Regneslottet/SYSTEM/DOSBOX/dosbox.conf
-```
-
-At runtime it writes an ignored clean DOSBox-Staging-native config to:
-
-```text
-local/runtime/gys-paa-regneslottet/gys-paa-regneslottet.conf
-```
-
-The bundled config is DOSBox-SVN/Daum-era and produces many invalid/deprecated
-options on DOSBox-Staging 0.82.x, so the wrapper no longer copies it verbatim.
-Instead it generates a minimal Staging-native config that preserves the proven
-640x480 SVGA ET4000, CPU, Sound Blaster, and repo-local `[autoexec]` values,
-plus the runtime Windows 3.1 video self-heal for the 256-colour Super VGA driver.
-
-## Current CPU/audio tuning (2026-09-14)
-
-The current default is `core=normal`, `cpu_cycles=15000`. The previous 50000
-setting saturated a host CPU core (about 98%); normal/15000 measured about
-55–58% in the introduction. This leaves scheduling headroom instead of
-increasing an already large audio buffer. PulseAudio, 44100 Hz, 2048/80 and
-SB2 remain unchanged. `cpu_cycles_protected=auto` inherits the fixed cycles;
-it does not mean maximum speed in Staging's modern configuration.
-
-Host mount paths now use `./GAME` and `./CDROM/CDROM.iso`. The previous
-`.\GAME` path failed with `MOUNT: Image file not found` in Staging 0.83.
-
-For a reversible comparison (close the previous instance first):
-
-```sh
-GYS_CPU_CORE=normal GYS_CPU_CYCLES=20000 ./games/gys-paa-regneslottet/launch.sh
-# Previous CPU settings, for diagnosis only:
+GYS_CPU_CYCLES=20000 ./games/gys-paa-regneslottet/launch.sh
+# Old CPU behavior for comparison only:
 GYS_CPU_CORE=auto GYS_CPU_CYCLES=50000 ./games/gys-paa-regneslottet/launch.sh
+```
+
+## Build and run the AppImage
+
+```sh
+./games/gys-paa-regneslottet/extras/build_appimage.sh
+# Rebuild from the already downloaded, checksum-verified tools:
+./games/gys-paa-regneslottet/extras/build_appimage.sh --no-download
+# Only prepare the unpacked application directory:
+./games/gys-paa-regneslottet/extras/build_appimage.sh --appdir-only
+```
+
+Build dependencies: Python 3.12+, bash, unzip, wrestool (icoutils), ImageMagick
+(`magick`) and internet access for the first tool download. `GYS_ARCHIVE`,
+`GYS_ZIP`, `GYS_SOURCE_DIR` and `RETRO_GAME_SOURCE_DIR` can locate private media.
+A clean private extraction is prepared through the canonical launcher, so the
+AppImage inherits its verified configuration without copying your live saves.
+
+Outputs:
+
+```text
+games/gys-paa-regneslottet/extras/dist/gys-paa-regneslottet-x86_64.AppImage
+games/gys-paa-regneslottet/extras/dist/gys-paa-regneslottet-x86_64.AppImage.sha256
+games/gys-paa-regneslottet/extras/build/gys-paa-regneslottet.AppDir
+```
+
+Run the AppImage directly or double-click it. It contains official DOSBox-Staging
+0.83.0, resources/licenses, the clean prepared Windows/game tree, CD image and
+the original game icon extracted from WNEWADDD.EXE. Downloads are SHA-256 pinned;
+`build-provenance.json` records inputs and the canonical config checksum.
+
+No Wine, Flatpak, system DOSBox or Python is needed at play time. This is a Linux
+x86_64 bundle, not a guarantee for every distribution: host bash/coreutils/flock,
+compatible glibc/libstdc++, audio and graphics drivers are still needed. The
+upstream DOSBox runtime README and licenses are included. If FUSE is unavailable,
+extract the AppImage with `--appimage-extract` and run `squashfs-root/AppRun`.
+
+### Saved games and settings
+
+The AppImage creates a separate writable installation at:
+
+```text
+${XDG_DATA_HOME:-$HOME/.local/share}/gys-paa-regneslottet/GAME/
+```
+
+Existing recipe saves are not automatically imported. The initial copy is atomic;
+subsequent launches preserve it. The CD symlink is refreshed for each AppImage
+mount, and a launch lock prevents concurrent use of the same state. Back up this
+GAME directory before resetting it. Audio backend override:
+`GYS_SDL_AUDIODRIVER=pulse`. For CPU experiments, pass DOSBox options such as
+`--set cpu_cycles=20000` to the AppImage; the default remains 15000.
+
+## Verification and limitations
+
+- Recipe: user-confirmed improved gameplay/audio; screenshot verification to
+  difficulty selection; generator regression tests and bash syntax checks pass.
+- AppImage: fresh and default-user-state launches verified; the final default-state
+  screenshot shows an arithmetic puzzle with two skeletons. Actual FUSE-launched process verified at `/tmp/.mount_*/runtime/dosbox`,
+  with bundled resources and CD data, PulseAudio 44100 Hz and about 54% CPU in
+  the sampled intro. User confirmed the running AppImage looked correct.
+- Extracted finished package checked for matching desktop/icon files, bundled
+  runtime/license, canonical config and provenance. Writable state preservation
+  and CD remapping after moving an AppDir have an automated regression test.
+- Closing the emulator window or forcibly stopping it can emit
+  `Pagefault didn't correct page` during shutdown. This remains a shutdown
+  compatibility issue, not evidence of a spontaneous gameplay crash.
+- Staging 0.83 reports deprecations for legacy window/shader/IMGMOUNT settings.
+  These are retained for compatibility with the canonical configuration.
+- No full playthrough, other-distribution verification or independent listening
+  verdict for the AppImage is claimed.
+
+```sh
 python3 games/gys-paa-regneslottet/extras/test_config.py
+python3 games/gys-paa-regneslottet/extras/test_appimage.py
 ```
 
-Visual verification used the Flatpak X11 socket explicitly; normal launches
-still use the desktop's default video backend. Audio recordings and logs are
-private under `local/runtime/gys-paa-regneslottet/logs/`. Recordings from different
-moments are diagnostic samples, not a controlled proof of glitch-free sound.
-Both auto-core and the final normal-core Wayland test emitted a paging abort
-when terminated by timeout. Do not equate that with a proven in-game crash.
-
-The older tuning history below is retained as historical evidence, not current defaults.
-
-Useful historical tuning overrides:
-
-```sh
-GYS_CPU_CYCLES=35000 ./games/gys-paa-regneslottet/launch.sh
-GYS_SDL_AUDIODRIVER=pipewire ./games/gys-paa-regneslottet/launch.sh
-GYS_CPU_CYCLES=45000 GYS_MIXER_BLOCKSIZE=4096 GYS_MIXER_PREBUFFER=120 ./games/gys-paa-regneslottet/launch.sh
-```
-
-Default audio/timing currently intentionally follows the supplied YouTube/original-bundle reference more closely than the earlier PipeWire tuning. In the generated config these are inherited or adapted from the bundled config:
-
-- `SDL_AUDIODRIVER=pulse`
-- `machine=svga_et4000`
-- `windowresolution=640x480`
-- `memsize=16`
-- `core=auto`
-- `cputype=486`
-- `cycles=50000` in the bundled-config copy, because the original `cycles=auto` made DOSBox-Staging switch to max cycles and the program exited quickly, while 40000 still sounded slightly slow for the user
-- `rate=44100`
-- `blocksize=2048`
-- `prebuffer=80`
-- Sound Blaster 2.0 (`sbtype=sb2`, `A220 I7 D1`) to match the bundled Windows `sndblst2.drv` / Creative Labs Sound Blaster 1.5 driver
-- unused GUS, MIDI, NE2000, and Voodoo devices disabled to reduce emulation overhead
-
-## Launcher evidence
-
-The archive is a prebuilt Windows 3.x/DOSBox package. The wrapper launches the game directly inside the bundled Windows tree:
-
-```text
-win c:\gilisoft\gys_cd\wnewaddd.exe /CFG:c:\gilisoft\gys_cd\wnewadd.ini /startdir:d:\dansk
-```
-
-Runtime mounts:
-
-```text
-C: local/runtime/gys-paa-regneslottet/.../SYSTEM/DOSBOX/GAME
-D: local/runtime/gys-paa-regneslottet/.../SYSTEM/DOSBOX/CDROM/CDROM.iso
-```
-
-`WNEWADDD.EXE` is a Windows 3.10 NE GUI executable. `CDROM.iso` contains `DANSK/ADD.A`, `DANSK/ADD.B`, `DANSK/ADD.LOD`, `DANSK/ADD.TXP`, setup files, and launch resources.
-
-## Compatibility notes
-
-- The bundled Windows Program Manager references an unused Danish network group (`NETVÆRK.GRP`). The launcher removes that Group3/Order reference and deletes stale mojibake filenames to avoid a Windows 3.x "Fejl i gruppefilen" prompt.
-- The game requires Windows 3.1/95 VGA 256 colours. The launcher keeps the runtime Windows tree on `SVGA256.DRV` / `VDDSVGA.386` / `VGADIB.3GR`, sets the DOSBox window to 640x480, and seeds WinG's bundled-good `SVGA256.DRV640x480x8...=2` profile. This targets the WinG display-driver dialogs shown when WinG has a bad/stale profile.
-- `unzip` can return status 1 because of a local/central filename mismatch for `NETV’RK.GRP`. The installer/launcher treats that as non-fatal only after the required game files are present.
-- The first validation used 48 kHz/PipeWire settings and the user reported bad/stuttering audio. The current launcher switches to PulseAudio and 44.1 kHz settings matching the YouTube reference stream and original bundled DOSBox config more closely.
-- After gameplay improved, the user still reported crackle and slightly slow audio. The current default retune uses larger 2048/80 audio buffering, 50000 cycles, and a simpler SB2 path instead of the default SB16/GUS/MIDI-heavy bundled profile.
-- The bundled DOSBox-SVN/Daum config emitted hundreds of invalid/deprecated config warnings in DOSBox-Staging. The launcher now emits a clean Staging-native runtime config; bounded verification confirmed no `CONFIG: Invalid` or `CONFIG: Deprecated` lines while still reaching SVGA mode 2Eh.
-
-## Verification performed 2026-06-30
-
-Commands run:
-
-```sh
-bash -n games/gys-paa-regneslottet/install.sh games/gys-paa-regneslottet/launch.sh
-./games/gys-paa-regneslottet/install.sh --existing --no-launch
-GYS_DRY_RUN=1 ./games/gys-paa-regneslottet/launch.sh
-timeout 25s ./games/gys-paa-regneslottet/launch.sh
-python3 -c 'import yaml; yaml.safe_load(...)'
-```
-
-Observed evidence from the final smoke test:
-
-- DOSBox-Staging 0.82.2 loaded the generated clean Staging-native config derived from the bundled `dosbox.conf` profile.
-- SDL initialized with Wayland video and PulseAudio audio.
-- Mixer initialized at 44100 Hz with a 2048 sample frame buffer.
-- `C:` mounted the runtime `GAME` tree.
-- `D:` imgmounted `CDROM.iso`.
-- CDAUDIO operated at 44100 Hz without resampling.
-- The game entered SVGA 640x480 256-colour graphics mode 2Eh and stayed alive until the bounded timeout killed it.
-
-Remaining gaps:
-
-- Automated screenshot capture did not work in this Wayland session, so the agent did not independently capture a gameplay screenshot.
-- The latest audio tuning still needs the user to listen and confirm it matches the YouTube reference.
-- No AppImage script exists for this title yet. It is feasible to adapt the repo's DOSBox-Staging AppImage pattern after audio/gameplay is confirmed.
-
-## Lutris
-
-`lutris.yml` is a local installer script pointing at this repo-local `launch.sh`. The wrapper remains the canonical entry point.
+`lutris.yml` remains a local installer for the canonical recipe. The separate
+`launch_wine95.sh` is an older experimental alternative, not the working default.
+Historical troubleshooting and the original reference video are in `notes.md`.

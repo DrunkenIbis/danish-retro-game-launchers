@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+STATE="${XDG_DATA_HOME:-$HOME/.local/share}/gys-paa-regneslottet"
+mkdir -p "$STATE"
+exec 9>"$STATE/.launch.lock"
+flock -n 9 || { printf 'Gys på Regneslottet kører allerede.\n' >&2; exit 1; }
+# Never overwrite progress. Seed via an atomic directory rename, so an interrupted
+# first copy is not mistaken for a complete installation on the next launch.
+if [[ ! -d "$STATE/GAME" ]]; then
+  seed="$(mktemp -d "$STATE/.seed.XXXXXXXX")"
+  trap 'rm -rf -- "$seed"' EXIT
+  cp -a "$HERE/game/GAME/." "$seed/"
+  chmod -R u+rwX "$seed"
+  mv -- "$seed" "$STATE/GAME"
+  trap - EXIT
+fi
+# The FUSE mount changes on every run; only this symlink is replaced.
+if [[ -e "$STATE/CDROM" && ! -L "$STATE/CDROM" ]]; then
+  printf 'CDROM er ikke et symlink: %s\n' "$STATE/CDROM" >&2
+  exit 1
+fi
+ln -sfn "$HERE/game/CDROM" "$STATE/CDROM"
+cp "$HERE/game/gys.conf" "$STATE/gys.conf"
+cd "$STATE"
+export SDL_AUDIODRIVER="${GYS_SDL_AUDIODRIVER:-pulse}"
+exec "$HERE/runtime/dosbox" -noprimaryconf -nolocalconf -conf "$STATE/gys.conf" "$@"

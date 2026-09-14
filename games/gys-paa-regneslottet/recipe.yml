@@ -54,6 +54,7 @@ launch:
     voodoo: false
     ne2000: false
 
+# Historical troubleshooting notes; current defaults/status are above.
 compatibility_notes:
   - "The bundled PROGMAN.INI references an unused Danish network group; launch.sh removes the Group3/Order reference and stale NETVÆRK/NETV’RK group files at runtime."
   - "unzip can return status 1 because of a local/central filename mismatch for NETV’RK.GRP; installer/launcher accepts that only after required files are present."
@@ -63,7 +64,9 @@ compatibility_notes:
   - "The generated runtime config is now Staging-native instead of a direct patched copy of the legacy DOSBox-SVN/Daum config, eliminating the invalid/deprecated CONFIG log spam while preserving the working launch path."
 
 verification:
-  last_checked: "2026-06-30"
+  user_confirmed: "2026-09-14: recipe works very well; AppImage looks correct"
+  last_checked: "2026-09-14"
+  historical_check: "The command/evidence list below records the 2026-06-30 baseline, not current CPU defaults."
   commands:
     - "bash -n games/gys-paa-regneslottet/install.sh games/gys-paa-regneslottet/launch.sh"
     - "./games/gys-paa-regneslottet/install.sh --existing --no-launch"
@@ -77,12 +80,20 @@ verification:
     - "Windows/game entered SVGA 640x480 256-colour mode 2Eh and remained running until timeout SIGTERM."
     - "Generated config no longer emits invalid/deprecated CONFIG warnings in bounded launch verification."
   gaps:
-    - "No automated screenshot/gameplay capture succeeded in this Wayland session."
-    - "Post-tuning audio quality needs user listening confirmation."
-    - "No AppImage script exists yet for this title."
+    - "No complete playthrough or cross-distribution test."
+    - "Shutdown paging abort remains; user confirmed the running game/AppImage."
+  current_evidence:
+    - "normal/15000 measured about 55–58% CPU versus about 98% at 50000."
+    - "X11 screenshots reached difficulty selection; FUSE process uses bundled runtime/dosbox."
+    - "Three config/state regression tests pass; package extraction verifies icons/config/runtime."
+    - "Current defaults and packaging details are documented in README.md."
 
 appimage:
-  status: "not implemented"
-  assessment: "Feasible by adapting the repo's DOSBox-Staging AppImage pattern, bundling the prepared Windows 3.x GAME tree, CDROM.iso, generated config, and official DOSBox-Staging runtime. Not built in this pass because the launch/audio validation still needs a human listening recheck."
+  status: "built; FUSE launch and packaged runtime visually verified; user-confirmed"
+  builder: "extras/build_appimage.sh"
+  output: "extras/dist/gys-paa-regneslottet-x86_64.AppImage"
+  runner: "bundled official DOSBox-Staging 0.83.0 x86_64"
+  writable_state: "${XDG_DATA_HOME:-$HOME/.local/share}/gys-paa-regneslottet/GAME"
+  notes: "Private local artifact; no game/runtime binaries in Git. Host glibc/libstdc++, bash/coreutils/flock, audio/graphics drivers required. Emulator-window close can emit a paging abort during shutdown."
 
 migrated_from: "/home/test/lutris_game_scripts_Regneslottet"

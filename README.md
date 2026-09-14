@@ -74,7 +74,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Galactic Warrior Rats | ✅ | ✅ hangar/shop verified; user visually confirmed expected working state | — |
 | Gold and Glory: The Road to El Dorado | ✅ | ✅ user-confirmed working in a centered 640×480 Wine-GE desktop; original ISO CD mapping retained | ✅ AppImage smoke-tested with bundled Wine-GE |
 | Global Operations | ✅ | ⚠️ blocked by SafeDisc/SecDrv before gameplay | — |
-| Gys på Regneslottet | ✅ | ✅ user-confirmed working; CPU/audio-stutter fix | — |
+| Gys på Regneslottet | ✅ | ✅ user-confirmed working; CPU/audio-stutter fix | ✅ bundled DOSBox; launch verified and user-confirmed |
 | Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |
 | Magnus & Myggen: Leg og Lær | ✅ | ⚠️ crash fixed, then blocked by CD-check dialog | ✅ |
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |

@@ -1,5 +1,25 @@
 # Notes
 
+## AppImage 2026-09-14
+
+Built with the official checksum-pinned DOSBox-Staging 0.83.0 Linux runtime and
+checksum-pinned AppImageKit tool. Uses a fresh extraction passed through launch.sh,
+not the user's current Windows/game tree. Preserves the working normal/15000 and
+Pulse/44100/2048/80 settings. AppRun seeds writable XDG state atomically, refreshes
+the CD symlink, and holds a launch lock. No Python/Wine/Flatpak at play time.
+
+FUSE process verified at /tmp/.mount_*/runtime/dosbox; screenshot verification
+reached difficulty selection. User then reported it looked correct. Fresh-state
+launch tested; final default-user-state screenshot subsequently shows an actual
+arithmetic puzzle with two skeletons. Package icons, canonical config, resources
+and licenses audited.
+Window-close (WM_DELETE_WINDOW), not only SIGTERM, can produce the known paging
+abort during shutdown. No full playthrough or cross-distribution guarantee.
+
+Build: extras/build_appimage.sh. Private output: extras/dist/. Historical text
+below is preserved as a troubleshooting record; see README for current status.
+
+
 ## User confirmation 2026-09-14
 
 User reports that the updated launcher works very well. Promote the canonical DOSBox path to user-confirmed working, including the reported audio improvement. Forced-stop paging warnings remain a separate diagnostic caveat.

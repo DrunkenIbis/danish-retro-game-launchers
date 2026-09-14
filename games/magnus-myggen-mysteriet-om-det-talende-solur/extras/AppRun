@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+STATE="${XDG_DATA_HOME:-$HOME/.local/share}/magnus-myggen-mysteriet-om-det-talende-solur"
+mkdir -p "$STATE"
+exec 9>"$STATE/.launch.lock"
+flock -n 9 || { printf 'Solur kører allerede.\n' >&2; exit 1; }
+export WINEPREFIX="$STATE/prefix" WINEARCH=win32
+if [[ ! -d "$WINEPREFIX" ]]; then
+    seed="$(mktemp -d "$STATE/.seed.XXXXXXXX")"
+    trap 'rm -rf -- "$seed"' EXIT
+    cp -a "$HERE/game/prefix/." "$seed/"
+    chmod -R u+rwX "$seed"
+    mv "$seed" "$WINEPREFIX"
+    trap - EXIT
+fi
+[[ -f "$WINEPREFIX/system.reg" ]] || { printf 'Ufuldstændig prefix: %s\n' "$WINEPREFIX" >&2; exit 1; }
+ln -sfn "$HERE/game/cdrom" "$WINEPREFIX/dosdevices/d:"
+WINE="$HERE/usr/lib/wine-wow64/wine/i386-unix/wine"
+SERVER="$HERE/usr/bin/wineserver"
+[[ -x "$WINE" && -x "$SERVER" ]] || { printf 'Bundled Wine mangler.\n' >&2; exit 1; }
+export WINESERVER="$SERVER"
+export WINEDLLPATH="$HERE/usr/lib/wine-wow64:$HERE/usr/lib64/wine-wow64:$HERE/usr/lib/wine:$HERE/usr/lib64/wine"
+export LD_LIBRARY_PATH="$HERE/usr/lib:$HERE/usr/lib64:/lib:/lib64:/usr/lib:/usr/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export XDG_DATA_DIRS="$HERE/usr/share${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
+export WINEDEBUG="${WINEDEBUG:--all}" WINEDLLOVERRIDES="${WINEDLLOVERRIDES:-mscoree,mshtml=}"
+cd "$WINEPREFIX/drive_c/Program Files/IVANOFF Interactive/Mysteriet om det talende solur"
+cleanup_signal() {
+    trap '' INT TERM
+    # WINEPREFIX scopes both operations to this game's bundled server.
+    "$SERVER" -k || true
+    "$SERVER" -w || true
+    wait || true
+    exit "$1"
+}
+trap 'cleanup_signal 130' INT
+trap 'cleanup_signal 143' TERM
+status=0
+# Bash defers traps for foreground commands; wait on children instead.
+"$WINE" explorer /desktop=Solur,800x600 'C:\Program Files\IVANOFF Interactive\Mysteriet om det talende solur\mm6.exe' "$@" &
+wait "$!" || status=$?
+"$SERVER" -w &
+wait "$!" || true
+exit "$status"

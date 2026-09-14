@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+STATE="${XDG_DATA_HOME:-$HOME/.local/share}/harald-haardtand"
+mkdir -p "$STATE"
+exec 9>"$STATE/.launch.lock"
+flock -n 9 || { printf 'Harald kører allerede.\n' >&2; exit 1; }
+if [[ ! -d "$STATE/game" ]]; then
+    seed="$(mktemp -d "$STATE/.seed.XXXXXXXX")"
+    trap 'rm -rf -- "$seed"' EXIT
+    cp -a "$HERE/game/." "$seed/"
+    chmod -R u+rwX "$seed"
+    mv -- "$seed" "$STATE/game"
+    trap - EXIT
+fi
+for f in HARALD.EXE HARALD.001 HARALD.002 HARALD.DIR HIGH.DAT; do
+    [[ -s "$STATE/game/$f" ]] || { printf 'Spilfil mangler: %s\n' "$STATE/game/$f" >&2; exit 1; }
+done
+cp "$HERE/harald.conf" "$STATE/harald.conf"
+cd "$STATE"
+export SDL_AUDIODRIVER="${SDL_AUDIODRIVER:-pulse}"
+exec "$HERE/runtime/dosbox" -noprimaryconf -nolocalconf -conf "$STATE/harald.conf" "$@"

@@ -28,7 +28,20 @@ bash -n games/harald-haardtand/{install,launch}.sh
 
 Two regression tests cover extraction allowlist, checksum rejection, preserving highscores, paths containing spaces, generated config and cycle validation. Local archive installation and shell syntax checks passed.
 
-AppImage: not yet packaged.
+## AppImage
+
+The private Linux x86_64 AppImage bundles DOSBox-Staging 0.83.0 and the five DOS files. No Wine, Flatpak, system DOSBox or Python is required to play. Host Bash, coreutils, flock, compatible glibc/libstdc++, graphics/audio drivers and FUSE are still required. Without FUSE, use `--appimage-extract-and-run`.
+
+```sh
+./games/harald-haardtand/extras/build_appimage.sh
+./games/harald-haardtand/extras/dist/harald-haardtand-x86_64.AppImage
+```
+
+`--no-download` builds offline with validated caches. The builder reuses pinned download utilities from `games/gys-paa-regneslottet/extras/build_appimage.py`; keep that sibling recipe when building. It installs from the original archive into a fresh temporary runtime, never from live saves. An original generic tooth icon is supplied (not an extracted game icon).
+
+Writable state: `${XDG_DATA_HOME:-$HOME/.local/share}/harald-haardtand/game/`. AppImage highscores are separate from the recipe runtime. State is seeded atomically once; subsequent starts preserve it, and a lock prevents simultaneous launches in the same state directory.
+
+Verification: final AppImage extracted and icon/desktop paths audited; bundled runtime reached actual first-level gameplay with movement and shooting. Three regression tests pass, including writable state and highscore preservation. User confirmation above applies to the original launcher; the AppImage has agent-verified gameplay, not a full playthrough. Build provenance and SHA256 accompany the local artifact. No media or AppImage is committed.
 
 ## References
 

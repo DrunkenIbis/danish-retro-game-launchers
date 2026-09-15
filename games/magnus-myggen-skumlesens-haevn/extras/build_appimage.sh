@@ -6,7 +6,7 @@ GAME_DIR=$(cd "$SCRIPT_DIR/.." && pwd -P)
 REPO=$(cd "$GAME_DIR/../.." && pwd -P)
 PROJECT_NAME=magnus-myggen-skumlesens-haevn
 DISPLAY_NAME='Magnus & Myggen: Skumlesens hævn'
-RUNTIME="$REPO/local/runtime/mm3-local-copy"
+RUNTIME="$(realpath -e -- "${MM3_APPIMAGE_RUNTIME:-$REPO/local/runtime/mm3-local-copy}")"
 PREFIX="$RUNTIME/prefix-ge"
 GE="$REPO/local/cache/mm3-physical-cd/runner/lutris-GE-Proton7-43-x86_64"
 INSTALLED='drive_c/Program Files/IVANOFF Interactive/Skumlesens hævn'
@@ -35,7 +35,7 @@ WORK=$(mktemp -d "$SCRIPT_DIR/build/mm3.XXXXXXXX")
 # Keep disk-backed AppDir for inspection; each invocation uses its own tree.
 APPDIR="$WORK/$PROJECT_NAME.AppDir"
 CACHE_DIR="$WORK/cache"
-DIST_DIR="$SCRIPT_DIR/dist"
+DIST_DIR="$(realpath -m -- "${MM3_APPIMAGE_DIST:-$SCRIPT_DIR/dist}")"
 OUTPUT_APPIMAGE="$DIST_DIR/$PROJECT_NAME-x86_64.AppImage"
 wine_appimage_reset_dirs
 cp -a "$PREFIX" "$APPDIR/game/prefix"

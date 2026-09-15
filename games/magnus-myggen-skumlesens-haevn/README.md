@@ -252,6 +252,16 @@ Import `lutris.yml` as a local Lutris install script/config. The wrapper remains
 
 ## AppImage status
 
+### Verified download-based rebuild
+
+The Archive.org BIN/CUE files match the published metadata; their converted ISO is byte-identical to the physical-CD ISO. A fresh original installation from these downloaded files (no copied CD prefix) was packaged separately and reached the first room with external ISO sources and runtime directories hidden. The user confirmed expected gameplay. This shows the original installer, rather than the physical medium, was the important missing step in the old manual-extraction workflow.
+
+New package: `local/appimage-dist/mm3-download/magnus-myggen-skumlesens-haevn-x86_64.AppImage` relative to the repository root. The external ISO is not required at runtime. The older physical-CD-derived package below is preserved.
+
+See [the complete download/install/build/test procedure](extras/DOWNLOAD_WORKFLOW.md). The builder accepts `MM3_APPIMAGE_RUNTIME` and `MM3_APPIMAGE_DIST` for isolated source/output paths. All 14 current regression tests pass; the extra builder test checks override configuration, not gameplay.
+
+### Earlier local-copy build
+
 Built from the working local copy with the complete Wine-GE Proton 7-43 runner, original installed prefix and read-only CD data. The user confirmed functioning gameplay; the fresh-state AppImage test exited normally (0). The game process was verified using Wine from the AppImage mount, not host Wine. All 13 scoped regression tests passed.
 
 Build: `./extras/build_appimage.sh`

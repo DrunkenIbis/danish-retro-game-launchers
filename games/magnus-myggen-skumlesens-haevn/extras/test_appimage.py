@@ -82,6 +82,11 @@ sys.exit(int(os.environ.get('WINE_STATUS', '0')))
 
 
 class BuilderTests(unittest.TestCase):
+    def test_isolated_source_and_output_overrides(self):
+        text = (HERE / 'build_appimage.sh').read_text()
+        self.assertIn('${MM3_APPIMAGE_RUNTIME:-', text)
+        self.assertIn('${MM3_APPIMAGE_DIST:-', text)
+
     def test_private_full_ge_builder_contract(self):
         builder = HERE / 'build_appimage.sh'
         self.assertTrue(builder.is_file(), 'MM3 builder missing')

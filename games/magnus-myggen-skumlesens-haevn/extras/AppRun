@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Private bundle of the original installed game; no installer/license changes.
+set -Eeuo pipefail
+HERE=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+STATE=${XDG_DATA_HOME:-$HOME/.local/share}/magnus-myggen-skumlesens-haevn
+fail() { printf 'MM3 AppImage: %s\n' "$*" >&2; exit 1; }
+mkdir -p -- "$STATE"
+exec 9>"$STATE/launch.lock"
+flock -n 9 || fail 'Game is already running.'
+export WINEPREFIX="$STATE/prefix" WINEARCH=win32
+GE=$HERE/usr/wine-ge
+export WINESERVER="$GE/bin/wineserver"
+unset WINEDLLPATH
+export LD_LIBRARY_PATH="$GE/lib:$GE/lib64"
+export PATH="$GE/bin:$PATH"
+export WINEDEBUG=${WINEDEBUG:--all}
+export WINEDLLOVERRIDES=${WINEDLLOVERRIDES:-mscoree,mshtml=}
+TEMP_PREFIX=
+trap '[[ -z $TEMP_PREFIX ]] || rm -rf -- "$TEMP_PREFIX"' EXIT
+if [[ ! -e $WINEPREFIX && ! -L $WINEPREFIX ]]; then
+    TEMP_PREFIX=$(mktemp -d "$STATE/.prefix.XXXXXXXX")
+    cp -a "$HERE/game/prefix/." "$TEMP_PREFIX/"
+    chmod -R u+rwX "$TEMP_PREFIX"
+    [[ -s $TEMP_PREFIX/system.reg ]] || fail 'Invalid bundled prefix.'
+    mv -T -- "$TEMP_PREFIX" "$WINEPREFIX"
+    TEMP_PREFIX=
+fi
+[[ ! -L $WINEPREFIX && -s $WINEPREFIX/system.reg && -d $WINEPREFIX/dosdevices && ! -L $WINEPREFIX/dosdevices ]] || fail 'Existing prefix is incomplete or unsafe; refusing to overwrite it.'
+for name in d: d:: e: e::; do
+    path=$WINEPREFIX/dosdevices/$name
+    [[ ! -e $path || -L $path ]] || fail "Refusing to replace non-symlink $path"
+done
+for name in d: d:: e: e::; do
+    rm -f -- "$WINEPREFIX/dosdevices/$name"
+done
+ln -s -- "$HERE/game/cdrom" "$WINEPREFIX/dosdevices/e:"
+GAME="$WINEPREFIX/drive_c/Program Files/IVANOFF Interactive/Skumlesens hævn"
+[[ -f $GAME/mm3run.exe && -x $GE/bin/wine && -x $WINESERVER ]] || fail 'Missing installed game or bundled GE runtime.'
+cd -- "$GAME"
+CHILD=
+stop() {
+    trap '' INT TERM HUP
+    "$WINESERVER" -k 9>&- || true
+    if [[ -n $CHILD ]]; then
+        kill -TERM "$CHILD" 2>/dev/null || true
+        wait "$CHILD" 2>/dev/null || true
+    fi
+    "$WINESERVER" -w 9>&- || true
+    exit "$1"
+}
+trap 'stop 130' INT
+trap 'stop 143' TERM
+trap 'stop 129' HUP
+status=0
+"$GE/bin/wine" "$GAME/mm3run.exe" "$@" 9>&- &
+CHILD=$!
+wait "$CHILD" || status=$?
+"$WINESERVER" -w 9>&- &
+CHILD=$!
+wait "$CHILD" || { server_status=$?; [[ $status != 0 ]] || status=$server_status; }
+exit "$status"

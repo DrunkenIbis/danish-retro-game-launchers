@@ -15,7 +15,7 @@ This directory contains only the compatibility recipe. It does not contain the B
 6. **CD-data ligger lokalt på E:.** En ISO blev læst fra egen CD og checksumkontrolleret. Dens filer blev udpakket lokalt. Den nye launcher peger E: på denne mappe og fjerner gamle D:/D::/E::-links til det fysiske drev i testkopien. Den behøver hverken fysisk CD, loop-mount eller ændringer af kopibeskyttelsen.
 7. **Det rigtige Wine-serverprogram bruges.** Launcheren bruger Wine-GE’s tilhørende `wineserver`, afventer afslutning også ved fejl og har en lås mod samtidige lokale starter.
 
-“Standalone” betyder her **spilbar uden fysisk CD**. Wine-GE-runneren, den klargjorte prefix og lokale CD-data skal stadig findes på maskinen. Det er endnu ikke en AppImage eller en verificeret portabel pakke til andre computere.
+“Standalone” betyder her **spilbar uden fysisk CD**. Wine-GE-runneren, den klargjorte prefix og lokale CD-data skal stadig findes på maskinen. En separat AppImage er nu bygget og brugerbekræftet på denne maskine; portabilitet til andre computere er ikke verificeret.
 
 ### Verificering
 
@@ -252,7 +252,15 @@ Import `lutris.yml` as a local Lutris install script/config. The wrapper remains
 
 ## AppImage status
 
-Not built or verified yet. The original physical-CD installation is now user-confirmed working. Packaging must preserve the original installer-created prefix and use the verified Wine runner; local extracted CD data now works with the CD ejected, but AppImage packaging itself remains untested. Do not package the older manual-extraction/modified runtime as the working version.
+Built from the working local copy with the complete Wine-GE Proton 7-43 runner, original installed prefix and read-only CD data. The user confirmed functioning gameplay; the fresh-state AppImage test exited normally (0). The game process was verified using Wine from the AppImage mount, not host Wine. All 13 scoped regression tests passed.
+
+Build: `./extras/build_appimage.sh`
+
+Artifact: `extras/dist/magnus-myggen-skumlesens-haevn-x86_64.AppImage` (private local output, not in Git).
+
+Persistent state: `${XDG_DATA_HOME:-$HOME/.local/share}/magnus-myggen-skumlesens-haevn/prefix`. The first launch copies the original installation atomically; later launches preserve saves. The packaged CD tree is mapped to E: inside the AppImage. No external ISO or physical CD is required at run time.
+
+The additional extraction/dependency audit was not performed because its approval was denied. Normal-state testing and cross-distribution portability remain separate from the user-confirmed isolated-state test. No executable or licence-state patches are used.
 
 ## Reference link
 

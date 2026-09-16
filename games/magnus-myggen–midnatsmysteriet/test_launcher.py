@@ -1,5 +1,6 @@
 """Contract tests; fake Wine does not establish gameplay compatibility."""
 import os
+import fcntl
 from pathlib import Path
 import subprocess
 import tempfile
@@ -8,7 +9,7 @@ import unittest
 SCRIPT = Path(__file__).with_name('launch.sh')
 
 class LauncherTests(unittest.TestCase):
-    def run_case(self, missing=None, fail=False):
+    def run_case(self, missing=None, fail=False, locked=False):
         with tempfile.TemporaryDirectory(prefix='midnight test ') as td:
             root = Path(td)
             runtime = root / 'runtime'
@@ -29,7 +30,10 @@ class LauncherTests(unittest.TestCase):
                 (runtime / 'cdrom').rmdir()
             env = {k:v for k,v in os.environ.items() if k not in ['WINEPREFIX','WINEARCH','WINEDLLOVERRIDES','WINEDEBUG','LD_LIBRARY_PATH']}
             env.update(MIDNIGHT_RUNTIME=str(runtime), MIDNIGHT_RUNNER=str(runner), CALLS=str(log))
-            p = subprocess.run(['bash', str(SCRIPT)], env=env, capture_output=True, text=True)
+            with (runtime / 'local-copy.lock').open('w') as lock:
+                if locked:
+                    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                p = subprocess.run(['bash', str(SCRIPT)], env=env, capture_output=True, text=True)
             return p.returncode, log.read_text() if log.exists() else ''
 
     def test_window_and_server(self):
@@ -43,6 +47,11 @@ class LauncherTests(unittest.TestCase):
         code, calls = self.run_case(fail=True)
         self.assertEqual(code, 7)
         self.assertTrue(calls.endswith('wineserver\n-w\n'))
+
+    def test_build_lock_blocks_launch(self):
+        code, calls = self.run_case(locked=True)
+        self.assertNotEqual(code, 0)
+        self.assertEqual(calls, '')
 
     def test_missing_exe(self):
         code, calls = self.run_case(missing='exe')

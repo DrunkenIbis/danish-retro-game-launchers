@@ -11,6 +11,9 @@ export LD_LIBRARY_PATH="$RUNNER/lib:$RUNNER/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY
 GAME="$WINEPREFIX/drive_c/Program Files/Magnus & Myggen - Midnatsmysteriet"
 [[ -f "$GAME/mm13main.exe" && -x "$RUNNER/bin/wine" ]] || { printf 'Original installation or Wine runner missing.\n' >&2; exit 1; }
 [[ -d "$RUNTIME/cdrom" ]] || { printf 'CD data missing.\n' >&2; exit 1; }
+# Coordinate source use with the AppImage builder during its snapshot.
+exec 9>"$RUNTIME/local-copy.lock"
+flock -n 9 || { printf 'Game or AppImage build is already using this installation.\n' >&2; exit 1; }
 cd -- "$GAME"
 status=0
 "$RUNNER/bin/wine" explorer /desktop=Midnatsmysteriet,800x600 'C:\Program Files\Magnus & Myggen - Midnatsmysteriet\mm13main.exe' || status=$?

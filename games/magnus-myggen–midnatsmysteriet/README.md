@@ -1,6 +1,6 @@
 # Magnus & Myggen – Midnatsmysteriet
 
-Status: Original installation from verified download completed; windowed intro/title visually verified. User reports that the game appears to run; interactive gameplay has not been independently verified. No AppImage built. Physical-CD workflow was skipped at the user's request because the CD appeared scratched; there is no CD/download comparison.
+Status: Download-derived AppImage built and user-confirmed playable: “det virker perfekt at spille via appimage”. Windowed 800×600 startup and bundled Wine verified. First isolated-state run exited 0. Physical-CD work was skipped at the user's request; no CD/download comparison or cross-machine portability verification.
 
 ## Verified source
 
@@ -41,8 +41,26 @@ Run `./launch.sh` to use the prepared download installation in an 800×600 Wine 
 
 The exact launcher passed `bash -n`. Its running window was visually checked: normal title bar, animated intro and title screen; the client screenshot is exactly 800×600 pixels. This verifies windowed startup, not interactive gameplay. Evidence: `window-800x600.png` and `window-frame.png` in the private runtime.
 
-## Outstanding
+## AppImage — verified private build
 
-The windowed launcher returned exit code 0. User reports: “spillet ser ud til at kører”. This is user-reported operation, not an independent playthrough or proof of in-game exit. Four isolated fake-runner tests pass (`python3 test_launcher.py`): 800×600 invocation and paired server wait; propagation of launch failure; missing installed EXE; missing CD data. Shell syntax also passes.
+Build with `./extras/build_appimage.sh` after closing the source game. Uses the repository's shared `scripts/wine-appimage-builder.sh` and the original installed download prefix. The source installation and CD data are preserved. Builder and source launcher share `local-copy.lock` to prevent concurrent launch during the snapshot.
 
-This checkpoint preserves the prepared-installation launcher and evidence, not a complete installer/AppImage pipeline. Independently verify interactive gameplay and in-game exit, add reproducible acquisition/setup scripts, then build and test the download-derived AppImage with bundled Wine and isolated XDG state. No portability claim is made. All media, prefixes, screenshots and helper binaries remain under ignored local directories.
+Artifact: `extras/dist/magnus-myggen-midnatsmysteriet-x86_64.AppImage`
+SHA-256: `4b58c8b3a55287599071debf196ebd5c4e4fede1d031ecbe55d9c58ee0cc2fd8`
+
+Bundled resources: complete Wine-GE Proton 7-43 runner (including libraries/share data), original installed prefix, CD data and original icon. No game executable or licence-state patches. The reviewed lock fix affects source/build coordination, not the already tested AppImage contents.
+
+Writable state: `${XDG_DATA_HOME:-$HOME/.local/share}/magnus-myggen-midnatsmysteriet/prefix`. AppRun atomically seeds the prefix on first run, preserves subsequent state and recreates D: for each current AppImage mount. It runs in an 800×600 Wine desktop with explicit bundled Wine and wineserver; no host Wine selection fallback.
+
+Verification:
+- Actual final AppImage launched with fresh isolated XDG data while external source and original runtime paths were reversibly renamed. Both were restored and verified after exit.
+- No physical CD device or external image mount was present. Wine D: referenced the bundled CD; no alternative CD drive mappings were found.
+- `/proc` executable paths pointed into `/tmp/.mount_.../usr/wine-ge/`, proving bundled Wine use.
+- Intro/window visually inspected; user subsequently confirmed perfect gameplay via AppImage. These are distinct evidence sources.
+- First AppImage test returned exit code 0. This alone does not prove in-game exit method.
+- Finished artifact was independently extracted; AppRun syntax, original icon, desktop file and Wine executables checked.
+- Five fake-runner launcher tests pass, including mutual exclusion with the builder; these are contract tests, not gameplay tests.
+
+Remaining verification: repeat launch with existing user data, default-XDG launch, saved-game persistence and portability to other Linux systems. The bundle may still rely on host graphics/audio and system ABI libraries; bundled Wine on this host is not a universal portability guarantee. Automated source acquisition/original setup scripts are also not yet part of this recipe.
+
+Private media, prefixes, screenshots and AppImages are excluded from Git. No push performed.

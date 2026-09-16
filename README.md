@@ -78,6 +78,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Harald Hårdtand: Kampen om de rene tænder | ✅ | ✅ first-level movement/shooting verified; user-confirmed working | ✅ bundled DOSBox; gameplay verified; fresh/default-state tests exited normally (0) |
 | Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |
 | Magnus & Myggen: Leg og Lær | ✅ | ⚠️ crash fixed, then blocked by CD-check dialog | ✅ |
+| Magnus & Myggen: Midnatsmysteriet | — original download setup completed manually | ✅ 800×600 intro/title verified; user reports running; four launcher tests pass | — not built |
 | Magnus & Myggen: Mysteriet om det talende solur | ✅ original setup completed | ✅ user-confirmed working; clean launcher exit | ✅ bundled Wine/menu verified; full AppImage gameplay not yet confirmed |
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |
 | Magnus & Myggen: Skumlesens Hævn | ✅ Original installation fra CD og verificeret download | ✅ Brugerbekræftet uden fysisk CD | ✅ Bundled Wine-GE; download-baseret pakke brugerbekræftet med ekstern ISO/installation skjult; normal afslutning |

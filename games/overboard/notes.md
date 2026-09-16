@@ -1,5 +1,20 @@
 # Overboard! / Shipwreckers! notes
 
+## Original physical-CD recovery (supersedes image-only status)
+
+- Physical source verified by `findmnt`: `/run/media/test/OVERBOARD`, `/dev/sr0`, ISO9660 read-only, lowercase filenames. Do not use the old extraction helper against this mount: it writes labels and may remove/re-extract its CD directory.
+- System Wine 11 win32 bootstrap timed out; the failed prefix was retained separately. Wine-GE 7-43 bootstrap completed in `local/runtime/overboard-physical/wineprefix-ge`.
+- Original Win16 `setup.exe` completed interactively. It installed `C:\Program Files\Psygnosis\Overboard!\Ob.exe` and supplied the genuine installed paths/registration. No game executable patches or CD-check bypass were applied.
+- Prefix Windows version read back as `win98`; `vol d:` returned `OVERBOARD`; `d:` points to the mounted CD and `d::` to `/dev/sr0`.
+- Launch: selected GE runner, `wine explorer /desktop=Overboard,800x600 'C:\Program Files\Psygnosis\Overboard!\Ob.exe'`, with working directory `local/runtime/overboard-physical`.
+- Initial window was black. User pressed Esc, reached the main menu, started a new game, and reported everything working perfectly. A subsequent screenshot shows the actual harbor/ship scene with pause menu. This is gameplay evidence, unlike the earlier image tests.
+- Intro remains unresolved. `ffprobe` identifies `intro.mpx` as MPEG-1 video, 320x192, but reports `slice below image`; this alone does not establish corruption or justify transcoding the game's MPX container. Preserve original assets and use Esc for now.
+- New `launch_cd.sh` preserves this command and maps only the prefix drive links. Automated checks passed, but this wrapper has not yet been relaunched end-to-end because the user's confirmed game session was left running.
+- Screenshots/logs remain private in `local/runtime/overboard-physical/logs/`; `game-after-escape.png` captures the in-game scene. No CD-free AppImage claim: true physical mixed-mode media is the verified path.
+
+## Historical image investigation
+
+
 ## Media inspection
 
 The Archive.org `OVERBOARD.zip` contains only:

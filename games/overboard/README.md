@@ -1,6 +1,28 @@
 # Overboard! / Shipwreckers! (PC ENG)
 
-Status: installer and launcher verified; game still blocked by original-CD validator under Wine  
+Status: original physical CD + original installation is gameplay-confirmed by the user; intro remains black until Esc. The older image-based recipe below is still blocked at CD validation.
+
+## Recommended: original physical CD
+
+With the original CD mounted at `/run/media/$USER/OVERBOARD` from `/dev/sr0`:
+
+```sh
+./launch_cd.sh --check
+./launch_cd.sh
+```
+
+Press **Esc** if the intro stays black. The user confirmed that the main menu and a new game work correctly after skipping the intro; a screenshot also confirms an in-game scene. Intro playback itself has NOT been fixed.
+
+This separate launcher preserves the successful original installation under `local/runtime/overboard-physical/wineprefix-ge` and uses `local/runners/lutris-GE-Proton7-43-x86_64/bin/wine` (win32 prefix, Windows 98 mode). It maps `d:` to the read-only CD mount and `d::` to the real optical device. It does not copy files to the CD, replace game files, reset configuration, or synthesize installer registration.
+
+The original CD installer was run with this runner in a fresh prefix; the installed executable is `C:\Program Files\Psygnosis\Overboard!\Ob.exe`. `launch_cd.sh` requires that installation and deliberately refuses to fall back to the old manually extracted runtime. For a new machine, complete the original `D:\setup.exe` installation in that dedicated win32 prefix first. The runner and installed files are private dependencies, not included in Git.
+
+Overrides: `OVERBOARD_PHYSICAL_RUNTIME`, `OVERBOARD_PHYSICAL_PREFIX`, `OVERBOARD_PHYSICAL_WINE`, `OVERBOARD_CD_MOUNT`, `OVERBOARD_CD_DEVICE`. `--dry-run` prints paths without side effects; `--check` validates prerequisites without starting Wine. The launcher has passed syntax, dry-run, wrong-device rejection, and live prerequisite checks; a fresh end-to-end launch through this newly saved script remains to be tested separately from the confirmed manual command.
+
+No CD-free AppImage is verified: the successful path depends on the physical mixed-mode CD, whereas the existing image paths fail CD validation.
+
+## Historical image recipe
+
 Runner: Wine (`wine32` preferred)  
 Source: ZIP containing mixed-mode BIN/CUE CD image
 

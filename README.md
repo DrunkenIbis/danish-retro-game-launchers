@@ -83,7 +83,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Magnus & Myggen: Quizkampen Superstarter | ✅ | ⚠️ SuperStarter/licens-stop | — |
 | Magnus & Myggen: Skumlesens Hævn | ✅ Original installation fra CD og verificeret download | ✅ Brugerbekræftet uden fysisk CD | ✅ Bundled Wine-GE; download-baseret pakke brugerbekræftet med ekstern ISO/installation skjult; normal afslutning |
 | Magnus & Myggen: Skumlesens Skygge | — | ✅ | — |
-| Overboard! / Shipwreckers! | ✅ | ⚠️ Installer/launcher verified, but Wine still hits original-CD validator (`OVERBOARD! CD NOT PRESENT`) | — |
+| Overboard! / Shipwreckers! | ✅ original CD installation | ✅ user-approved gameplay and windowed 16-bit intro/scaling fix; see [display notes](games/overboard/DISPLAY-FIX.md) | ✅ rebuilt with bundled Wine-GE/Xephyr; scaled intro visually verified; normal exit (0); host Gamescope and CDEmu/VHBA required |
 | Peddersen og Findus i værkstedet | ✅ | ✅ gameplay verified | ✅ AppImage smoke-tested |
 | Den Lyserøde Panter: På hemmelig mission i udlandet / Passport to Peril | ✅ | ✅ | — |
 | Pyrus | — | ✅ | — |

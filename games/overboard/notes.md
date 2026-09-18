@@ -1,5 +1,46 @@
 # Overboard! / Shipwreckers! notes
 
+## Aktuel status: window mode med intro godkendt
+
+Brugeren godkendte den sidste 1024×768-vinduestest: introen virkede perfekt og spillet oplevedes mere flydende. Den afgørende kombination er 16-bit Xephyr, Wine Explorer-skrivebord, Gamescope med bevaret billedformat, størrelseshjælper READY før spilstart og normal drift uden tung debuglog. Fuldskærmsforsøget blev forkastet; brugeren ønsker et almindeligt vindue.
+
+Den fulde forklaring, fejlslagne forsøg, begrænsninger og erfaringer til andre projekter er samlet i [DISPLAY-FIX.md](DISPLAY-FIX.md). AppImage-kilderne er opgraderet; den tidligere pakke er bevaret som `Overboard-classic-backup-x86_64.AppImage`. Godkendelsen af den selvstændige test og valideringen af den genbyggede pakke holdes adskilt.
+
+Alt nedenfor er kronologiske undersøgelsesnoter. Ældre udsagn om manglende skalering, kun Esc-løsning eller afventende testgodkendelse er historiske og erstattes af status ovenfor.
+
+## Fixed outer resolution: positive scaled-video test
+
+A later isolated test combines Gamescope (SDL/X11 backend, `-W 640 -H 480 -w 640 -h 480 -S fit -F linear`) with Xephyr (`:4 -screen 640x480x16 -resizeable -nolisten tcp -noreset`) and Wine-GE Explorer desktop `OverboardFixed,640x480`. Direct game launch without Explorer was black in this stack; the Explorer desktop path displays video.
+
+The important missing step was following the Wine desktop's actual dimensions: during movies that window becomes 320x240 while Xephyr initially stayed 640x480. Changing Xephyr's RandR mode to 320x240 lets Gamescope scale the full movie area into an unchanged 640x480 outer window. A private `follow_size.py` watches only `OverboardFixed - Wine desktop` on display :4 and switches Xephyr between its supported modes as Wine changes size.
+
+Verified screenshots: `local/runtime/overboard-fixed-screen/scaled-intro.png` shows the animated movie across the full width with correct letterboxing; `fixed-current.png` shows the subsequent rendered harbor/demo scene. Geometry checks confirm outer 640x480 throughout; inner switches from 320x240 to 640x480, remaining 16-bit. This supersedes the earlier finding that video could only be shown small. Interactive controls, sound and sustained gameplay in this stack still await user confirmation. The existing AppImage has NOT been changed. Private test files are in `local/runtime/overboard-fixed-screen/`.
+
+## Dansk resumé: introvideo og færdig AppImage
+
+Brugeren har efter testen bekræftet, at AppImage'en virker som den skal. Introeksperimenterne er ikke med i denne pakke; den stabile version bruger fortsat Esc til at springe den sorte intro over. Denne status erstatter de ældre forbehold nedenfor om manglende AppImage-bekræftelse.
+
+Introen havde tydelig lyd, men sort billede. De fem installerede MPX-filer matchede cd-kopien byte for byte. Spillet ser ud til selv at afkode Psygnosis' MPEG-1/MPX-variant og vise billederne gennem DirectDraw; vi fandt ikke belæg for blot at installere et manglende Wine-codec.
+
+Gennembruddet var et separat Xephyr-vindue med 16-bit farvedybde. Med Wine-GE 7-43 og de uændrede videofiler kunne vi se både Psygnosis-logoet og den animerede intro. Den normale sorte visning brugte en 32-bit RGB-billedflade; den fungerende test brugte 16-bit RGB565. Det peger stærkt på et farvedybdeafhængigt problem i afkodnings-/visningsvejen, men den præcise fejl i koden er ikke bevist.
+
+Billedet kom frem i originalopløsningen 320×192, placeret i et 320×240-område øverst til venstre i et 640×480-vindue. Derfor fyldte det ikke vinduet. Korrekt opskalering og efterfølgende 3D-gameplay i denne testopsætning blev ikke verificeret.
+
+Forsøg med dxwrapper for at kombinere 16-bit med opskalering mislykkedes: Dd7to9 gav en fejl om utilstrækkelig 3D-acceleration, og native DirectDraw-wrapper med tvungen 16-bit udløste en Wine-assertion. GDI gav stadig sort billede; Wine 11-testen nåede ikke en brugbar videotest. Alle forsøg foregik i separate testmiljøer. Ingen video blev konverteret, og den fungerende spilinstallation blev ikke ændret.
+
+Konklusion: originalvideoerne kan afspilles med billede under Wine i den isolerede 16-bit-test, men en stabil, korrekt skaleret løsning sammen med gameplay mangler. Derfor blev den sikre Esc-løsning beholdt i AppImage'en.
+
+## Virtual-CD and intro investigation
+
+- CDEmu/VHBA on kernel 7.2.5 loads the user's original `local/sources/overboard-original-cd/OVERBOARD.toc`/`.bin`. A dedicated device 1 was allocated because device 0 belonged to Global Operations; never assume `/dev/sr0` is physical after reboot. `cdemu device-mapping` mapped Overboard to `/dev/sr1`, mounted at `/run/media/test/OVERBOARD`; ioctl returned tracks 1–31. Wine `d::` in the separate `overboard-image-test/wineprefix-ge` points to this virtual device. User confirmed clear audio; explicit physical-disc-removal/gameplay confirmation remains separate.
+- Original backup: BIN 754519248 bytes, SHA256 `4675345cbc68d574e41ef28f6d8275a502b82a3f6cd33cf510f765c4045ac40f`. TOC references all bytes correctly; the 150-sector difference from the physical leadout is represented as `SILENCE 00:02:00`. cdrdao completed successfully but reported 394 Q-subchannel CRC errors; do not describe it as a perfect subchannel dump.
+- Installed MPX SHA256 hashes match the virtual CD for all five movies. The EXE imports DirectDraw and contains decoder diagnostic strings; the movie headers identify Psygnosis MPEG-1 animation. Generic ffmpeg gives slice errors and corrupt-looking frames, so transcoding these files as ordinary MPEG is not a justified fix.
+- Reproduced black video with clear audio. Wine DirectDraw trace shows the intro locking/unlocking a 320x240 **32-bit RGB** primary surface. GDI rendering also remained black. A separate Wine 11 prefix upgrade stalled and did not provide a meaningful video comparison.
+- **Positive control:** local Xephyr `:2 -screen 640x480x16 -nolisten tcp -noreset`, then the GE runner with `DISPLAY=:2`, an isolated prefix, and `explorer /desktop=Overboard16,640x480` visibly plays both the Psygnosis logo and actual animated intro. Xlib confirms root depth 16; DirectDraw confirms 16-bit RGB565, pitch 640. Original MPX assets were unchanged. Screenshots: `local/runtime/overboard-intro-test/depth16.png` and `depth16-film.png`; user also confirms picture. This strongly isolates the black-video failure to the 32-bit display path rather than absent Wine MPX codecs.
+- The Xephyr result is diagnostic, not a finished launcher: the native 320x192 movie sits inside a 320x240 area at the upper left of a 640x480 window. Scaling and subsequent 3D gameplay in this environment are NOT verified.
+- Tried upstream dxwrapper v1.8.8600.25 in the isolated intro prefix only. Dd7to9 mode showed `Machine does not contain sufficient 3D Acceleration hardware`; native `EnableDdrawWrapper=1` plus `DdrawOverrideBitMode=16` hit Wine's `d3d_viewport_vtbl` assertion in `ddraw/viewport.c`. Neither is promoted. The normal physical and virtual gameplay prefixes remain untouched. Test windows/Xephyr were stopped.
+- Keep the normal working gameplay path with Esc until a scaled 16-bit presentation path also passes gameplay verification. No movie replacement or executable patch has been applied.
+
 ## Original physical-CD recovery (supersedes image-only status)
 
 - Physical source verified by `findmnt`: `/run/media/test/OVERBOARD`, `/dev/sr0`, ISO9660 read-only, lowercase filenames. Do not use the old extraction helper against this mount: it writes labels and may remove/re-extract its CD directory.

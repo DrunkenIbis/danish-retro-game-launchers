@@ -1,6 +1,21 @@
 # Overboard! / Shipwreckers! (PC ENG)
 
-Status: original physical CD + original installation is gameplay-confirmed by the user; intro remains black until Esc. The older image-based recipe below is still blocked at CD validation.
+Status: gameplay and the windowed 16-bit intro solution are user-approved. The AppImage has been rebuilt with that display path; host CDEmu/VHBA and Gamescope remain required. Historical experiments are retained below and in `notes.md`.
+
+See [DISPLAY-FIX.md](DISPLAY-FIX.md) for the approved settings, root-cause evidence, failed attempts, and reusable lessons.
+
+## Local AppImage (no physical CD used by launcher)
+
+Artifact: `local/appimage-dist/Overboard-x86_64.AppImage`.
+Build: `games/overboard/extras/build_appimage.sh`.
+
+The private bundle includes the original installed game, Wine-GE 7-43, Xephyr, Python-Xlib/six, and the full BIN/TOC backup. It requires host Python 3, Gamescope, CDEmu with a loaded VHBA kernel module, udisksctl/findmnt, and compatible Wine/Xephyr system libraries. It is not an entirely host-independent package and must not be redistributed with copyrighted game data.
+
+Launch the AppImage normally. On first run, it seeds writable files under `${XDG_DATA_HOME:-$HOME/.local/share}/overboard-appimage`; `OVERBOARD_APPIMAGE_STATE` overrides this directory. It allocates an empty virtual drive (or adds one), never unloads another game's occupied drive, rewrites TOC paths, maps only that virtual device into Wine, and unloads it after exit. `--check` verifies host prerequisites without starting the game.
+
+Default display is a normal decorated 1024×768 window, not fullscreen. Gamescope preserves aspect ratio; Xephyr supplies 16-bit RGB; the size helper must report READY before Wine launches. Debug tracing is disabled. No MPX conversion or game EXE patch is used. For the old Esc-to-skip path, set `OVERBOARD_DISPLAY_MODE=classic`. The previous package is preserved as `local/appimage-dist/Overboard-classic-backup-x86_64.AppImage`.
+
+The original AppImage and the subsequent standalone windowed16 test were user-approved. The upgraded final package was launched and visually verified rendering the scaled intro in a decorated 1024×768 window; Wine and Xephyr were confirmed running from its mount. Regression tests and packaged-source comparison passed. The final AppImage subsequently exited normally with status 0. A new extended gameplay/audio test of the rebuilt package has not been performed; see `DISPLAY-FIX.md` for exact evidence and portability limits.
 
 ## Recommended: original physical CD
 
@@ -19,7 +34,7 @@ The original CD installer was run with this runner in a fresh prefix; the instal
 
 Overrides: `OVERBOARD_PHYSICAL_RUNTIME`, `OVERBOARD_PHYSICAL_PREFIX`, `OVERBOARD_PHYSICAL_WINE`, `OVERBOARD_CD_MOUNT`, `OVERBOARD_CD_DEVICE`. `--dry-run` prints paths without side effects; `--check` validates prerequisites without starting Wine. The launcher has passed syntax, dry-run, wrong-device rejection, and live prerequisite checks; a fresh end-to-end launch through this newly saved script remains to be tested separately from the confirmed manual command.
 
-No CD-free AppImage is verified: the successful path depends on the physical mixed-mode CD, whereas the existing image paths fail CD validation.
+The newer AppImage uses CDEmu for a full mixed-mode virtual CD; see the validation status above. The historical data-only and loop-backed image attempts below did not satisfy CD validation.
 
 ## Historical image recipe
 

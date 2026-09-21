@@ -1,5 +1,14 @@
 # Notes: Magnus & Myggen Quizkampen Superstarter
 
+## Q122DK download: original setup løser det tidligere stop
+
+Brugeren har nu bekræftet gameplay fra Q122DK efter original installation i et
+nyt Wine-GE 7-43 win32/win98-prefix, med ISO via CDEmu og 800×600 desktop.
+Menuen blev visuelt verificeret, spillet afsluttede med kode 0. Ingen filer
+eller registrering fra Q112DK blev overført. Se Q122DK_DOWNLOAD.md.
+Den gamle konklusion nedenfor gælder kun det fejlede CAB-only-forsøg; den
+var for vidtgående som vurdering af hele mediet.
+
 ## Current Q112DK status
 
 Original Q112DK installation and the final Wine-GE AppImage are user-confirmed

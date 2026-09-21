@@ -1,7 +1,7 @@
 id: "magnus-myggen-quizkampen-superstarter"
 title: "Magnus & Myggen: Quizkampen Superstarter"
 runner: "wine"
-status: "user-confirmed-q112dk-appimage-cd-free"
+status: "user-confirmed-q112dk-appimage-and-q122dk-original-setup"
 
 repository_policy: "recipe-only; no game files included"
 
@@ -18,7 +18,7 @@ game_files:
   required:
     - filename: "Quizkampen Superstarter Version.iso"
       type: "cdrom-image"
-      sha256: "TODO"
+      sha256: "0346759d435612e2c05170deab203402fae92e2345833dca98a69fb6afb61ae9"
       note: "Place under local/sources/magnus-myggen-quizkampen-superstarter/, set MMQ_ISO, or run install.sh."
 
 paths:
@@ -38,7 +38,7 @@ launch:
   default_mode: "game"
   executable: "mm12main.exe"
   notes:
-    - "AUTORUN.INF opens LAUNCHER.EXE, but the reliable launcher bypasses InstallShield and manually extracts Application_DK/mm12main.exe plus CXT resources/Xtras from DATA1.CAB."
+    - "launch.sh is the historical CAB-only path and is not the verified Q122DK path. Use original setup and the installed executable as documented in Q122DK_DOWNLOAD.md."
     - "Wine prefix is win32/win98 by default."
 
 appimage:
@@ -48,4 +48,5 @@ appimage:
   host_requires: "CDEmu/VHBA, Python 3, udisksctl, findmnt, cp, compatible Wine system libraries"
   artifact: "local/appimage-dist/Quizkampen-Q112DK-WineGE-x86_64.AppImage"
   verification: "Bundled Wine observed; user-confirmed gameplay; exit 0; virtual medium cleanup verified"
-  historical_q122dk_status: "blocked-superstarter-license-gate"
+  historical_q122dk_status: "CAB-only path failed; original setup now user-confirmed working"
+  q122dk_appimage_status: "not-built-or-tested"

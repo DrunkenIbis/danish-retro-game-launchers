@@ -4,7 +4,10 @@ Status: Original Q112DK og den færdige AppImage er brugerbekræftet fungerende 
 Runner: bundlet Wine-GE 7-43, 800×600 Wine-desktop og virtuel CD via host CDEmu/VHBA.
 
 Se [Q112DK_APPIMAGE.md](Q112DK_APPIMAGE.md) for den aktuelle bygge-/startvej.
-Den historiske Q122DK SuperStarter/CAB-opskrift nedenfor er fortsat blokeret.
+Downloadudgaven Q122DK er også brugerbekræftet fungerende efter original setup
+i et rent Wine-GE-prefix. Se [Q122DK_DOWNLOAD.md](Q122DK_DOWNLOAD.md).
+Den historiske manuelle CAB-opskrift nedenfor fejlede; det er ikke en generel
+licensblokering af downloadmediet. Q122DK-AppImage er endnu ikke bygget/testet.
 
 This directory contains only the compatibility recipe. It does not contain the game ISO, extracted game files, Wine prefix, AppDir, AppImage, logs or screenshots.
 
@@ -16,7 +19,7 @@ allerede installerede Wine-GE-version i et 800×600-vindue. Menuadgang er
 verificeret, og brugeren har efterfølgende bekræftet CD-fri drift og gameplay i den færdige AppImage. Status nedenfor
 gælder fortsat den gamle Q122DK/CAB-baserede opskrift, ikke Q112DK.
 
-## Current blocker
+## Historisk fejl i den manuelle CAB-installation
 
 The launcher can extract and start the real Director projector, but that is not enough for this Superstarter release. The running game immediately opens a custom in-game modal titled `0` (or `Information` if those registry fields are changed), with a Magnus drawing and an `Ok` button. This is not a Wine crash and not a missing-window issue: the process and windows are real, but the title remains at the SuperStarter/licence gate.
 
@@ -39,7 +42,7 @@ The archive.org ISO has volume label `Q122DK` and this CD-root layout:
 - InstallShield payload: `DATA1.CAB`, `DATA1.HDR`, `DATA2.CAB`
 - icon: `MM.ICO`
 
-The robust launcher bypasses the visible InstallShield flow and manually extracts the real Director game runtime from `DATA1.CAB`:
+The historical CAB-only launcher bypasses the visible InstallShield flow and manually extracts the real Director game runtime from `DATA1.CAB`:
 
 - `Application_DK/mm12main.exe`
 - `Application_DK/*.cxt`

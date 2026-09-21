@@ -5,6 +5,14 @@ Runner: Wine, manual InstallShield CAB extraction
 
 This directory contains only the compatibility recipe. It does not contain the game ISO, extracted game files, Wine prefix, AppDir, AppImage, logs or screenshots.
 
+## Original fysisk CD (Q112DK)
+
+Den originale Q112DK-CD har nu en separat, installer-baseret opskrift:
+se [PHYSICAL_CD.md](PHYSICAL_CD.md) og brug `./launch_physical.sh` til den
+allerede installerede Wine-GE-version i et 800×600-vindue. Menuadgang er
+verificeret; fuld gameplay-/inputtest er endnu ikke afsluttet. Status nedenfor
+gælder fortsat den gamle Q122DK/CAB-baserede opskrift, ikke Q112DK.
+
 ## Current blocker
 
 The launcher can extract and start the real Director projector, but that is not enough for this Superstarter release. The running game immediately opens a custom in-game modal titled `0` (or `Information` if those registry fields are changed), with a Magnus drawing and an `Ok` button. This is not a Wine crash and not a missing-window issue: the process and windows are real, but the title remains at the SuperStarter/licence gate.

@@ -1,7 +1,7 @@
 id: "magnus-myggen-quizkampen-superstarter"
 title: "Magnus & Myggen: Quizkampen Superstarter"
 runner: "wine"
-status: "blocked-superstarter-license-gate"
+status: "user-confirmed-q112dk-appimage-cd-free"
 
 repository_policy: "recipe-only; no game files included"
 
@@ -42,5 +42,10 @@ launch:
     - "Wine prefix is win32/win98 by default."
 
 appimage:
-  script: "extras/build_appimage.sh"
-  status: "not-currently-useful-until-launcher-passes-superstarter-gate"
+  script: "extras/build_q112dk_appimage.sh"
+  status: "user-confirmed-gameplay-without-physical-cd"
+  media: "Original Q112DK; not the historical Q122DK download above"
+  host_requires: "CDEmu/VHBA, Python 3, udisksctl, findmnt, cp, compatible Wine system libraries"
+  artifact: "local/appimage-dist/Quizkampen-Q112DK-WineGE-x86_64.AppImage"
+  verification: "Bundled Wine observed; user-confirmed gameplay; exit 0; virtual medium cleanup verified"
+  historical_q122dk_status: "blocked-superstarter-license-gate"

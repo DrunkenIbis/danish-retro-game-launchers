@@ -47,8 +47,9 @@ det er bevaret som fejlet forsøg og bruges ikke af denne launcher.
   brugeren rapporterede manglende reaktion på klik.
 - Wine-desktop på 800×600 blev visuelt verificeret. Brugeren rapporterede
   derefter, at spillet så ud til at køre. Dette er ikke en fuld gameplay-test.
-- Museinput, en gennemført quizrunde og lyd er ikke endeligt verificeret.
-- AppImage/CD-fri drift er ikke verificeret; tidligere Q122DK-AppImage må ikke
+- Efterfølgende bekræftede brugeren, at CD-fri drift og den færdige AppImage
+  fungerer rigtig godt; se Q112DK_APPIMAGE.md for den aktuelle status.
+- Q112DK-AppImage/CD-fri drift er brugerbekræftet; tidligere Q122DK-AppImage må ikke
   præsenteres som en pakning af denne installation.
 
 Tests: `python3 games/magnus-myggen-quizkampen-superstarter/test_physical.py`.

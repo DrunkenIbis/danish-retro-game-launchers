@@ -1,5 +1,12 @@
 # Notes: Magnus & Myggen Quizkampen Superstarter
 
+## Current Q112DK status
+
+Original Q112DK installation and the final Wine-GE AppImage are user-confirmed
+working without physical CD. See Q112DK_APPIMAGE.md for build, runtime, host
+dependencies and verification limits. The Q122DK investigation below remains
+historical and does not describe the working Q112DK release.
+
 ## Disc inspection
 
 Downloaded from:

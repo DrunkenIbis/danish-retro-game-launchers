@@ -1,7 +1,10 @@
 # Magnus & Myggen: Quizkampen Superstarter
 
-Status: blocked after runtime starts: the game opens a SuperStarter/licence dialog instead of gameplay  
-Runner: Wine, manual InstallShield CAB extraction
+Status: Original Q112DK og den færdige AppImage er brugerbekræftet fungerende uden fysisk CD.
+Runner: bundlet Wine-GE 7-43, 800×600 Wine-desktop og virtuel CD via host CDEmu/VHBA.
+
+Se [Q112DK_APPIMAGE.md](Q112DK_APPIMAGE.md) for den aktuelle bygge-/startvej.
+Den historiske Q122DK SuperStarter/CAB-opskrift nedenfor er fortsat blokeret.
 
 This directory contains only the compatibility recipe. It does not contain the game ISO, extracted game files, Wine prefix, AppDir, AppImage, logs or screenshots.
 
@@ -10,7 +13,7 @@ This directory contains only the compatibility recipe. It does not contain the g
 Den originale Q112DK-CD har nu en separat, installer-baseret opskrift:
 se [PHYSICAL_CD.md](PHYSICAL_CD.md) og brug `./launch_physical.sh` til den
 allerede installerede Wine-GE-version i et 800×600-vindue. Menuadgang er
-verificeret; fuld gameplay-/inputtest er endnu ikke afsluttet. Status nedenfor
+verificeret, og brugeren har efterfølgende bekræftet CD-fri drift og gameplay i den færdige AppImage. Status nedenfor
 gælder fortsat den gamle Q122DK/CAB-baserede opskrift, ikke Q112DK.
 
 ## Current blocker

@@ -71,6 +71,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Battle Beast | — | ✅ | — |
 | Den Lyserøde Panter: Hokus Pokus Panter | ✅ | ⚠️ Visible Wine game scene; manual playthrough not verified | ✅ |
 | Det Magiske Jordbær | ✅ | ✅ | ✅ |
+| [FlipOut!](games/FlipOut/) | ✅ original CD-autorun | ✅ brugerbekræftet gameplay/styring fra lokale originalfiler; ingen CD, monteret ISO eller CDEmu nødvendig | — ikke bygget/testet |
 | Galactic Warrior Rats | ✅ | ✅ hangar/shop verified; user visually confirmed expected working state | — |
 | Gold and Glory: The Road to El Dorado | ✅ | ✅ user-confirmed working in a centered 640×480 Wine-GE desktop; original ISO CD mapping retained | ✅ AppImage smoke-tested with bundled Wine-GE |
 | Global Operations | ✅ | ⚠️ blocked by SafeDisc/SecDrv before gameplay | — |

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+HERE=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+STATE=${BUD_APPIMAGE_STATE:-${XDG_DATA_HOME:-$HOME/.local/share}/bud-tucker-in-double-trouble}
+[[ $STATE == /* && $STATE != *$'\n'* && $STATE != *$'\r'* && $STATE != *'"'* ]] || { printf 'State must be an absolute path without quotes/newlines.\n' >&2; exit 1; }
+mkdir -p "$STATE/logs"
+exec 9>"$STATE/session.lock"
+flock -n 9 || { printf 'Bud Tucker is already running in this state directory.\n' >&2; exit 1; }
+if [[ ! -e "$STATE/c" ]]; then
+  seed=$(mktemp -d "$STATE/.seed.XXXXXXXX")
+  trap 'rm -rf -- "$seed"' EXIT
+  cp -a "$HERE/seed-c/." "$seed/"
+  chmod -R u+rwX "$seed"
+  mv -- "$seed" "$STATE/c"
+  trap - EXIT
+fi
+[[ -s "$STATE/c/TUCKER/BUD.BAT" && -s "$STATE/c/G.IN" ]] || { printf 'Incomplete writable installation: %s\n' "$STATE/c" >&2; exit 1; }
+# C: is writable state; D: is the read-only original file tree, not a CD device.
+{
+  printf '%s\n' "$(<"$HERE/base.conf")" '[autoexec]' '@echo off'
+  printf 'mount c "%s/c"\nmount d "%s/cd-files"\n' "$STATE" "$HERE"
+  printf '%s\n' 'c:' 'cd \TUCKER' 'call BUD.BAT' 'exit'
+} >"$STATE/game.conf"
+cd "$STATE"
+export SDL_VIDEODRIVER=${SDL_VIDEODRIVER:-x11}
+export SDL_AUDIODRIVER=${SDL_AUDIODRIVER:-pulse}
+"$HERE/runtime/dosbox" --noprimaryconf --nolocalconf --conf "$STATE/game.conf" \
+  >"$STATE/logs/game-$(date +%Y%m%d-%H%M%S).log" 2>&1

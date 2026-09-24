@@ -1,0 +1,33 @@
+id: bud-tucker-in-double-trouble
+title: Bud Tucker in Double Trouble
+year: 1996
+platform: DOS
+edition: BUD_USA CD
+runner: DOSBox-Staging 0.83.0
+installer: install.sh
+launcher: launch.sh
+build: extras/build_appimage.sh
+source: owner-original-physical-cd
+private_source_dir: local/sources/bud-tucker-in-double-trouble
+private_runtime_dir: local/runtime/bud-tucker-in-double-trouble
+verification:
+  physical_cd: user-confirmed-gameplay-audio-normal-exit
+  physical_cd_visual: agent-inspected-user-screenshot-of-bedroom-gameplay
+  backup: single-mode1-data-track-complete-user-data-read-and-7z-tested
+  folder: user-confirmed-gameplay-audio-normal-exit-without-physical-or-image-media
+  appimage_fresh_state: user-confirmed-gameplay-audio
+  appimage_existing_state: user-confirmed-gameplay-audio-normal-exit
+  appimage_bundled_runtime: proc-exe-verified-native-dosbox-from-appimage
+  appimage_gameplay_visual: no-separate-agent-screenshot
+  cleanup: both-appimage-runs-exit-0-no-remaining-dosbox
+  save_load: untested
+  full_playthrough: untested
+  cross_distribution: untested
+appimage:
+  output: extras/dist/Bud-Tucker-in-Double-Trouble-x86_64.AppImage
+  bundled: [dosbox-staging, original-cd-files, installed-c-drive-seed]
+  optical_emulation: false
+  external_wine: false
+  external_flatpak: false
+  state_override: BUD_APPIMAGE_STATE
+  private_use_only: true

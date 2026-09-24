@@ -1,0 +1,33 @@
+[sdl]
+fullscreen = false
+window_size = 960x720
+
+[dosbox]
+machine = svga_s3
+memsize = 16
+
+[cpu]
+core = auto
+cpu_cycles = 30000
+
+[mixer]
+rate = 48000
+blocksize = 1024
+prebuffer = 80
+
+[sblaster]
+sbtype = sb16
+sbbase = 220
+irq = 7
+dma = 1
+hdma = 5
+
+[midi]
+mididevice = none
+
+[autoexec]
+@echo off
+mount c "@C_DRIVE@"
+mount d "@CD@" -t cdrom -label BUD_USA
+d:
+install.bat

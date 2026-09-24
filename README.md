@@ -69,6 +69,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 |---|---:|---:|---:|
 | Atomic Bomberman (1997) | ✅ | ✅ main menu verified | ✅ main menu verified |
 | Battle Beast | — | ✅ | — |
+| [Bud Tucker in Double Trouble](games/bud-tucker-in-double-trouble/) | ✅ original DOS CD-installation | ✅ brugerbekræftet gameplay/lyd fra lokale filer uden CD/image | ✅ bundlet DOSBox; friske og eksisterende brugerdata gameplay-bekræftet; normal afslutning |
 | Den Lyserøde Panter: Hokus Pokus Panter | ✅ | ⚠️ Visible Wine game scene; manual playthrough not verified | ✅ |
 | Det Magiske Jordbær | ✅ | ✅ | ✅ |
 | [FlipOut!](games/FlipOut/) | ✅ original CD-autorun | ✅ brugerbekræftet gameplay/styring fra lokale originalfiler; ingen CD, monteret ISO eller CDEmu nødvendig | — ikke bygget/testet |

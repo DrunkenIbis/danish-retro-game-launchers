@@ -2,6 +2,10 @@
 
 Anbefalet lokal variant: originalt installeret grundspil, officiel retail 1.61b og ejerens udtrykkeligt valgte SiMPLE-pakke. Ikke uændret vanilla: community-pakken ændrer CD-kontrol, widescreen, portability og masterserver-adresse. Originale 1.6- og officielle 1.61b-prefixes er bevaret separat.
 
+## Separat udvidelse: The Road to Rome
+
+`launch_road_to_rome.sh` starter den separate CD-fri udvidelse. Original CD-installation, diskfri launcher og egen AppImage er brugerbekræftet i gameplay; pakken er afprøvet med friske/genbrugte brugerdata, bundlet Wine/wineserver og oprydning verificeret. Grundversionen er uændret. CD 3-backup er sektor-ufuldstændig, men filområdernes læsedækning og 7z-test består. Se [ROAD-TO-ROME.md](ROAD-TO-ROME.md) for særskilte installations-, build-, start- og verifikationsdetaljer.
+
 ## Start
 
 Fra projektroden:

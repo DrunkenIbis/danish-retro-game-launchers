@@ -70,6 +70,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Atomic Bomberman (1997) | ✅ | ✅ main menu verified | ✅ main menu verified |
 | Battle Beast | — | ✅ | — |
 | [Battlefield 1942 — WWII Anthology](games/battlefield-1942/) | ⚠️ original installation documented; scripted end-to-end rebuild pending | ✅ 1.61b + SiMPLE, diskfri gameplay brugerbekræftet | ✅ privat AppImage, frisk/genbrugt tilstand gameplay-bekræftet; bundlet Wine og oprydning verificeret |
+| [Battlefield 1942: The Road to Rome](games/battlefield-1942/ROAD-TO-ROME.md) | ✅ original CD 3 installer i separat kopi; kræver installeret grundspil | ✅ separat diskfri SiMPLE-launcher, gameplay brugerbekræftet | ✅ egen privat AppImage; frisk/genbrugt gameplay bekræftet, bundlet Wine og oprydning verificeret |
 | [Battlefield Vietnam](games/battlefield-vietnam/) | ✅ original Windows setup, three CDs; officiel 1.21 + separat SiMPLE | ✅ original-CD v1.0/1.21 og diskfri SiMPLE-gameplay brugerbekræftet | ✅ privat AppImage: frisk/genbrugt tilstand, gameplay/lyd/menu-exit bekræftet på testværten |
 | [Bud Tucker in Double Trouble](games/bud-tucker-in-double-trouble/) | ✅ original DOS CD-installation | ✅ brugerbekræftet gameplay/lyd fra lokale filer uden CD/image | ✅ bundlet DOSBox; friske og eksisterende brugerdata gameplay-bekræftet; normal afslutning |
 | Den Lyserøde Panter: Hokus Pokus Panter | ✅ | ⚠️ Visible Wine game scene; manual playthrough not verified | ✅ |

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Private disk-free SiMPLE variant, writable state outside read-only bundle.
+set -Eeuo pipefail
+umask 077
+HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+STATE="${BF1942_RTR_APPIMAGE_STATE:-${XDG_DATA_HOME:-$HOME/.local/share}/battlefield-1942-road-to-rome-appimage}"
+[[ "$STATE" == /* ]] || { printf 'State directory must be absolute\n' >&2; exit 1; }
+mkdir -p "$STATE"
+STATE="$(cd "$STATE" && pwd -P)"
+case "$STATE/" in "$HERE/"*) printf 'State cannot be inside bundle\n' >&2; exit 1;; esac
+exec 9>"$STATE/.lock"
+flock -n 9 || { printf 'Battlefield 1942 state already in use\n' >&2; exit 1; }
+WINE="$HERE/wine/bin/wine"
+export WINESERVER="$HERE/wine/bin/wineserver"
+[[ -x "$WINE" && -x "$WINESERVER" ]] || { printf 'Bundled Wine missing\n' >&2; exit 1; }
+unset WINEARCH WINEDLLOVERRIDES WINEDLLPATH WINELOADER
+export WINEPREFIX="$STATE/prefix" WINEDEBUG="${BF1942_DEBUG:--all}"
+export PATH="$HERE/wine/bin:$PATH"
+[[ ! -L "$WINEPREFIX" ]] || { printf 'Refusing symlinked prefix\n' >&2; exit 1; }
+if [[ ! -e "$WINEPREFIX" ]]; then
+ STAGING="$(mktemp -d "$STATE/.prefix-seed.XXXXXX")"
+ trap 'rm -rf -- "$STAGING"' EXIT
+ cp -a "$HERE/game/prefix/." "$STAGING/"
+ chmod -R u+rwX "$STAGING"
+ mv "$STAGING" "$WINEPREFIX"
+ trap - EXIT
+fi
+[[ -f "$WINEPREFIX/system.reg" ]] || { printf 'Incomplete existing state; choose a fresh BF1942_RTR_APPIMAGE_STATE\n' >&2; exit 1; }
+timeout 5 "$WINESERVER" -w 9>&-
+[[ -d "$WINEPREFIX/dosdevices" && ! -L "$WINEPREFIX/dosdevices" ]]
+for link in "$WINEPREFIX/dosdevices/"*; do
+ [[ ! -L "$link" ]] || rm -- "$link"
+done
+ln -s ../drive_c "$WINEPREFIX/dosdevices/c:"
+ln -s / "$WINEPREFIX/dosdevices/z:"
+GAME="$WINEPREFIX/drive_c/Program Files/EA GAMES/Battlefield 1942"
+[[ -f "$GAME/BF1942.exe" && -f "$GAME/Mods/XPack1/Archives/Bf1942/Levels/cassino.rfa" ]] || { printf "Missing Road to Rome game data\n" >&2; exit 1; }
+mkdir -p "$STATE/logs"
+LOG="$STATE/logs/game-$(date +%Y%m%d-%H%M%S).log"
+printf 'Bundled Wine: %s\nState: %s\nLog: %s\n' "$WINE" "$STATE" "$LOG"
+cd "$GAME"
+trap '"$WINESERVER" -k 9>&-; "$WINESERVER" -w 9>&-; exit 130' INT TERM HUP
+rc=0
+"$WINE" "$GAME/BF1942.exe" +game XPack1 "$@" 9>&- >"$LOG" 2>&1 || rc=$?
+"$WINESERVER" -w 9>&- || rc=$?
+exit "$rc"

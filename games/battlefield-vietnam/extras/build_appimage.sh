@@ -5,12 +5,29 @@ umask 077
 HERE="$(cd "$(dirname "$0")" && pwd)"
 GAME_DIR="$(cd "$HERE/.." && pwd)"
 ROOT="$(cd "$GAME_DIR/../.." && pwd)"
+MODE=fullscreen
+case "${1:-}" in
+  '') ;;
+  --windowed) MODE=windowed; shift ;;
+  *) printf '%s\n' 'Usage: build_appimage.sh [--windowed]' >&2; exit 1 ;;
+esac
+[[ $# == 0 ]] || { printf '%s\n' 'Unexpected build arguments.' >&2; exit 1; }
 PROJECT_NAME=battlefield-vietnam
 DISPLAY_NAME='Battlefield Vietnam'
-APPDIR="${APPDIR:-$ROOT/local/tmp/battlefield-vietnam-appimage/BattlefieldVietnam.AppDir}"
+BUILD_NAME=battlefield-vietnam-appimage
+APPDIR_NAME=BattlefieldVietnam.AppDir
+OUTPUT_NAME=Battlefield-Vietnam-1.21-SiMPLE-x86_64.AppImage
+if [[ "$MODE" == windowed ]]; then
+  PROJECT_NAME=battlefield-vietnam-windowed
+  DISPLAY_NAME='Battlefield Vietnam (Windowed)'
+  BUILD_NAME=battlefield-vietnam-windowed-appimage
+  APPDIR_NAME=BattlefieldVietnamWindowed.AppDir
+  OUTPUT_NAME=Battlefield-Vietnam-1.21-SiMPLE-Windowed-x86_64.AppImage
+fi
+APPDIR="${APPDIR:-$ROOT/local/tmp/$BUILD_NAME/$APPDIR_NAME}"
 DIST_DIR="${DIST_DIR:-$ROOT/local/appimage-dist}"
-CACHE_DIR="${CACHE_DIR:-$ROOT/local/cache/battlefield-vietnam-appimage}"
-OUTPUT_APPIMAGE="$DIST_DIR/Battlefield-Vietnam-1.21-SiMPLE-x86_64.AppImage"
+CACHE_DIR="${CACHE_DIR:-$ROOT/local/cache/$BUILD_NAME}"
+OUTPUT_APPIMAGE="$DIST_DIR/$OUTPUT_NAME"
 SEED="$ROOT/local/runtime/battlefield-vietnam/simple121-ge7/prefix"
 RUNNER="$ROOT/local/runners/lutris-GE-Proton7-43-x86_64"
 source "$ROOT/scripts/wine-appimage-builder.sh"
@@ -56,6 +73,8 @@ for link in (p/'drive_c/users').rglob('*'):
         link.mkdir()
 PY
 cp "$HERE/AppRun" "$APPDIR/AppRun"
+cp "$HERE/normalize_windowed.py" "$APPDIR/normalize_windowed.py"
+printf '%s\n' "$MODE" > "$APPDIR/launch-mode"
 printf '%s\n' '#!/usr/bin/env bash' 'exec "$(cd "$(dirname "$0")/../.." && pwd)/AppRun" "$@"' > "$APPDIR/usr/bin/$PROJECT_NAME"
 chmod +x "$APPDIR/AppRun" "$APPDIR/usr/bin/$PROJECT_NAME"
 wine_appimage_write_desktop_file

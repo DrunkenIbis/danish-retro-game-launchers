@@ -4,8 +4,8 @@ set -Eeuo pipefail
 HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 source "$HERE/../../scripts/common.sh"
 ROOT="$(repo_root_from_game_dir "$HERE")"
-LABEL="${1:?Usage: backup-disc.sh DISC_1_BF1942_1|DISC_2_BF1942_2|DISC_3_ROADTOROME}"
-case "$LABEL" in DISC_1_BF1942_1|DISC_2_BF1942_2|DISC_3_ROADTOROME) ;; *) printf 'Wrong disc label\n' >&2; exit 1;; esac
+LABEL="${1:?Usage: backup-disc.sh DISC_1_BF1942_1|DISC_2_BF1942_2|DISC_3_ROADTOROME|DISC_4_SECRETWEAPONS}"
+case "$LABEL" in DISC_1_BF1942_1|DISC_2_BF1942_2|DISC_3_ROADTOROME|DISC_4_SECRETWEAPONS) ;; *) printf 'Wrong disc label\n' >&2; exit 1;; esac
 DEVICE="${BF1942_DEVICE:-/dev/sr0}"
 DEST="$(retro_source_dir "$ROOT" battlefield-1942)/backups"
 RESCUE="${BF1942_DDRESCUE:-$(command -v ddrescue || true)}"

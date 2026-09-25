@@ -6,6 +6,10 @@ Anbefalet lokal variant: originalt installeret grundspil, officiel retail 1.61b 
 
 `launch_road_to_rome.sh` starter den separate CD-fri udvidelse. Original CD-installation, diskfri launcher og egen AppImage er brugerbekræftet i gameplay; pakken er afprøvet med friske/genbrugte brugerdata, bundlet Wine/wineserver og oprydning verificeret. Grundversionen er uændret. CD 3-backup er sektor-ufuldstændig, men filområdernes læsedækning og 7z-test består. Se [ROAD-TO-ROME.md](ROAD-TO-ROME.md) for særskilte installations-, build-, start- og verifikationsdetaljer.
 
+## Separat udvidelse: Secret Weapons of WWII
+
+`launch_secret_weapons.sh` starter den separate diskfri udvidelse. Fysisk CD, diskfri launcher og egen AppImage er brugerbekræftet i gameplay. AppImage er testet med friske/genbrugte brugerdata; bundlet Wine/wineserver og oprydning er verificeret. Grundspil og Road to Rome bevares separat. Se [SECRET-WEAPONS.md](SECRET-WEAPONS.md) for opskrift, testomfang og sektor-ufuldstændig CD 4-backup.
+
 ## Start
 
 Fra projektroden:

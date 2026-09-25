@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Private disk-free 1.21 + SiMPLE. Never writes into the AppImage.
+set -Eeuo pipefail
+umask 077
+HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+STATE="${BFV_APPIMAGE_STATE:-${XDG_DATA_HOME:-$HOME/.local/share}/battlefield-vietnam-appimage}"
+[[ "$STATE" == /* ]] || { printf '%s\n' 'State directory must be absolute.' >&2; exit 1; }
+mkdir -p "$STATE"
+STATE="$(cd "$STATE" && pwd -P)"
+case "$STATE/" in "$HERE/"*) printf '%s\n' 'State cannot be inside the bundle.' >&2; exit 1;; esac
+exec 9>"$STATE/.lock"
+flock -n 9 || { printf '%s\n' 'Battlefield Vietnam state is already in use.' >&2; exit 1; }
+WINE="$HERE/wine/bin/wine"
+export WINESERVER="$HERE/wine/bin/wineserver"
+[[ -x "$WINE" && -x "$WINESERVER" ]]
+unset WINEARCH WINEDLLOVERRIDES WINEDLLPATH WINELOADER
+export WINEPREFIX="$STATE/prefix" WINEDEBUG="${WINEDEBUG:--all}"
+export PATH="$HERE/wine/bin:$PATH"
+[[ ! -L "$WINEPREFIX" ]] || { printf '%s\n' 'Refusing symlinked prefix.' >&2; exit 1; }
+if [[ ! -e "$WINEPREFIX" ]]; then
+  STAGING="$(mktemp -d "$STATE/.prefix-seed.XXXXXX")"
+  trap 'rm -rf -- "$STAGING"' EXIT
+  cp -a "$HERE/game/prefix/." "$STAGING/"
+  chmod -R u+rwX "$STAGING"
+  mv "$STAGING" "$WINEPREFIX"
+  trap - EXIT
+fi
+[[ -f "$WINEPREFIX/system.reg" ]] || { printf '%s\n' 'Incomplete existing prefix; choose fresh BFV_APPIMAGE_STATE.' >&2; exit 1; }
+# Refuse live prefixes; never clean drive links while Wine is using them.
+timeout 5 "$WINESERVER" -w 9>&-
+[[ -d "$WINEPREFIX/dosdevices" && ! -L "$WINEPREFIX/dosdevices" ]]
+for link in "$WINEPREFIX/dosdevices/"*; do
+  [[ ! -L "$link" ]] || rm -- "$link"
+done
+ln -s ../drive_c "$WINEPREFIX/dosdevices/c:"
+ln -s / "$WINEPREFIX/dosdevices/z:"
+GAME="$WINEPREFIX/drive_c/Program Files/EA GAMES/Battlefield Vietnam"
+[[ -f "$GAME/BfVietnam.exe" ]]
+cd "$GAME"
+# Keep the state lock and AppImage mount alive until this matching server exits.
+trap '"$WINESERVER" -k 9>&-; "$WINESERVER" -w 9>&-; exit 130' INT TERM HUP
+rc=0
+"$WINE" "$GAME/BfVietnam.exe" "$@" 9>&- || rc=$?
+"$WINESERVER" -w 9>&- || rc=$?
+exit "$rc"

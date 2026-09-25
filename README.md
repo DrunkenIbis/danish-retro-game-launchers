@@ -69,6 +69,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 |---|---:|---:|---:|
 | Atomic Bomberman (1997) | ✅ | ✅ main menu verified | ✅ main menu verified |
 | Battle Beast | — | ✅ | — |
+| [Battlefield Vietnam](games/battlefield-vietnam/) | ✅ original Windows setup, three CDs; officiel 1.21 + separat SiMPLE | ✅ original-CD v1.0/1.21 og diskfri SiMPLE-gameplay brugerbekræftet | ✅ privat AppImage: frisk/genbrugt tilstand, gameplay/lyd/menu-exit bekræftet på testværten |
 | [Bud Tucker in Double Trouble](games/bud-tucker-in-double-trouble/) | ✅ original DOS CD-installation | ✅ brugerbekræftet gameplay/lyd fra lokale filer uden CD/image | ✅ bundlet DOSBox; friske og eksisterende brugerdata gameplay-bekræftet; normal afslutning |
 | Den Lyserøde Panter: Hokus Pokus Panter | ✅ | ⚠️ Visible Wine game scene; manual playthrough not verified | ✅ |
 | Det Magiske Jordbær | ✅ | ✅ | ✅ |

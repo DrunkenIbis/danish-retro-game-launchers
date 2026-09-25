@@ -1,0 +1,83 @@
+name: Battlefield Vietnam
+slug: battlefield-vietnam
+year: 2004
+platform: Windows
+edition: retail v1.0, multilingual three-CD edition; separate official 1.21 and SiMPLE 1.21 copies
+status: disk-free-simple121-and-appimage-gameplay-user-confirmed
+launcher: launch.sh
+installer: launch_physical.sh setup
+recommended_runtime: local/runtime/battlefield-vietnam/simple121-ge7
+runner:
+  tested_directory: lutris-GE-Proton7-43-x86_64
+  reported_version: wine-5.12-15762-ge9a47cbabb9 (Staging)
+  architecture: win32
+  windows_version: winxp
+  override: BFV_WINE
+  preparation_note: patch/preparation helpers and AppImage builder require the fixed local runner path
+media:
+  labels: [BFV_1, BFV_2, BFV_3]
+  format: single-track Mode 1 on each original disc
+  backups: incomplete-sector rescue ISOs; allocated filesystem extents audited without unread overlap
+verification:
+  original_installation: completed; installer completion visually reviewed
+  physical_cd: retail v1.0 and official-only v1.21 gameplay user-confirmed
+  folder_only: separate SiMPLE 1.21 disk-free gameplay described by user as perfect
+  appimage_user: fresh and existing state confirmed; movement, shooting, sound and menu exit worked
+  agent_visual: gameplay-restart.png shows first-person gun, HUD and minimap; earlier physical evidence was intro only
+  bundled_runtime: /proc executable paths proved wine-preloader and wineserver from AppImage mount
+  media_absence: physical tray open (status 2), CDEmu empty, no loop devices or mounted game images
+  user_exit: wrapper exit 1 was confirmed normal user exit, not a crash
+  final_cleanup: no test-prefix processes, Battlefield AppImage mount or loop devices remained
+  automated: 19 recipe tests plus 1 multi-case AppImage synthetic test passed; separate from gameplay evidence
+historical_trials:
+  scope: unchanged retail v1.0 only; not current SiMPLE or AppImage failures
+  folder_only: correct-CD request
+  mounted_iso: correct-CD request with ISO-file raw mapping; readable raw loop device not established
+  cdemu: no captured game window; mod.dll initialization failure in trace
+patches:
+  official_order: full 1.2 then incremental 1.21 in separate patch121-ge7 prefix
+  preserved_source_required: physical-ge7/prefix-gameplay-confirmed; manually copy stopped gameplay-confirmed prefix before prepare
+  official_1_2:
+    file: bfv_v1_2.exe
+    source: https://ftp.bf-games.net/patches/bfv/bfv_v1_2.exe
+    sha256: db136d5f14d894a38f073e4eee8bc11e1e3d9b9badebe3b7e8221be922bdaa44
+  official_1_21:
+    file: bfv_v1_21.exe
+    source: https://www.patches-scrolls.com/dl.php?file=bfv12to121.zip
+    extracted_name: battlefield_vietnam_incremental_patch_v1.2_to_v1.21.exe
+    sha256: a9064d5d463aca549c79a662e4dc106f2e005fc481d8200f164f49431e5a84dd
+    hash_scope: extracted EXE, not download ZIP
+  simple_1_21:
+    official: false
+    file: bfvietnam-v1.21-patched.zip
+    source: https://team-simple.org/download/bfvietnam-v1.21-patched.zip
+    sha256: b419f57ec0f6e7503064daac1ce4dbfe52e572f0d56830aedeea2a78baad60dc
+    replaced_files: [BfVietnam.exe, Mods/BfVietnam/Mod.dll, Mods/BfVietnam/init.con, Mods/BfVietnam/LevelCheck.con]
+    byte_changes: EXE and DLL changed; both .con files identical to this official 1.21 source
+  integrity_note: local integrity hashes, not publisher-authenticated checksums
+appimage:
+  status: built-real-artifact-gameplay-confirmed-fresh-and-existing-state
+  tested_artifact: /home/test/danish-retro-game-launchers/local/appimage-dist/Battlefield-Vietnam-1.21-SiMPLE-x86_64.AppImage
+  sha256: dc12b544f7c17c0a13d8f39b1b81d5b53ba3c96bc4bc44884a2f8cf51e173388
+  builder: extras/build_appimage.sh
+  tested_state: local/runtime/battlefield-vietnam/appimage-test-fresh
+  privacy: private installed game and registration data; never distribute
+  portability: other hosts unverified
+requirements:
+  - compatible tested local Wine runner and its sibling wineserver for source preparation/launch
+  - compatible 32-bit host graphics and system libraries; AppImage also needs compatible host libraries/drivers
+  - bash, Python 3.11 or newer, coreutils, util-linux
+  - original CD set and owner-entered CD key for original installation
+  - official updates and optional third-party SiMPLE archive for recommended disk-free route
+  - cd-info and GNU ddrescue for optional backups; 7z for optional file validation
+  - CDEmu/VHBA only for historical diagnostic experiments, not recommended play
+private_paths:
+  sources: local/sources/battlefield-vietnam
+  runtime: local/runtime/battlefield-vietnam
+  appimage: local/appimage-dist/Battlefield-Vietnam-1.21-SiMPLE-x86_64.AppImage
+notes:
+  - launch_physical.sh retains original-CD/setup controls; launch.sh defaults to disk-free simple121-ge7.
+  - No synthetic registration or old DirectX installation; SiMPLE does replace executable/DLL files in a separate copy.
+  - No online or mod compatibility claim; compatibility beyond the tested host is unverified.
+  - Rescue ISOs do not preserve unread sectors, subchannels or proven protection fidelity.
+  - Do not publish media, installed files, prefixes, registration state, logs, screenshots or builds.

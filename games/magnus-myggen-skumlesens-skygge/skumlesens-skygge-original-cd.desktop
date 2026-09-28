@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Magnus & Myggen – Skumlesens Skygge (original-CD)
+Comment=Start den afprøvede lokale Wine-opsætning med original-CD, uden Lutris
+Exec=/home/test/danish-retro-game-launchers/games/magnus-myggen-skumlesens-skygge/launch.sh --desktop
+TryExec=/home/test/danish-retro-game-launchers/games/magnus-myggen-skumlesens-skygge/launch.sh
+Icon=applications-games
+Terminal=false
+StartupNotify=false
+Categories=Game;

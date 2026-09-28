@@ -1,32 +1,60 @@
 id: "magnus-myggen-skumlesens-skygge"
-title: "Magnus & Myggen: Skumlesens Skygge/Hævn"
+title: "Magnus & Myggen: Skumlesens Skygge"
 runner: "wine"
-status: "migrated-from-local-working-folder"
+status: "user-confirmed-original-cd-local-runtime"
+repository_policy: "recipe-only; no game files or private Wine runtime included"
 
-repository_policy: "recipe-only; no game files included"
+media:
+  type: "physical original CD"
+  label: "MM4DK"
+  mountpoint: "/run/media/test/MM4DK"
+  device: "/dev/sr0"
+  required: true
+  image_equivalence_verified: false
 
-sources:
-  references:
-    - name: "Internet Archive search"
-      url: "https://archive.org/search?query=Magnus+&+Myggen:+Skumlesens+Skygge/Hævn"
-      note: "Reference/search link only. Verify legal status yourself."
-    - name: "Second-hand / original media"
-      url: ""
-      note: "Use your own legally obtained copy."
+installation:
+  method: "original CD setup completed manually"
+  automatic_rebuild_available: false
+  requires_existing_local_runtime: true
 
 game_files:
-  required:
-    - filename: "TODO"
-      type: "original game media"
-      sha256: "TODO"
-      note: "Place under ~/retro-game-files/magnus-myggen-skumlesens-skygge/ or local/sources/magnus-myggen-skumlesens-skygge/."
+  installed_executable: "drive_c/Program Files/Skumlesens Skygge/MM4.exe"
+  installed_executable_sha256: "232613c229ba96a1eb7238809a7d82e1e6257d08c850fcaaf88674f0cd207d27"
+  executable_modified: false
 
 paths:
-  source_dir: "local/sources/magnus-myggen-skumlesens-skygge"
-  runtime_dir: "local/runtime/magnus-myggen-skumlesens-skygge"
+  runtime_dir: "local/runtime/mm4-graphics"
+  wineprefix: "local/runtime/mm4-graphics/prefix"
+  wine_runner: "local/runtime/mm4-thunk-fix/runner"
+
+compatibility:
+  architecture: "win32"
+  windows_version: "winxp"
+  initial_desktop: "1024x768"
+  game_display: "800x600, 16-bit"
+  use_system_memory: 0
+  renderer: "default"
+  runner_basis: "GE-Proton7-43"
+  private_runner_modifications: "experimental LS01 lifetime and DPMI/MSCDEX compatibility work"
+  stock_runner_equivalence_verified: false
 
 launch:
   wrapper: "launch.sh"
-  lutris: "lutris.yml"
+  compatibility_alias: "launch_physical.sh"
+  check_command: "bash launch.sh --check"
+  desktop: "skumlesens-skygge-original-cd.desktop"
+  lutris_required: false
+  optional_lutris_config: "lutris.yml"
+  optional_lutris_ui_verified: false
+  game_timeout: false
+  debug_log_file: false
 
-migrated_from: "/home/test/lutris_game_scripts_mm4"
+verification:
+  gameplay: "user-confirmed"
+  mouse_and_audio: "user-confirmed"
+  desktop_shortcut: "user-confirmed; normal exit 0"
+  save_load: "not separately verified"
+  complete_playthrough: "not verified"
+  automated_tests: "python3 test_launch_physical.py -v"
+  appimage: "not built or tested"
+  portable_fresh_install: "not available"

@@ -1,32 +1,57 @@
-# Magnus & Myggen: Skumlesens Skygge/Hævn
+# Magnus & Myggen: Skumlesens Skygge
 
-Status: recipe migrated from an existing local working/debug folder.  
-Runner: wine
+Status: **brugerbekræftet fungerende med fysisk original-CD**, inklusive gameplay, mus, lyd og lokal skrivebordsgenvej. Ingen AppImage eller automatisk frisk installation er bygget/verificeret.
 
-This directory contains only the compatibility recipe. It does not contain the game.
+## Én hoved-launcher, uden Lutris som krav
 
-## Bring your own game files
-
-Place your legally obtained game files in one of these locations:
-
-```text
-~/retro-game-files/magnus-myggen-skumlesens-skygge/
-# or
-local/sources/magnus-myggen-skumlesens-skygge/
-```
-
-See `recipe.yml` for expected metadata. Checksums still need to be filled in before publishing.
-
-## Run
+Fra repository-roden:
 
 ```sh
-RETRO_GAME_SOURCE_DIR=~/retro-game-files RETRO_GAME_RUNTIME_DIR=~/retro-game-runtime ./games/magnus-myggen-skumlesens-skygge/launch.sh
+./games/magnus-myggen-skumlesens-skygge/launch.sh
 ```
 
-## Lutris
+Al startlogik er samlet i `launch.sh`: eget Wine-miljø, kontrol af original-CD og D:-mapping, eksklusiv prefixlås, kontrol af XP/grafikindstilling og selve spilstarten. Der er ingen test-timer eller debuglogfil. `launch_physical.sh` er kun et bagudkompatibelt alias til samme fil; skrivebordsgenvejen peger direkte på `launch.sh`.
 
-If `lutris.yml` exists, import it as a local Lutris install script/config. The wrapper remains the canonical entry point.
+Kontrol uden spilstart:
 
-## Reference links
+```sh
+./games/magnus-myggen-skumlesens-skygge/launch.sh --check
+```
 
-The recipe may include search/reference links only. Verify legal status and provide your own copy.
+`--check` starter kortvarige Wine-registerforespørgsler; det ændrer ikke indstillinger. `--desktop` tilføjer skrivebordsnotifikation ved fejl, når `notify-send` er tilgængelig.
+
+## Forudsætninger
+
+Dette er start af en **eksisterende lokal installation**, ikke en installer:
+
+- Original-CD MM4DK monteret på `/run/media/test/MM4DK` fra `/dev/sr0`.
+- Prefix `local/runtime/mm4-graphics/prefix`, inklusive den originale installerede `MM4.exe`.
+- Den allerede brugerafprøvede private runner `local/runtime/mm4-thunk-fix/runner`.
+- Win32/Windows XP, UseSystemMemory=0 og standardrenderer.
+- Wine-desktop starter i **1024×768**; spillet vælger selv **800×600/16-bit**. Start direkte i 800×600 gav forkerte farver/layout.
+
+Lutris, ISO-udpakning og download er ikke del af startvejen. Launcheren ændrer ikke CD-mapping eller registerindstillinger for at få en forkert opsætning til at bestå. Der er ingen skjult fallback til system-Wine eller et nyt prefix.
+
+Den private runner har eksperimentelle LS01/DPMI-ændringer. Denne fungerende lokale kombination er bevaret; en urettet runner er endnu ikke verificeret med samme indstillinger. Game data, runtime, screenshots og logs følger ikke med repository'et. Et nyt checkout alene er derfor ikke spilklart.
+
+## Genvej og dokumentation
+
+- Lokal genvej: **Magnus & Myggen – Skumlesens Skygge (original-CD)** på skrivebordet og i programmenuen.
+- [LOCAL_LAUNCHER.md](LOCAL_LAUNCHER.md): detaljer, kontroller og lokale stier.
+- [notes.md](notes.md): verificerede resultater og begrænsninger.
+- `recipe.yml`: aktuel original-CD-status og EXE-checksum.
+- `lutris.yml`: valgfri lokal Linux-runner-konfiguration til samme `launch.sh`; importvejen er ikke GUI-testet.
+
+## Tests
+
+```sh
+python3 games/magnus-myggen-skumlesens-skygge/test_launch_physical.py -v
+bash -n games/magnus-myggen-skumlesens-skygge/launch.sh
+desktop-file-validate games/magnus-myggen-skumlesens-skygge/skumlesens-skygge-original-cd.desktop
+```
+
+De automatiske tests bruger fixture-ejet Wine og medier, ikke den rigtige installation. Visuel kontrol og brugerbekræftelse af spillet er særskilte beviser, ikke udledt af unit-tests eller exitkode.
+
+## Historik
+
+Den tidligere `launch.sh` var en ikke-verificeret ISO-/manuel-installationsvej og er erstattet af den fungerende original-CD-start. Den findes fortsat i Git-historikken. Diagnosearbejde og fejlede ISO/CDEmu-/Win98-forsøg er ikke alternative godkendte startveje. Ingen spil-EXE-patch er nødvendig i den afprøvede opsætning.

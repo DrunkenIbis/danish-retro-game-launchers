@@ -88,7 +88,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Magnus & Myggen: Mysteriet om det talende solur | ✅ original setup completed | ✅ user-confirmed working; clean launcher exit | ✅ bundled Wine/menu verified; full AppImage gameplay not yet confirmed |
 | Magnus & Myggen: Quizkampen (Q112DK / download Q122DK) | ✅ original setup fra CD og download-ISO | ✅ begge udgaver brugerbekræftet; Wine-GE 800×600 og CDEmu | ✅ Q112DK-AppImage brugerbekræftet med bundlet Wine/ISO; Q122DK endnu ikke pakket; host CDEmu/VHBA kræves; [detaljer](games/magnus-myggen-quizkampen-superstarter/Q112DK_APPIMAGE.md) |
 | Magnus & Myggen: Skumlesens Hævn | ✅ Original installation fra CD og verificeret download | ✅ Brugerbekræftet uden fysisk CD | ✅ Bundled Wine-GE; download-baseret pakke brugerbekræftet med ekstern ISO/installation skjult; normal afslutning |
-| Magnus & Myggen: Skumlesens Skygge | — | ✅ | — |
+| [Magnus & Myggen: Skumlesens Skygge](games/magnus-myggen-skumlesens-skygge/) | ⚠️ original CD-installation udført; automatisk geninstallation mangler | ✅ samlet `launch.sh` uden Lutris; original-CD, gameplay/mus/lyd og genvej brugerbekræftet; lokal privat Wine-runner | — ikke bygget/testet |
 | Overboard! / Shipwreckers! | ✅ original CD installation | ✅ user-approved gameplay and windowed 16-bit intro/scaling fix; see [display notes](games/overboard/DISPLAY-FIX.md) | ✅ rebuilt with bundled Wine-GE/Xephyr; scaled intro visually verified; normal exit (0); host Gamescope and CDEmu/VHBA required |
 | Peddersen og Findus i værkstedet | ✅ | ✅ gameplay verified | ✅ AppImage smoke-tested |
 | Den Lyserøde Panter: På hemmelig mission i udlandet / Passport to Peril | ✅ | ✅ | — |

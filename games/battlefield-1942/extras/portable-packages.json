@@ -1,0 +1,1282 @@
+[
+  {
+    "package": "fontconfig",
+    "architecture": "i386",
+    "version": "2.15.0-1.1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/f/fontconfig/fontconfig_2.15.0-1.1ubuntu2_i386.deb",
+    "filename": "fontconfig_2.15.0-1.1ubuntu2_i386.deb",
+    "sha256": "788c76ef5f0cfd4ad812e02cb5e05220474f801565182054dea2d593833346dc"
+  },
+  {
+    "package": "fontconfig-config",
+    "architecture": "i386",
+    "version": "2.15.0-1.1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/f/fontconfig/fontconfig-config_2.15.0-1.1ubuntu2_i386.deb",
+    "filename": "fontconfig-config_2.15.0-1.1ubuntu2_i386.deb",
+    "sha256": "65dac1ee321fa4024eed0032c02d94486d90613469de2fa1eb89ab7482136313"
+  },
+  {
+    "package": "fonts-dejavu-core",
+    "architecture": "i386",
+    "version": "2.37-8",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/f/fonts-dejavu/fonts-dejavu-core_2.37-8_all.deb",
+    "filename": "fonts-dejavu-core_2.37-8_all.deb",
+    "sha256": "40049660c194f3b8a2541fc7369efebb10e9f94bdac836a2f38fafedd10fa73a"
+  },
+  {
+    "package": "fonts-dejavu-mono",
+    "architecture": "i386",
+    "version": "2.37-8",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/f/fonts-dejavu/fonts-dejavu-mono_2.37-8_all.deb",
+    "filename": "fonts-dejavu-mono_2.37-8_all.deb",
+    "sha256": "8a599d6553307db7ecb795d2f0e5a301e03234afc75c7358b0ba43466454c89a"
+  },
+  {
+    "package": "gcc-14-base",
+    "architecture": "i386",
+    "version": "14-20240412-0ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/gcc-14-base_14-20240412-0ubuntu1_i386.deb",
+    "filename": "gcc-14-base_14-20240412-0ubuntu1_i386.deb",
+    "sha256": "378894fb99d2869bdc38492bfe5391c37ee4598845080dec1910c765ea116dc5"
+  },
+  {
+    "package": "libaom3",
+    "architecture": "i386",
+    "version": "3.8.2-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/a/aom/libaom3_3.8.2-2build1_i386.deb",
+    "filename": "libaom3_3.8.2-2build1_i386.deb",
+    "sha256": "87c7374d5ef88e844fd4ddcf9fe0bc8e6e627be28d4eeda8e2ae06edcd94fc9e"
+  },
+  {
+    "package": "libapparmor1",
+    "architecture": "i386",
+    "version": "4.0.0-beta3-0ubuntu3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/a/apparmor/libapparmor1_4.0.0-beta3-0ubuntu3_i386.deb",
+    "filename": "libapparmor1_4.0.0-beta3-0ubuntu3_i386.deb",
+    "sha256": "7a15231f91aaf65eebc9b9e85139ce27b40e6e835ae74139e9dca373856ac7eb"
+  },
+  {
+    "package": "libasound2-data",
+    "architecture": "i386",
+    "version": "1.2.11-1build2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/a/alsa-lib/libasound2-data_1.2.11-1build2_all.deb",
+    "filename": "libasound2-data_1.2.11-1build2_all.deb",
+    "sha256": "a9e6326591ad5867f0783367f4708f145627ec95edfd8124d70d78b7516db4f1"
+  },
+  {
+    "package": "libasound2-plugins",
+    "architecture": "i386",
+    "version": "1.2.7.1-1ubuntu5",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/a/alsa-plugins/libasound2-plugins_1.2.7.1-1ubuntu5_i386.deb",
+    "filename": "libasound2-plugins_1.2.7.1-1ubuntu5_i386.deb",
+    "sha256": "19e08267cbc085ad9b10ba0c1ea035e6a7e5105c1c78cc4f1516948f5282907e"
+  },
+  {
+    "package": "libasound2t64",
+    "architecture": "i386",
+    "version": "1.2.11-1build2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/a/alsa-lib/libasound2t64_1.2.11-1build2_i386.deb",
+    "filename": "libasound2t64_1.2.11-1build2_i386.deb",
+    "sha256": "41b1a0a4711672a0c60cf30abffe1ff69ed0aa96eed549d3aa1883bc1249485e"
+  },
+  {
+    "package": "libasyncns0",
+    "architecture": "i386",
+    "version": "0.8-6build4",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/liba/libasyncns/libasyncns0_0.8-6build4_i386.deb",
+    "filename": "libasyncns0_0.8-6build4_i386.deb",
+    "sha256": "c043c5b050826a2d28d9a0c62f29f5bb6e2d1d953c7f543e8de28c42ffc6ef25"
+  },
+  {
+    "package": "libatomic1",
+    "architecture": "i386",
+    "version": "14-20240412-0ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/libatomic1_14-20240412-0ubuntu1_i386.deb",
+    "filename": "libatomic1_14-20240412-0ubuntu1_i386.deb",
+    "sha256": "22c8d0aa2b67fe888eec2a707a4a6fe765179bf8c64627e1237af969d62e0d33"
+  },
+  {
+    "package": "libavcodec60",
+    "architecture": "i386",
+    "version": "7:6.1.1-3ubuntu5",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/f/ffmpeg/libavcodec60_6.1.1-3ubuntu5_i386.deb",
+    "filename": "libavcodec60_6.1.1-3ubuntu5_i386.deb",
+    "sha256": "52a9cb7f74680aa8e661b3daa0a1a75f0571da4e9ef35e53ca3965d455a52476"
+  },
+  {
+    "package": "libavutil58",
+    "architecture": "i386",
+    "version": "7:6.1.1-3ubuntu5",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/f/ffmpeg/libavutil58_6.1.1-3ubuntu5_i386.deb",
+    "filename": "libavutil58_6.1.1-3ubuntu5_i386.deb",
+    "sha256": "16acf94aa13b298688baeafed737125fc2aaec70427dbee9d8e87b790c5e02f0"
+  },
+  {
+    "package": "libblkid1",
+    "architecture": "i386",
+    "version": "2.39.3-9ubuntu6",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/u/util-linux/libblkid1_2.39.3-9ubuntu6_i386.deb",
+    "filename": "libblkid1_2.39.3-9ubuntu6_i386.deb",
+    "sha256": "7feee2e03d4841c1dbe3e1ded7358c8d0c1f9b68f804a040eb3e4717a53d5f0f"
+  },
+  {
+    "package": "libbrotli1",
+    "architecture": "i386",
+    "version": "1.1.0-2build2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/b/brotli/libbrotli1_1.1.0-2build2_i386.deb",
+    "filename": "libbrotli1_1.1.0-2build2_i386.deb",
+    "sha256": "4771011aa83c0a09e3841b4f8642a4243ea6bd9a1f38f208c4a7831a39500335"
+  },
+  {
+    "package": "libbsd0",
+    "architecture": "i386",
+    "version": "0.12.1-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libb/libbsd/libbsd0_0.12.1-1build1_i386.deb",
+    "filename": "libbsd0_0.12.1-1build1_i386.deb",
+    "sha256": "f3c95fe209425983eca351a14441a380108454b3efdaf831c40c2ec563c7fa83"
+  },
+  {
+    "package": "libbz2-1.0",
+    "architecture": "i386",
+    "version": "1.0.8-5.1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/b/bzip2/libbz2-1.0_1.0.8-5.1_i386.deb",
+    "filename": "libbz2-1.0_1.0.8-5.1_i386.deb",
+    "sha256": "db8bcc3f7aebc48d356a52fb071da1653e4c6fc7c3f6df9020911dc7ea80677a"
+  },
+  {
+    "package": "libc6",
+    "architecture": "i386",
+    "version": "2.39-0ubuntu8",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6_2.39-0ubuntu8_i386.deb",
+    "filename": "libc6_2.39-0ubuntu8_i386.deb",
+    "sha256": "8928db539155135cc6943677d6ee158fe6380653188716e16daf9de7094e6476"
+  },
+  {
+    "package": "libcairo-gobject2",
+    "architecture": "i386",
+    "version": "1.18.0-3build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/c/cairo/libcairo-gobject2_1.18.0-3build1_i386.deb",
+    "filename": "libcairo-gobject2_1.18.0-3build1_i386.deb",
+    "sha256": "1c82a8bb873d7a99e5117516f7aa6436413fc62c7725989409352714d2687d93"
+  },
+  {
+    "package": "libcairo2",
+    "architecture": "i386",
+    "version": "1.18.0-3build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/c/cairo/libcairo2_1.18.0-3build1_i386.deb",
+    "filename": "libcairo2_1.18.0-3build1_i386.deb",
+    "sha256": "bfe6e60b6592fcc6a4d152600b47ad7a9df04569498e11e1876ae14d084a7467"
+  },
+  {
+    "package": "libcap2",
+    "architecture": "i386",
+    "version": "1:2.66-5ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libc/libcap2/libcap2_2.66-5ubuntu2_i386.deb",
+    "filename": "libcap2_2.66-5ubuntu2_i386.deb",
+    "sha256": "a96889272e1bbd2c28eefa75968978ec634c1b164d3f3f1a72a2dc3420b62b7a"
+  },
+  {
+    "package": "libcodec2-1.2",
+    "architecture": "i386",
+    "version": "1.2.0-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/c/codec2/libcodec2-1.2_1.2.0-2build1_i386.deb",
+    "filename": "libcodec2-1.2_1.2.0-2build1_i386.deb",
+    "sha256": "2622d6f9989a1f607302dee307f3076284060235bd73ae1fe5281177cc0001a8"
+  },
+  {
+    "package": "libdatrie1",
+    "architecture": "i386",
+    "version": "0.2.13-3build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libd/libdatrie/libdatrie1_0.2.13-3build1_i386.deb",
+    "filename": "libdatrie1_0.2.13-3build1_i386.deb",
+    "sha256": "67bf1205736b60f1defb952070e01cb76fa171dcb86c9d3a5d93322a69d7988a"
+  },
+  {
+    "package": "libdav1d7",
+    "architecture": "i386",
+    "version": "1.4.1-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/d/dav1d/libdav1d7_1.4.1-1build1_i386.deb",
+    "filename": "libdav1d7_1.4.1-1build1_i386.deb",
+    "sha256": "b44a73a45f8178cfb03b0c33d0b9daa2d7787fd97e5f622ceb51ca7a40f669b3"
+  },
+  {
+    "package": "libdb5.3t64",
+    "architecture": "i386",
+    "version": "5.3.28+dfsg2-7",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/d/db5.3/libdb5.3t64_5.3.28+dfsg2-7_i386.deb",
+    "filename": "libdb5.3t64_5.3.28+dfsg2-7_i386.deb",
+    "sha256": "2da780c18350029f00599ac28726b74a23e37d58656f2a601cbde924c4a8ff47"
+  },
+  {
+    "package": "libdbus-1-3",
+    "architecture": "i386",
+    "version": "1.14.10-4ubuntu4",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/d/dbus/libdbus-1-3_1.14.10-4ubuntu4_i386.deb",
+    "filename": "libdbus-1-3_1.14.10-4ubuntu4_i386.deb",
+    "sha256": "95334b92c45a08c2cc86b7c08bf547aef80686e7642351044aac7c8be35adafc"
+  },
+  {
+    "package": "libdeflate0",
+    "architecture": "i386",
+    "version": "1.19-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libd/libdeflate/libdeflate0_1.19-1build1_i386.deb",
+    "filename": "libdeflate0_1.19-1build1_i386.deb",
+    "sha256": "a25097d5ea490239bc918dd8f454a5e5fc51971bb0c10259a80de8a2470a44db"
+  },
+  {
+    "package": "libdrm-amdgpu1",
+    "architecture": "i386",
+    "version": "2.4.120-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libd/libdrm/libdrm-amdgpu1_2.4.120-2build1_i386.deb",
+    "filename": "libdrm-amdgpu1_2.4.120-2build1_i386.deb",
+    "sha256": "a7ab3619b5c32ee0e1006e75073ae9369cd81a990879ab93518fa18cdee9d60d"
+  },
+  {
+    "package": "libdrm-common",
+    "architecture": "i386",
+    "version": "2.4.120-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libd/libdrm/libdrm-common_2.4.120-2build1_all.deb",
+    "filename": "libdrm-common_2.4.120-2build1_all.deb",
+    "sha256": "84d60f8726a47b57c2ba9bd4105d838ff8554b7309035a61543e2bee4ed7914a"
+  },
+  {
+    "package": "libdrm-intel1",
+    "architecture": "i386",
+    "version": "2.4.120-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libd/libdrm/libdrm-intel1_2.4.120-2build1_i386.deb",
+    "filename": "libdrm-intel1_2.4.120-2build1_i386.deb",
+    "sha256": "b793d9bfc24d6f31543aec54f85abbc2e51cdcc761d4ce760ad00c3415cfc5c5"
+  },
+  {
+    "package": "libdrm-nouveau2",
+    "architecture": "i386",
+    "version": "2.4.120-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libd/libdrm/libdrm-nouveau2_2.4.120-2build1_i386.deb",
+    "filename": "libdrm-nouveau2_2.4.120-2build1_i386.deb",
+    "sha256": "d0c9dcbf9d710a8b90a521767d758dc03db6eb47b1aa43bc08ba52052c172444"
+  },
+  {
+    "package": "libdrm-radeon1",
+    "architecture": "i386",
+    "version": "2.4.120-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libd/libdrm/libdrm-radeon1_2.4.120-2build1_i386.deb",
+    "filename": "libdrm-radeon1_2.4.120-2build1_i386.deb",
+    "sha256": "9c2facad8a3de40274e71d6617f6ce400a48b6c5d7a2202f46a9b0e37a1ed6a9"
+  },
+  {
+    "package": "libdrm2",
+    "architecture": "i386",
+    "version": "2.4.120-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libd/libdrm/libdrm2_2.4.120-2build1_i386.deb",
+    "filename": "libdrm2_2.4.120-2build1_i386.deb",
+    "sha256": "a9dac265ad3b5f0493367df3f820312948f63f4733a280510da6a021cb9482b1"
+  },
+  {
+    "package": "libedit2",
+    "architecture": "i386",
+    "version": "3.1-20230828-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libe/libedit/libedit2_3.1-20230828-1build1_i386.deb",
+    "filename": "libedit2_3.1-20230828-1build1_i386.deb",
+    "sha256": "d6a6d9c225f49b9dd6f0e9e7a172c4f362dd792c8755919ad9644745f0225ad8"
+  },
+  {
+    "package": "libelf1t64",
+    "architecture": "i386",
+    "version": "0.190-1.1build4",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/e/elfutils/libelf1t64_0.190-1.1build4_i386.deb",
+    "filename": "libelf1t64_0.190-1.1build4_i386.deb",
+    "sha256": "49d4a3008c1aea6fc4c5ad14bb8c0ebae95820b79bfc800856cdeeedaf451448"
+  },
+  {
+    "package": "libexpat1",
+    "architecture": "i386",
+    "version": "2.6.1-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/e/expat/libexpat1_2.6.1-2build1_i386.deb",
+    "filename": "libexpat1_2.6.1-2build1_i386.deb",
+    "sha256": "04fe448721ff380da3fd051799c1eea94191bdc8dafd94f4cc4da6cf6eb83838"
+  },
+  {
+    "package": "libffi8",
+    "architecture": "i386",
+    "version": "3.4.6-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libf/libffi/libffi8_3.4.6-1build1_i386.deb",
+    "filename": "libffi8_3.4.6-1build1_i386.deb",
+    "sha256": "8f16d0a794a9cadb910171b65119ec767fce0850ec8cd0212f7f4f31d528d44f"
+  },
+  {
+    "package": "libflac12t64",
+    "architecture": "i386",
+    "version": "1.4.3+ds-2.1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/f/flac/libflac12t64_1.4.3+ds-2.1ubuntu2_i386.deb",
+    "filename": "libflac12t64_1.4.3+ds-2.1ubuntu2_i386.deb",
+    "sha256": "50a92a9332a1226c06210784d0ebe513b7c99acd2c899e98c325adc80e419ffc"
+  },
+  {
+    "package": "libfontconfig1",
+    "architecture": "i386",
+    "version": "2.15.0-1.1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/f/fontconfig/libfontconfig1_2.15.0-1.1ubuntu2_i386.deb",
+    "filename": "libfontconfig1_2.15.0-1.1ubuntu2_i386.deb",
+    "sha256": "76e703ecbe58e1cd104fcba6f34e2eeb22bfe7c5a907db2470dba2f1f3146bf3"
+  },
+  {
+    "package": "libfreetype6",
+    "architecture": "i386",
+    "version": "2.13.2+dfsg-1build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/f/freetype/libfreetype6_2.13.2+dfsg-1build3_i386.deb",
+    "filename": "libfreetype6_2.13.2+dfsg-1build3_i386.deb",
+    "sha256": "15e4ee2be0907c81d9321346006ae3d909cf86325cc68d57ea6a52c95d3a8054"
+  },
+  {
+    "package": "libfribidi0",
+    "architecture": "i386",
+    "version": "1.0.13-3build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/f/fribidi/libfribidi0_1.0.13-3build1_i386.deb",
+    "filename": "libfribidi0_1.0.13-3build1_i386.deb",
+    "sha256": "4027f29892abef5d85976367fe3a8d5fcb9dbbbeb0c5f83bce9161021ea88c3e"
+  },
+  {
+    "package": "libgcc-s1",
+    "architecture": "i386",
+    "version": "14-20240412-0ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/libgcc-s1_14-20240412-0ubuntu1_i386.deb",
+    "filename": "libgcc-s1_14-20240412-0ubuntu1_i386.deb",
+    "sha256": "43cb16a9a1cbfcb90d86aeb445a1ab7ba60bd6d0acd44679ffad1c0dee11b10e"
+  },
+  {
+    "package": "libgcrypt20",
+    "architecture": "i386",
+    "version": "1.10.3-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libg/libgcrypt20/libgcrypt20_1.10.3-2build1_i386.deb",
+    "filename": "libgcrypt20_1.10.3-2build1_i386.deb",
+    "sha256": "d37f568a2ce30c58d59d82ae0428ecdc976db3c5c66f418ea961bc959d773146"
+  },
+  {
+    "package": "libgdk-pixbuf-2.0-0",
+    "architecture": "i386",
+    "version": "2.42.10+dfsg-3ubuntu3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gdk-pixbuf/libgdk-pixbuf-2.0-0_2.42.10+dfsg-3ubuntu3_i386.deb",
+    "filename": "libgdk-pixbuf-2.0-0_2.42.10+dfsg-3ubuntu3_i386.deb",
+    "sha256": "637e90cc22eaccee501265eb34a68d86791bc24636a9ef32255b7a1f10faec02"
+  },
+  {
+    "package": "libgdk-pixbuf2.0-common",
+    "architecture": "i386",
+    "version": "2.42.10+dfsg-3ubuntu3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gdk-pixbuf/libgdk-pixbuf2.0-common_2.42.10+dfsg-3ubuntu3_all.deb",
+    "filename": "libgdk-pixbuf2.0-common_2.42.10+dfsg-3ubuntu3_all.deb",
+    "sha256": "851ed73005dad3178d1022191e84311c3eb2a84159347b6542308449dfe402e0"
+  },
+  {
+    "package": "libgl1",
+    "architecture": "i386",
+    "version": "1.7.0-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libg/libglvnd/libgl1_1.7.0-1build1_i386.deb",
+    "filename": "libgl1_1.7.0-1build1_i386.deb",
+    "sha256": "50dde40a681b15732590b1faa896263a7b4f0588a136e5a38ef2c3b534e27e7e"
+  },
+  {
+    "package": "libgl1-mesa-dri",
+    "architecture": "i386",
+    "version": "24.0.5-1ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/m/mesa/libgl1-mesa-dri_24.0.5-1ubuntu1_i386.deb",
+    "filename": "libgl1-mesa-dri_24.0.5-1ubuntu1_i386.deb",
+    "sha256": "276f501aa6b840fda8d373dcc46726b0eb3295f56295f5da52b5f592c09da9e9"
+  },
+  {
+    "package": "libglapi-mesa",
+    "architecture": "i386",
+    "version": "24.0.5-1ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/m/mesa/libglapi-mesa_24.0.5-1ubuntu1_i386.deb",
+    "filename": "libglapi-mesa_24.0.5-1ubuntu1_i386.deb",
+    "sha256": "331fa2a5a2e7539f54021534ab6a019e9248a7f9378e00fee14066d0aab3d330"
+  },
+  {
+    "package": "libglib2.0-0t64",
+    "architecture": "i386",
+    "version": "2.80.0-6ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/glib2.0/libglib2.0-0t64_2.80.0-6ubuntu1_i386.deb",
+    "filename": "libglib2.0-0t64_2.80.0-6ubuntu1_i386.deb",
+    "sha256": "5776b08c25abad8b39e66fed77295c9ae35a7bed684e317ee213cf596c3cc093"
+  },
+  {
+    "package": "libglvnd0",
+    "architecture": "i386",
+    "version": "1.7.0-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libg/libglvnd/libglvnd0_1.7.0-1build1_i386.deb",
+    "filename": "libglvnd0_1.7.0-1build1_i386.deb",
+    "sha256": "5aa0c77521964c4c7b685c82bcc58d2eae81d35c045114bd6c92df4e4b4f5920"
+  },
+  {
+    "package": "libglx-mesa0",
+    "architecture": "i386",
+    "version": "24.0.5-1ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/m/mesa/libglx-mesa0_24.0.5-1ubuntu1_i386.deb",
+    "filename": "libglx-mesa0_24.0.5-1ubuntu1_i386.deb",
+    "sha256": "432217132ea36d83935802ab26ce6a0eb8e1523cac3e26eb21cb06caf3db2147"
+  },
+  {
+    "package": "libglx0",
+    "architecture": "i386",
+    "version": "1.7.0-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libg/libglvnd/libglx0_1.7.0-1build1_i386.deb",
+    "filename": "libglx0_1.7.0-1build1_i386.deb",
+    "sha256": "47d45e15c4d4113d70d7ae348def026bb6f9db28199a496c6149faca39237e53"
+  },
+  {
+    "package": "libgmp10",
+    "architecture": "i386",
+    "version": "2:6.3.0+dfsg-2ubuntu6",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gmp/libgmp10_6.3.0+dfsg-2ubuntu6_i386.deb",
+    "filename": "libgmp10_6.3.0+dfsg-2ubuntu6_i386.deb",
+    "sha256": "36f8924eedfc39555e8c9cc022ea75003c4881ab0cb99d3b9d809ea30ab09dc5"
+  },
+  {
+    "package": "libgnutls30t64",
+    "architecture": "i386",
+    "version": "3.8.3-1.1ubuntu3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gnutls28/libgnutls30t64_3.8.3-1.1ubuntu3_i386.deb",
+    "filename": "libgnutls30t64_3.8.3-1.1ubuntu3_i386.deb",
+    "sha256": "d024a03ffdab051ef03453afbe84acd9a98a508834d1c057beede7baf906c170"
+  },
+  {
+    "package": "libgomp1",
+    "architecture": "i386",
+    "version": "14-20240412-0ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/libgomp1_14-20240412-0ubuntu1_i386.deb",
+    "filename": "libgomp1_14-20240412-0ubuntu1_i386.deb",
+    "sha256": "2d78796a9aa1a796434567121054f6ca8cedf3c8eca9aa02065d1cfff1ff6457"
+  },
+  {
+    "package": "libgpg-error0",
+    "architecture": "i386",
+    "version": "1.47-3build2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libg/libgpg-error/libgpg-error0_1.47-3build2_i386.deb",
+    "filename": "libgpg-error0_1.47-3build2_i386.deb",
+    "sha256": "4017ba46e2684f0cf75c0f562ea65d1bfa059d889359b1c7c239d49ba03b2c15"
+  },
+  {
+    "package": "libgraphite2-3",
+    "architecture": "i386",
+    "version": "1.3.14-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/graphite2/libgraphite2-3_1.3.14-2build1_i386.deb",
+    "filename": "libgraphite2-3_1.3.14-2build1_i386.deb",
+    "sha256": "ae4bd32a4fe3b849d4f30c9e5db810aaf96f8be3692d8106cd274044d657f804"
+  },
+  {
+    "package": "libgsm1",
+    "architecture": "i386",
+    "version": "1.0.22-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/libg/libgsm/libgsm1_1.0.22-1build1_i386.deb",
+    "filename": "libgsm1_1.0.22-1build1_i386.deb",
+    "sha256": "83a329fbe8a2e662936e2436e35e6bef7d47ab22e669a871340973b97555fe79"
+  },
+  {
+    "package": "libharfbuzz0b",
+    "architecture": "i386",
+    "version": "8.3.0-2build2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/h/harfbuzz/libharfbuzz0b_8.3.0-2build2_i386.deb",
+    "filename": "libharfbuzz0b_8.3.0-2build2_i386.deb",
+    "sha256": "51d18838d78b9db28eafe640fd97fee8484848e0e830935fe0de25cad67461f5"
+  },
+  {
+    "package": "libhogweed6t64",
+    "architecture": "i386",
+    "version": "3.9.1-2.2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/n/nettle/libhogweed6t64_3.9.1-2.2build1_i386.deb",
+    "filename": "libhogweed6t64_3.9.1-2.2build1_i386.deb",
+    "sha256": "18f4daa5a4aaa15738d5d9c224e0fc4ec5e85e17130586b82e68e2d04bd01e92"
+  },
+  {
+    "package": "libicu74",
+    "architecture": "i386",
+    "version": "74.2-1ubuntu3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu74_74.2-1ubuntu3_i386.deb",
+    "filename": "libicu74_74.2-1ubuntu3_i386.deb",
+    "sha256": "39a0c3070dc5d3e7a809219b86a8e3edf04bd83a73b4ada0e6b06d8b1ef3d8be"
+  },
+  {
+    "package": "libidn2-0",
+    "architecture": "i386",
+    "version": "2.3.7-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libi/libidn2/libidn2-0_2.3.7-2build1_i386.deb",
+    "filename": "libidn2-0_2.3.7-2build1_i386.deb",
+    "sha256": "42c10f52daf8d9f126268e76e2ae239cc26f5bdcbd2d760ea6c95204d66abb06"
+  },
+  {
+    "package": "libjack-jackd2-0",
+    "architecture": "i386",
+    "version": "1.9.21~dfsg-3ubuntu3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/j/jackd2/libjack-jackd2-0_1.9.21~dfsg-3ubuntu3_i386.deb",
+    "filename": "libjack-jackd2-0_1.9.21~dfsg-3ubuntu3_i386.deb",
+    "sha256": "ef6f3c722d50899c2772ac54d9602a691eb5f43419fd6727a936d6ee191e662c"
+  },
+  {
+    "package": "libjbig0",
+    "architecture": "i386",
+    "version": "2.1-6.1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/j/jbigkit/libjbig0_2.1-6.1ubuntu2_i386.deb",
+    "filename": "libjbig0_2.1-6.1ubuntu2_i386.deb",
+    "sha256": "09457723cebe6195ec06469f3996045f47d46907022b14041357ec0a8477ae92"
+  },
+  {
+    "package": "libjpeg-turbo8",
+    "architecture": "i386",
+    "version": "2.1.5-2ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libj/libjpeg-turbo/libjpeg-turbo8_2.1.5-2ubuntu2_i386.deb",
+    "filename": "libjpeg-turbo8_2.1.5-2ubuntu2_i386.deb",
+    "sha256": "2477b1656af5f17aa3045b5c03c77b14524b824484047c1433d70ea2060865bd"
+  },
+  {
+    "package": "libjpeg8",
+    "architecture": "i386",
+    "version": "8c-2ubuntu11",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libj/libjpeg8-empty/libjpeg8_8c-2ubuntu11_i386.deb",
+    "filename": "libjpeg8_8c-2ubuntu11_i386.deb",
+    "sha256": "37f0a9ae718ae8e96d1b468ca8257cf81f90b5abcf12eedaf99885bbf1785f73"
+  },
+  {
+    "package": "libllvm17t64",
+    "architecture": "i386",
+    "version": "1:17.0.6-9ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/l/llvm-toolchain-17/libllvm17t64_17.0.6-9ubuntu1_i386.deb",
+    "filename": "libllvm17t64_17.0.6-9ubuntu1_i386.deb",
+    "sha256": "4534ebe095fa1654d12e0a54dfba3aac3099929f4a0b454a5b11bd7332064b09"
+  },
+  {
+    "package": "liblz4-1",
+    "architecture": "i386",
+    "version": "1.9.4-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/l/lz4/liblz4-1_1.9.4-1build1_i386.deb",
+    "filename": "liblz4-1_1.9.4-1build1_i386.deb",
+    "sha256": "aa5b41509d4e38c3bf13c493be4068b9ee0a505119a8df96b9ff7574b57a0398"
+  },
+  {
+    "package": "liblzma5",
+    "architecture": "i386",
+    "version": "5.6.1+really5.4.5-1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/x/xz-utils/liblzma5_5.6.1+really5.4.5-1_i386.deb",
+    "filename": "liblzma5_5.6.1+really5.4.5-1_i386.deb",
+    "sha256": "51006b0dc400a0bd1f3f346e89ef9e714e1c703b85cb917d022c6578c01018c0"
+  },
+  {
+    "package": "libmd0",
+    "architecture": "i386",
+    "version": "1.1.0-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libm/libmd/libmd0_1.1.0-2build1_i386.deb",
+    "filename": "libmd0_1.1.0-2build1_i386.deb",
+    "sha256": "227ef7a3f53a29cae8eea1d48f315f79335de794ec34a32f1acf71de6eb09633"
+  },
+  {
+    "package": "libmount1",
+    "architecture": "i386",
+    "version": "2.39.3-9ubuntu6",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/u/util-linux/libmount1_2.39.3-9ubuntu6_i386.deb",
+    "filename": "libmount1_2.39.3-9ubuntu6_i386.deb",
+    "sha256": "b732bcbd0612d3608a7e60e714a2cee86e2f1cf71cad6b7f2f1eb2d38e370639"
+  },
+  {
+    "package": "libmp3lame0",
+    "architecture": "i386",
+    "version": "3.100-6build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/l/lame/libmp3lame0_3.100-6build1_i386.deb",
+    "filename": "libmp3lame0_3.100-6build1_i386.deb",
+    "sha256": "fa3b262eef971189ed18b050a4eeccf484731efa7d165551ec1b58ce71d9f405"
+  },
+  {
+    "package": "libmpg123-0t64",
+    "architecture": "i386",
+    "version": "1.32.5-1ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/m/mpg123/libmpg123-0t64_1.32.5-1ubuntu1_i386.deb",
+    "filename": "libmpg123-0t64_1.32.5-1ubuntu1_i386.deb",
+    "sha256": "eecd90f3dd2148016fdc1bbc5386fc9dce6716e23c1babeaa5f44584276f11c8"
+  },
+  {
+    "package": "libnettle8t64",
+    "architecture": "i386",
+    "version": "3.9.1-2.2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/n/nettle/libnettle8t64_3.9.1-2.2build1_i386.deb",
+    "filename": "libnettle8t64_3.9.1-2.2build1_i386.deb",
+    "sha256": "860e79306727ccc0ffc6bb8e6d4d6e9743ede828b34c65b62d366e150f35fd53"
+  },
+  {
+    "package": "libnuma1",
+    "architecture": "i386",
+    "version": "2.0.18-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/n/numactl/libnuma1_2.0.18-1build1_i386.deb",
+    "filename": "libnuma1_2.0.18-1build1_i386.deb",
+    "sha256": "e292ddc95cc1b4f8fc1ce497fd0ae34a7321effcf774ed62998904c33e6223c8"
+  },
+  {
+    "package": "libogg0",
+    "architecture": "i386",
+    "version": "1.3.5-3build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libo/libogg/libogg0_1.3.5-3build1_i386.deb",
+    "filename": "libogg0_1.3.5-3build1_i386.deb",
+    "sha256": "cf29d47c6ae596851f0003380b5913c8bda877b5fc1129596ca1bdaafd817c41"
+  },
+  {
+    "package": "libopenjp2-7",
+    "architecture": "i386",
+    "version": "2.5.0-2build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/o/openjpeg2/libopenjp2-7_2.5.0-2build3_i386.deb",
+    "filename": "libopenjp2-7_2.5.0-2build3_i386.deb",
+    "sha256": "bf8b2becb6e422add4b9d65973c90668fecd6d12a986309d48dc33021806fff3"
+  },
+  {
+    "package": "libopus0",
+    "architecture": "i386",
+    "version": "1.4-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/o/opus/libopus0_1.4-1build1_i386.deb",
+    "filename": "libopus0_1.4-1build1_i386.deb",
+    "sha256": "ae30392beb8909b9ce98c8c5783c93981c87f8780f3346881e4448f90450529b"
+  },
+  {
+    "package": "libp11-kit0",
+    "architecture": "i386",
+    "version": "0.25.3-4ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/p/p11-kit/libp11-kit0_0.25.3-4ubuntu2_i386.deb",
+    "filename": "libp11-kit0_0.25.3-4ubuntu2_i386.deb",
+    "sha256": "13426baeee36b91f7bc188fc3bc5ee63cd8ef9431fc4fc0bfc4b028d77ccf737"
+  },
+  {
+    "package": "libpango-1.0-0",
+    "architecture": "i386",
+    "version": "1.52.1+ds-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/p/pango1.0/libpango-1.0-0_1.52.1+ds-1build1_i386.deb",
+    "filename": "libpango-1.0-0_1.52.1+ds-1build1_i386.deb",
+    "sha256": "6b3b7d8a17d872f47de9ebb2ff031a15827f8b2fc55747b915b060ec92fe608f"
+  },
+  {
+    "package": "libpangocairo-1.0-0",
+    "architecture": "i386",
+    "version": "1.52.1+ds-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/p/pango1.0/libpangocairo-1.0-0_1.52.1+ds-1build1_i386.deb",
+    "filename": "libpangocairo-1.0-0_1.52.1+ds-1build1_i386.deb",
+    "sha256": "1e794da07cd1a1e16a7cb1a1f56889e114197938829b9bac725b84d3c8317620"
+  },
+  {
+    "package": "libpangoft2-1.0-0",
+    "architecture": "i386",
+    "version": "1.52.1+ds-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/p/pango1.0/libpangoft2-1.0-0_1.52.1+ds-1build1_i386.deb",
+    "filename": "libpangoft2-1.0-0_1.52.1+ds-1build1_i386.deb",
+    "sha256": "11afab6cbe7dd5886e5dd035a8a435d1d4111dafb546ad9a45dab912b6f150c6"
+  },
+  {
+    "package": "libpciaccess0",
+    "architecture": "i386",
+    "version": "0.17-3build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libp/libpciaccess/libpciaccess0_0.17-3build1_i386.deb",
+    "filename": "libpciaccess0_0.17-3build1_i386.deb",
+    "sha256": "c0ef42cdbde5ad72d4504bf6299dba20582c04eb67707bcbab81580238c40746"
+  },
+  {
+    "package": "libpcre2-8-0",
+    "architecture": "i386",
+    "version": "10.42-4ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/p/pcre2/libpcre2-8-0_10.42-4ubuntu2_i386.deb",
+    "filename": "libpcre2-8-0_10.42-4ubuntu2_i386.deb",
+    "sha256": "c9efdd658ee2fc60b231b92469b9dc2defcdda6b91432ccc15afd2587dac3102"
+  },
+  {
+    "package": "libpixman-1-0",
+    "architecture": "i386",
+    "version": "0.42.2-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/p/pixman/libpixman-1-0_0.42.2-1build1_i386.deb",
+    "filename": "libpixman-1-0_0.42.2-1build1_i386.deb",
+    "sha256": "4128d6052319e7183e162075cb989e547710f4bd11c47df41851298a85b4d618"
+  },
+  {
+    "package": "libpng16-16t64",
+    "architecture": "i386",
+    "version": "1.6.43-5build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libp/libpng1.6/libpng16-16t64_1.6.43-5build1_i386.deb",
+    "filename": "libpng16-16t64_1.6.43-5build1_i386.deb",
+    "sha256": "da5ac91c39bae3d288cee54d11562357fe133bda03a28212bc882d618ffa771f"
+  },
+  {
+    "package": "libpulse0",
+    "architecture": "i386",
+    "version": "1:16.1+dfsg1-2ubuntu10",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/p/pulseaudio/libpulse0_16.1+dfsg1-2ubuntu10_i386.deb",
+    "filename": "libpulse0_16.1+dfsg1-2ubuntu10_i386.deb",
+    "sha256": "dffe76f8c5db9b1b600a2707525ae73d3e29b3e7aa198836a37e75b57deb1d0b"
+  },
+  {
+    "package": "librsvg2-2",
+    "architecture": "i386",
+    "version": "2.58.0+dfsg-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libr/librsvg/librsvg2-2_2.58.0+dfsg-1build1_i386.deb",
+    "filename": "librsvg2-2_2.58.0+dfsg-1build1_i386.deb",
+    "sha256": "3567f1f26dddf2a9fdfa49e3e12cc2ccf32c131618fb90e9791ff4456628f472"
+  },
+  {
+    "package": "libsamplerate0",
+    "architecture": "i386",
+    "version": "0.2.2-4build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libs/libsamplerate/libsamplerate0_0.2.2-4build1_i386.deb",
+    "filename": "libsamplerate0_0.2.2-4build1_i386.deb",
+    "sha256": "88715155fef5341f7616a669bd5f2cc111e9eabd662027397dd8f88095294495"
+  },
+  {
+    "package": "libselinux1",
+    "architecture": "i386",
+    "version": "3.5-2ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libs/libselinux/libselinux1_3.5-2ubuntu2_i386.deb",
+    "filename": "libselinux1_3.5-2ubuntu2_i386.deb",
+    "sha256": "e76f39f642a70badee6c352546b06123840d042f6046f938410d450b7fca86ab"
+  },
+  {
+    "package": "libsensors-config",
+    "architecture": "i386",
+    "version": "1:3.6.0-9build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/l/lm-sensors/libsensors-config_3.6.0-9build1_all.deb",
+    "filename": "libsensors-config_3.6.0-9build1_all.deb",
+    "sha256": "148103a436fd273dabfe0fe41dc54873df46227b59b2c7ac7339d7e2ddfd033b"
+  },
+  {
+    "package": "libsensors5",
+    "architecture": "i386",
+    "version": "1:3.6.0-9build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/l/lm-sensors/libsensors5_3.6.0-9build1_i386.deb",
+    "filename": "libsensors5_3.6.0-9build1_i386.deb",
+    "sha256": "ff697377624c53d6b3a1ffd840cb9c438e383f7fb6c2bc3fc5038537a4691c63"
+  },
+  {
+    "package": "libsharpyuv0",
+    "architecture": "i386",
+    "version": "1.3.2-0.4build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libw/libwebp/libsharpyuv0_1.3.2-0.4build3_i386.deb",
+    "filename": "libsharpyuv0_1.3.2-0.4build3_i386.deb",
+    "sha256": "25f1a98cbc8e7c444d7ecfdc2702afbde41c30ddb929f0950d7dc9464d755949"
+  },
+  {
+    "package": "libshine3",
+    "architecture": "i386",
+    "version": "3.1.1-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/s/shine/libshine3_3.1.1-2build1_i386.deb",
+    "filename": "libshine3_3.1.1-2build1_i386.deb",
+    "sha256": "44018830e029305f9ea0322cac93ce1628e4f80302244119d45748b14614a193"
+  },
+  {
+    "package": "libsnappy1v5",
+    "architecture": "i386",
+    "version": "1.1.10-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/s/snappy/libsnappy1v5_1.1.10-1build1_i386.deb",
+    "filename": "libsnappy1v5_1.1.10-1build1_i386.deb",
+    "sha256": "a0f3539cac84662370ba9825ecb445af60daaa8a363fc4a4c9e087d0ae73b960"
+  },
+  {
+    "package": "libsndfile1",
+    "architecture": "i386",
+    "version": "1.2.2-1ubuntu5",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libs/libsndfile/libsndfile1_1.2.2-1ubuntu5_i386.deb",
+    "filename": "libsndfile1_1.2.2-1ubuntu5_i386.deb",
+    "sha256": "8c491569c0ca7bd6845b4706236921bbb01b15984f13bba6e6a2ccebe80ed033"
+  },
+  {
+    "package": "libsoxr0",
+    "architecture": "i386",
+    "version": "0.1.3-4build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/libs/libsoxr/libsoxr0_0.1.3-4build3_i386.deb",
+    "filename": "libsoxr0_0.1.3-4build3_i386.deb",
+    "sha256": "487c1bf0f93b1d295811f212eda704186ffa6a15e982983c694c491ce49ad0fa"
+  },
+  {
+    "package": "libspeex1",
+    "architecture": "i386",
+    "version": "1.2.1-2ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/s/speex/libspeex1_1.2.1-2ubuntu2_i386.deb",
+    "filename": "libspeex1_1.2.1-2ubuntu2_i386.deb",
+    "sha256": "ffb9bd214d3a5e8d2ac82c544213f762746f00dc6df52603bd1fee8e708b1f86"
+  },
+  {
+    "package": "libspeexdsp1",
+    "architecture": "i386",
+    "version": "1.2.1-1ubuntu3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/s/speexdsp/libspeexdsp1_1.2.1-1ubuntu3_i386.deb",
+    "filename": "libspeexdsp1_1.2.1-1ubuntu3_i386.deb",
+    "sha256": "fda4f8bf21853b8167a4ddfe87ddad85b7d814358e5c386792193b927a74f3c8"
+  },
+  {
+    "package": "libstdc++6",
+    "architecture": "i386",
+    "version": "14-20240412-0ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/libstdc++6_14-20240412-0ubuntu1_i386.deb",
+    "filename": "libstdc++6_14-20240412-0ubuntu1_i386.deb",
+    "sha256": "faa19dca31a86eb8acc8b6941238a98340e09fc71e78a4d53285736d56ae79ca"
+  },
+  {
+    "package": "libsvtav1enc1d1",
+    "architecture": "i386",
+    "version": "1.7.0+dfsg-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/s/svt-av1/libsvtav1enc1d1_1.7.0+dfsg-2build1_i386.deb",
+    "filename": "libsvtav1enc1d1_1.7.0+dfsg-2build1_i386.deb",
+    "sha256": "3e7e5402c8c0236aff3d1eb20d8744d477a04ad8ca7e72035173aae65582d79f"
+  },
+  {
+    "package": "libswresample4",
+    "architecture": "i386",
+    "version": "7:6.1.1-3ubuntu5",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/f/ffmpeg/libswresample4_6.1.1-3ubuntu5_i386.deb",
+    "filename": "libswresample4_6.1.1-3ubuntu5_i386.deb",
+    "sha256": "e770274071830f60693be402beec6166d96ebf9c2f21281730ed3c3c281498f7"
+  },
+  {
+    "package": "libsystemd0",
+    "architecture": "i386",
+    "version": "255.4-1ubuntu8",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/s/systemd/libsystemd0_255.4-1ubuntu8_i386.deb",
+    "filename": "libsystemd0_255.4-1ubuntu8_i386.deb",
+    "sha256": "92568773275ba7208b704fdaa2b1b48cc0c3de7647efbe1f3d62cfc1346f3fee"
+  },
+  {
+    "package": "libtasn1-6",
+    "architecture": "i386",
+    "version": "4.19.0-3build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libt/libtasn1-6/libtasn1-6_4.19.0-3build1_i386.deb",
+    "filename": "libtasn1-6_4.19.0-3build1_i386.deb",
+    "sha256": "aef8528c80847a57c8cb5f2f21f02d2cee6dc266a8c5f50ea4f4031b4d552e55"
+  },
+  {
+    "package": "libthai-data",
+    "architecture": "i386",
+    "version": "0.1.29-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libt/libthai/libthai-data_0.1.29-2build1_all.deb",
+    "filename": "libthai-data_0.1.29-2build1_all.deb",
+    "sha256": "6035d4a714290b97816bed7f3bf64921c6358ddb84d1dacdddccdc1cf39bffb7"
+  },
+  {
+    "package": "libthai0",
+    "architecture": "i386",
+    "version": "0.1.29-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libt/libthai/libthai0_0.1.29-2build1_i386.deb",
+    "filename": "libthai0_0.1.29-2build1_i386.deb",
+    "sha256": "b6c9c418ad5cf97be4ae020af1d4c5da9b803baa6a872ffc0dc088cfe7227b04"
+  },
+  {
+    "package": "libtheora0",
+    "architecture": "i386",
+    "version": "1.1.1+dfsg.1-16.1build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libt/libtheora/libtheora0_1.1.1+dfsg.1-16.1build3_i386.deb",
+    "filename": "libtheora0_1.1.1+dfsg.1-16.1build3_i386.deb",
+    "sha256": "3310fbddeb2f1b8655e39cfa132ece462756d082338dcf4124c1d285f1c78d5b"
+  },
+  {
+    "package": "libtiff6",
+    "architecture": "i386",
+    "version": "4.5.1+git230720-4ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/t/tiff/libtiff6_4.5.1+git230720-4ubuntu2_i386.deb",
+    "filename": "libtiff6_4.5.1+git230720-4ubuntu2_i386.deb",
+    "sha256": "4c700b955bef344c7fcb185ed2d6d7c82299c40b1ba3452c6720b7fb82601b31"
+  },
+  {
+    "package": "libtinfo6",
+    "architecture": "i386",
+    "version": "6.4+20240113-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/n/ncurses/libtinfo6_6.4+20240113-1ubuntu2_i386.deb",
+    "filename": "libtinfo6_6.4+20240113-1ubuntu2_i386.deb",
+    "sha256": "66af73bb26395ccc8a8b9f7b4f7854ba38ae6d00602ab8a70dda30af77910057"
+  },
+  {
+    "package": "libtwolame0",
+    "architecture": "i386",
+    "version": "0.4.0-2build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/t/twolame/libtwolame0_0.4.0-2build3_i386.deb",
+    "filename": "libtwolame0_0.4.0-2build3_i386.deb",
+    "sha256": "88f711998074b8f3eebb97bd5a65b35abd4659a00bcbffc0fbdaae9f6a1c9c76"
+  },
+  {
+    "package": "libunistring5",
+    "architecture": "i386",
+    "version": "1.1-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libu/libunistring/libunistring5_1.1-2build1_i386.deb",
+    "filename": "libunistring5_1.1-2build1_i386.deb",
+    "sha256": "20bf9ea9d4b4e72d2516e63e06e068f3d2597d2aad3863827a041b9a998ed177"
+  },
+  {
+    "package": "libunwind8",
+    "architecture": "i386",
+    "version": "1.6.2-3build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libu/libunwind/libunwind8_1.6.2-3build1_i386.deb",
+    "filename": "libunwind8_1.6.2-3build1_i386.deb",
+    "sha256": "8c7b12c7a485da1aa5b8b12b06ef9773f713521292e87bca153edd8792a3e07d"
+  },
+  {
+    "package": "libva-drm2",
+    "architecture": "i386",
+    "version": "2.20.0-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/libv/libva/libva-drm2_2.20.0-2build1_i386.deb",
+    "filename": "libva-drm2_2.20.0-2build1_i386.deb",
+    "sha256": "e4413cfceae44394a30d540f27c6a11a52b2c293a8ea80af4b9cd783a69aa042"
+  },
+  {
+    "package": "libva-x11-2",
+    "architecture": "i386",
+    "version": "2.20.0-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/libv/libva/libva-x11-2_2.20.0-2build1_i386.deb",
+    "filename": "libva-x11-2_2.20.0-2build1_i386.deb",
+    "sha256": "12558683861e675b72b9defee8db35a4688fdbd427c4c1cafd415c6c8b04397f"
+  },
+  {
+    "package": "libva2",
+    "architecture": "i386",
+    "version": "2.20.0-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/libv/libva/libva2_2.20.0-2build1_i386.deb",
+    "filename": "libva2_2.20.0-2build1_i386.deb",
+    "sha256": "1d26e7b39b8031519b3b9cb53c64c6e61def02f27f5484f87acef811cc70b03c"
+  },
+  {
+    "package": "libvdpau1",
+    "architecture": "i386",
+    "version": "1.5-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libv/libvdpau/libvdpau1_1.5-2build1_i386.deb",
+    "filename": "libvdpau1_1.5-2build1_i386.deb",
+    "sha256": "de25cfed4c243d8422fddf447d63b78b3f21bd181acdf3c9b23f9969849bd06a"
+  },
+  {
+    "package": "libvorbis0a",
+    "architecture": "i386",
+    "version": "1.3.7-1build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbis0a_1.3.7-1build3_i386.deb",
+    "filename": "libvorbis0a_1.3.7-1build3_i386.deb",
+    "sha256": "635270f9a8934834df9f697f0ecdda8dd3d549454e0db46de1adcbfdc865236f"
+  },
+  {
+    "package": "libvorbisenc2",
+    "architecture": "i386",
+    "version": "1.3.7-1build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libv/libvorbis/libvorbisenc2_1.3.7-1build3_i386.deb",
+    "filename": "libvorbisenc2_1.3.7-1build3_i386.deb",
+    "sha256": "8fe30b7d78c64ef58b4ea5eeb1f91e3bf74cce0b08a0c09cdfbfda4c2d6e6a6c"
+  },
+  {
+    "package": "libvpx9",
+    "architecture": "i386",
+    "version": "1.14.0-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libv/libvpx/libvpx9_1.14.0-1ubuntu2_i386.deb",
+    "filename": "libvpx9_1.14.0-1ubuntu2_i386.deb",
+    "sha256": "9998b2b2666515982f8d30be79e6883141c1f70a98d5934fe149a398aff5dc67"
+  },
+  {
+    "package": "libvulkan1",
+    "architecture": "i386",
+    "version": "1.3.275.0-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/v/vulkan-loader/libvulkan1_1.3.275.0-1build1_i386.deb",
+    "filename": "libvulkan1_1.3.275.0-1build1_i386.deb",
+    "sha256": "301708ce1ca8fcc76a11a719e01467ea4804e37de6a0e64fd2bc755da64b3bb7"
+  },
+  {
+    "package": "libwebp7",
+    "architecture": "i386",
+    "version": "1.3.2-0.4build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libw/libwebp/libwebp7_1.3.2-0.4build3_i386.deb",
+    "filename": "libwebp7_1.3.2-0.4build3_i386.deb",
+    "sha256": "c4ba6e15c694ce4dacdff8f494a62d3a58d0300ab0fc968d10c743b445afe519"
+  },
+  {
+    "package": "libwebpmux3",
+    "architecture": "i386",
+    "version": "1.3.2-0.4build3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libw/libwebp/libwebpmux3_1.3.2-0.4build3_i386.deb",
+    "filename": "libwebpmux3_1.3.2-0.4build3_i386.deb",
+    "sha256": "3852c9d7b4e58283f5d3d95212b9e358e7ad6eaad9a78de9ac7629b2a3035581"
+  },
+  {
+    "package": "libx11-6",
+    "architecture": "i386",
+    "version": "2:1.8.7-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libx11/libx11-6_1.8.7-1build1_i386.deb",
+    "filename": "libx11-6_1.8.7-1build1_i386.deb",
+    "sha256": "78ea31581e66ad59209dffced25628f973431ecc4cc6f45541084933c7b5d2b4"
+  },
+  {
+    "package": "libx11-data",
+    "architecture": "i386",
+    "version": "2:1.8.7-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libx11/libx11-data_1.8.7-1build1_all.deb",
+    "filename": "libx11-data_1.8.7-1build1_all.deb",
+    "sha256": "9ae01f7747e7f479394c697c55acf11d3baf139e8e54b7c4adfb55ef9c50de08"
+  },
+  {
+    "package": "libx11-xcb1",
+    "architecture": "i386",
+    "version": "2:1.8.7-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libx11/libx11-xcb1_1.8.7-1build1_i386.deb",
+    "filename": "libx11-xcb1_1.8.7-1build1_i386.deb",
+    "sha256": "39d5bfd95061f84fe1c416a0f430a86f75e0a2cd02ac6c133b084b46f01edd67"
+  },
+  {
+    "package": "libx264-164",
+    "architecture": "i386",
+    "version": "2:0.164.3108+git31e19f9-1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/x/x264/libx264-164_0.164.3108+git31e19f9-1_i386.deb",
+    "filename": "libx264-164_0.164.3108+git31e19f9-1_i386.deb",
+    "sha256": "c79a50f4ebcc43bf19d5a6673bfadb7803d7931f7c1b753ad6101dfb5a35e157"
+  },
+  {
+    "package": "libx265-199",
+    "architecture": "i386",
+    "version": "3.5-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/x/x265/libx265-199_3.5-2build1_i386.deb",
+    "filename": "libx265-199_3.5-2build1_i386.deb",
+    "sha256": "a73650a77e389fa65a5e05a32549008e175a011960fbae9cdae0171a3f9a8cad"
+  },
+  {
+    "package": "libxau6",
+    "architecture": "i386",
+    "version": "1:1.0.9-1build6",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxau/libxau6_1.0.9-1build6_i386.deb",
+    "filename": "libxau6_1.0.9-1build6_i386.deb",
+    "sha256": "66b2ef74e7f620af6d1f82df8bb31ebedb9b1b5d0a454395eaf2a633d4e9d933"
+  },
+  {
+    "package": "libxcb-dri2-0",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-dri2-0_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb-dri2-0_1.15-1ubuntu2_i386.deb",
+    "sha256": "7f2846edb2e46ab194350736fa1872f909d5a8e0f6651939a4729d7060d6b2bd"
+  },
+  {
+    "package": "libxcb-dri3-0",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-dri3-0_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb-dri3-0_1.15-1ubuntu2_i386.deb",
+    "sha256": "9fbd35a255bca635453d4eaeec6113ebcf88250f172073be570220bcb095dbfb"
+  },
+  {
+    "package": "libxcb-glx0",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-glx0_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb-glx0_1.15-1ubuntu2_i386.deb",
+    "sha256": "5f30bcebf36a482095284080d468aed8bc424593b642f1833948d9eb9bdee3bf"
+  },
+  {
+    "package": "libxcb-present0",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-present0_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb-present0_1.15-1ubuntu2_i386.deb",
+    "sha256": "8c70edf5eb0830360fc21e79fc2e8fab6a0dbdd07c11f1e1a5a1a16265af727a"
+  },
+  {
+    "package": "libxcb-randr0",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-randr0_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb-randr0_1.15-1ubuntu2_i386.deb",
+    "sha256": "36cdcf0cf984a7091b571ba92af41571125337cfcb6c1573daea25675510fec5"
+  },
+  {
+    "package": "libxcb-render0",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-render0_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb-render0_1.15-1ubuntu2_i386.deb",
+    "sha256": "ba2b0164a8315566507f8abfb30c876af493c6c455f609281721086982ae14ee"
+  },
+  {
+    "package": "libxcb-shm0",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-shm0_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb-shm0_1.15-1ubuntu2_i386.deb",
+    "sha256": "40db3f28814f8a7c2d418b0654db41db8930429cf91b2c3c27ef1ac31bbcdcec"
+  },
+  {
+    "package": "libxcb-sync1",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-sync1_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb-sync1_1.15-1ubuntu2_i386.deb",
+    "sha256": "defb9e552fac7b19c60ba0153a6f75f1fd5dc5a06036d003e4ce029c9e66147c"
+  },
+  {
+    "package": "libxcb-xfixes0",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb-xfixes0_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb-xfixes0_1.15-1ubuntu2_i386.deb",
+    "sha256": "7d99147b7235650fa31a3c4db7e4e612df8ef1bc2dfdff11dcf61391c895e0d7"
+  },
+  {
+    "package": "libxcb1",
+    "architecture": "i386",
+    "version": "1.15-1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcb/libxcb1_1.15-1ubuntu2_i386.deb",
+    "filename": "libxcb1_1.15-1ubuntu2_i386.deb",
+    "sha256": "08dded33339c6792c3069982a1216a2d3e8d3210d20f011eff8fffeae1ae417e"
+  },
+  {
+    "package": "libxcursor1",
+    "architecture": "i386",
+    "version": "1:1.2.1-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxcursor/libxcursor1_1.2.1-1build1_i386.deb",
+    "filename": "libxcursor1_1.2.1-1build1_i386.deb",
+    "sha256": "45f05053b5af477273d3bb76fb7dfa03ba1f865ca376d15aad0a57a6327b7b31"
+  },
+  {
+    "package": "libxdmcp6",
+    "architecture": "i386",
+    "version": "1:1.1.3-0ubuntu6",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxdmcp/libxdmcp6_1.1.3-0ubuntu6_i386.deb",
+    "filename": "libxdmcp6_1.1.3-0ubuntu6_i386.deb",
+    "sha256": "467e2c3bc89c0fe8cc2df824c918ffdfe99a15c5cee3878b46ba854782364967"
+  },
+  {
+    "package": "libxext6",
+    "architecture": "i386",
+    "version": "2:1.3.4-1build2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxext/libxext6_1.3.4-1build2_i386.deb",
+    "filename": "libxext6_1.3.4-1build2_i386.deb",
+    "sha256": "9b101f93ec404abe53430db891c025f72d0d6b9bdc849ca9576b1edb71a1e994"
+  },
+  {
+    "package": "libxfixes3",
+    "architecture": "i386",
+    "version": "1:6.0.0-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxfixes/libxfixes3_6.0.0-2build1_i386.deb",
+    "filename": "libxfixes3_6.0.0-2build1_i386.deb",
+    "sha256": "f52cc2ad39cb4da19e4ee873bc23aa8e45343af5b7148624d9712a97d97ed434"
+  },
+  {
+    "package": "libxi6",
+    "architecture": "i386",
+    "version": "2:1.8.1-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxi/libxi6_1.8.1-1build1_i386.deb",
+    "filename": "libxi6_1.8.1-1build1_i386.deb",
+    "sha256": "359d108e611793d0afef283882f77ea7a522aff614d25f615f3526208cf7146d"
+  },
+  {
+    "package": "libxinerama1",
+    "architecture": "i386",
+    "version": "2:1.1.4-3build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxinerama/libxinerama1_1.1.4-3build1_i386.deb",
+    "filename": "libxinerama1_1.1.4-3build1_i386.deb",
+    "sha256": "1e340e7cbf14d5527dddf88aee9abc4e0d735b5994a5369c41504126c3bba26b"
+  },
+  {
+    "package": "libxml2",
+    "architecture": "i386",
+    "version": "2.9.14+dfsg-1.3ubuntu3",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxml2/libxml2_2.9.14+dfsg-1.3ubuntu3_i386.deb",
+    "filename": "libxml2_2.9.14+dfsg-1.3ubuntu3_i386.deb",
+    "sha256": "2747f9483ae0be0e1b96719f150e1291761d0e85bea6a1925e0eec56ab9ebac8"
+  },
+  {
+    "package": "libxrandr2",
+    "architecture": "i386",
+    "version": "2:1.5.2-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxrandr/libxrandr2_1.5.2-2build1_i386.deb",
+    "filename": "libxrandr2_1.5.2-2build1_i386.deb",
+    "sha256": "9a0eaeae2cd6c13414e50e4b327a4e1f8e91c6b0ca7f1bdd51349f7d69dc09db"
+  },
+  {
+    "package": "libxrender1",
+    "architecture": "i386",
+    "version": "1:0.9.10-1.1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxrender/libxrender1_0.9.10-1.1build1_i386.deb",
+    "filename": "libxrender1_0.9.10-1.1build1_i386.deb",
+    "sha256": "b431bed1ce0c8371496dd7913352378341fe09867958a84434fe7840e6ac3ad6"
+  },
+  {
+    "package": "libxshmfence1",
+    "architecture": "i386",
+    "version": "1.3-1build5",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxshmfence/libxshmfence1_1.3-1build5_i386.deb",
+    "filename": "libxshmfence1_1.3-1build5_i386.deb",
+    "sha256": "0221d563acd5605576a6cce4c9450eae02cdc1b945af414b0d837af249f26c46"
+  },
+  {
+    "package": "libxvidcore4",
+    "architecture": "i386",
+    "version": "2:1.3.7-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/x/xvidcore/libxvidcore4_1.3.7-1build1_i386.deb",
+    "filename": "libxvidcore4_1.3.7-1build1_i386.deb",
+    "sha256": "27a2fb7bb78a77ea2df78267da46aab5eb008ccf321653cdf3c1f1360dcb5232"
+  },
+  {
+    "package": "libxxf86vm1",
+    "architecture": "i386",
+    "version": "1:1.1.4-1build4",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libx/libxxf86vm/libxxf86vm1_1.1.4-1build4_i386.deb",
+    "filename": "libxxf86vm1_1.1.4-1build4_i386.deb",
+    "sha256": "731be82eaf1f1871665f27bb3bf3c0dd2da7e9dfe4836aec8098eea8fb002b9a"
+  },
+  {
+    "package": "libzstd1",
+    "architecture": "i386",
+    "version": "1.5.5+dfsg2-2build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/libz/libzstd/libzstd1_1.5.5+dfsg2-2build1_i386.deb",
+    "filename": "libzstd1_1.5.5+dfsg2-2build1_i386.deb",
+    "sha256": "d8a7128c4773a109a0f7ff9ec12d805cc67e226243f228593287dc8dda5db013"
+  },
+  {
+    "package": "libzvbi-common",
+    "architecture": "i386",
+    "version": "0.2.42-2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/z/zvbi/libzvbi-common_0.2.42-2_all.deb",
+    "filename": "libzvbi-common_0.2.42-2_all.deb",
+    "sha256": "c099fcdaaa1f0ccfb0551470faae76f43798150809e07ff8a08f4743fc1a8074"
+  },
+  {
+    "package": "libzvbi0t64",
+    "architecture": "i386",
+    "version": "0.2.42-2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/z/zvbi/libzvbi0t64_0.2.42-2_i386.deb",
+    "filename": "libzvbi0t64_0.2.42-2_i386.deb",
+    "sha256": "c8b3f0739ebc3079c7627401ff432f3abbf05c897dd2366649c930fe7d266f8b"
+  },
+  {
+    "package": "ocl-icd-libopencl1",
+    "architecture": "i386",
+    "version": "2.3.2-1build1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/universe/o/ocl-icd/ocl-icd-libopencl1_2.3.2-1build1_i386.deb",
+    "filename": "ocl-icd-libopencl1_2.3.2-1build1_i386.deb",
+    "sha256": "786d8a932ce02f79dd588e16cb082cbbaae9d874743008b67df3611dac3a8dee"
+  },
+  {
+    "package": "shared-mime-info",
+    "architecture": "i386",
+    "version": "2.4-4",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/s/shared-mime-info/shared-mime-info_2.4-4_i386.deb",
+    "filename": "shared-mime-info_2.4-4_i386.deb",
+    "sha256": "12f873b4cbfb0c25791bd50302a0d090ff040cf376baa1e21e42d7ce4cd8a9c5"
+  },
+  {
+    "package": "zlib1g",
+    "architecture": "i386",
+    "version": "1:1.3.dfsg-3.1ubuntu2",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib1g_1.3.dfsg-3.1ubuntu2_i386.deb",
+    "filename": "zlib1g_1.3.dfsg-3.1ubuntu2_i386.deb",
+    "sha256": "96bfd120cff8a4811154b80a177723d914dda190f295b857a931e924c978edc4"
+  },
+  {
+    "package": "gcc-14-base",
+    "architecture": "amd64",
+    "version": "14-20240412-0ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/gcc-14-base_14-20240412-0ubuntu1_amd64.deb",
+    "filename": "gcc-14-base_14-20240412-0ubuntu1_amd64.deb",
+    "sha256": "bc5a682c694a1ce5af50772b7c737a21e9a74f0f0edaae98e97bc9c4af583fef"
+  },
+  {
+    "package": "libc6",
+    "architecture": "amd64",
+    "version": "2.39-0ubuntu8",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6_2.39-0ubuntu8_amd64.deb",
+    "filename": "libc6_2.39-0ubuntu8_amd64.deb",
+    "sha256": "af36c7ac770770fe3d3c10e85d6bc538e76e57570ba7db7d397fb9f654783ef3"
+  },
+  {
+    "package": "libgcc-s1",
+    "architecture": "amd64",
+    "version": "14-20240412-0ubuntu1",
+    "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/libgcc-s1_14-20240412-0ubuntu1_amd64.deb",
+    "filename": "libgcc-s1_14-20240412-0ubuntu1_amd64.deb",
+    "sha256": "a39efdcaa2245f026dc3254ce14fcff255fc430a17064632b6ba7c5da974a912"
+  }
+]

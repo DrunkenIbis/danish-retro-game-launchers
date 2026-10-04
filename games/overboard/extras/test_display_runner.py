@@ -48,6 +48,13 @@ class DisplayTests(unittest.TestCase):
                     with self.assertRaises(m.subprocess.TimeoutExpired) as raised:
                         m.inner()
                     self.assertIs(raised.exception, timeout)
+                    # Cleanup must use the Wine boundary and must not release
+                    # the mount/lock just because wineserver is slow to exit.
+                    cleanup_wait = m.subprocess.run.call_args_list[-1]
+                    self.assertNotIn('timeout', cleanup_wait.kwargs)
+                    self.assertIn('env', cleanup_wait.kwargs)
+                    self.assertIn(mock.call(m.signal.SIGTERM, m.signal.SIG_IGN),
+                                  m.signal.signal.call_args_list)
                     stop.set.assert_called_once_with()
                     watcher.join.assert_called_once_with(timeout=2)
                     xserver.terminate.assert_called_once_with()

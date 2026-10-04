@@ -58,6 +58,8 @@ toc.write_text(relocate_toc(toc.read_text(),'OVERBOARD.bin'))
 (app/'usr/bin/overboard').write_text('#!/usr/bin/env bash\nexec "$(cd "$(dirname "$0")/../.." && pwd)/AppRun" "$@"\n')
 (app/'game/README.txt').write_text('Private Overboard CD backup. Requires host Python3, Gamescope, CDEmu/VHBA, udisksctl and compatible Wine/Xephyr system libraries. Wine-GE, Xephyr and Python-Xlib are bundled. Windowed 1024x768, 16-bit movie fix, aspect-preserving scaling. OVERBOARD_DISPLAY_MODE=classic selects the old Esc-to-skip path.\n')
 PY
+cp "$GAME_DIR/NY-MASKINE.md" "$APPDIR/game/NY-MASKINE.md"
+cp "$GAME_DIR/NY-MASKINE.md" "$DIST_DIR/NY-MASKINE.md"
 chmod +x "$APPDIR/AppRun" "$APPDIR/usr/bin/overboard"
 wine_appimage_write_desktop_file
 wine_appimage_write_icon "$SEED/drive_c/Program Files/Psygnosis/Overboard!/uninstal.ico"

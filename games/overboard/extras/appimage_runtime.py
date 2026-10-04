@@ -31,6 +31,36 @@ def run(args, **kwargs):
     return subprocess.run(args, check=True, text=True, capture_output=True, **kwargs).stdout
 
 
+def check_prerequisites(app, display_mode):
+    problems = []
+    tools = ['cdemu', 'udisksctl', 'findmnt', 'cp']
+    if display_mode == 'windowed16':
+        tools.append('gamescope')
+        if not (app/'usr/bin/Xephyr').is_file():
+            problems.append('Bundlet Xephyr mangler; genbyg eller hent pakken igen.')
+    for tool in tools:
+        if not shutil.which(tool):
+            problems.append('Mangler værtskommando: ' + tool)
+    if not Path('/sys/module/vhba').exists():
+        problems.append('VHBA-kernemodulet er ikke indlæst for den aktive kernel.')
+    if not (app/'wine/bin/wine').is_file():
+        problems.append('Bundlet Wine mangler; genbyg eller hent pakken igen.')
+    status = ''
+    if shutil.which('cdemu'):
+        try:
+            status = run(['cdemu', 'status'], timeout=10)
+        except (subprocess.SubprocessError, OSError):
+            problems.append('CDEmu-tjenesten kunne ikke kontaktes med cdemu status (fejl eller timeout). Kontrollér tjenesten og sessionens D-Bus.')
+    if problems:
+        raise RuntimeError('Pakken er ikke helt selvstændig. Følgende skal løses:\n- '
+                           + '\n- '.join(problems)
+                           + '\nCDEmu (klient og tjeneste) samt VHBA skal sættes op på værtsmaskinen. '
+                           'Standardvisningen kræver også Gamescope.\n'
+                           'Se vejledningen NY-MASKINE.md ved siden af AppImagen eller i projektet. '
+                           'Kør derefter AppImagen med --check. Ingen systemændringer er udført.')
+    return status
+
+
 def main():
     app = Path(__file__).resolve().parent.parent
     state = Path(os.environ.get('OVERBOARD_APPIMAGE_STATE', str(Path(os.environ.get('XDG_DATA_HOME', str(Path.home()/'.local/share')))/'overboard-appimage'))).absolute()
@@ -39,21 +69,10 @@ def main():
     display_mode = os.environ.get('OVERBOARD_DISPLAY_MODE', 'windowed16')
     if display_mode not in ('windowed16', 'classic'):
         raise RuntimeError('OVERBOARD_DISPLAY_MODE skal være windowed16 eller classic')
-    tools = ['cdemu', 'udisksctl', 'findmnt', 'cp']
-    if display_mode == 'windowed16':
-        tools.append('gamescope')
-        if not (app/'usr/bin/Xephyr').is_file():
-            raise RuntimeError('Bundlet Xephyr mangler')
-    for tool in tools:
-        if not shutil.which(tool):
-            raise RuntimeError('Mangler værtskommando: ' + tool)
-    if not Path('/sys/module/vhba').exists():
-        raise RuntimeError('VHBA mangler for den aktive kernel. Installér CDEmu/VHBA på værten.')
-    if not wine.is_file():
-        raise RuntimeError('Bundlet Wine mangler')
-    status = run(['cdemu', 'status'])
+    status = check_prerequisites(app, display_mode)
     if '--check' in sys.argv:
-        print('OK: CDEmu/VHBA og bundlet Wine. State: ' + str(state))
+        print('OK: værtskommandoer, CDEmu-tjeneste, indlæst VHBA og bundlet runtime (' + display_mode + '). State: ' + str(state))
+        print('Spillet er ikke startet; grafik, lyd og systembibliotekernes kompatibilitet er ikke testet.')
         return
     state.mkdir(parents=True, exist_ok=True)
     lock = (state/'.lock').open('w')
@@ -156,6 +175,6 @@ if __name__ == '__main__':
     except Exception as exc:
         message = 'Overboard AppImage: ' + str(exc)
         print(message, file=sys.stderr)
-        if shutil.which('zenity'):
+        if '--check' not in sys.argv and shutil.which('zenity'):
             subprocess.run(['zenity', '--error', '--text', message])
         sys.exit(1)

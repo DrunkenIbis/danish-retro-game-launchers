@@ -1,6 +1,10 @@
 # Overboard! / Shipwreckers! (PC ENG)
 
-Status: gameplay and the windowed 16-bit intro solution are user-approved. The AppImage has been rebuilt with that display path; host CDEmu/VHBA and Gamescope remain required. Historical experiments are retained below and in `notes.md`.
+Status: a newer **kernel-free portable variant** bundles its Wine/Linux/display runtimes and uses original-disc TOC/audio emulation without CDEmu/VHBA. The v4 artifact reached interactive gameplay on the host (direct X11, software rendering); Mint under QEMU TCG still crashes. The delivery build has now passed interactive host steering on fresh and reused state using the bundled Wayland path. See [PORTABLE-RELEASE.md](PORTABLE-RELEASE.md) for the exact artifact/hash, tests and remaining verification boundaries; Mint compatibility is still blocked. See [PORTABLE-FINDINGS.md](PORTABLE-FINDINGS.md) for consolidated evidence and [the Mint test](extras/mint-portable-test.md) for limitations.
+
+Portable builder: `extras/build_portable_appimage.sh`; consumes a locally prepared private seed. Default state: `${XDG_DATA_HOME:-$HOME/.local/share}/overboard-kernel-free-portable`, overridden with `OVERBOARD_STATE`. Wayland uses Gamescope aspect-preserving scaling; X11/direct mode does not supply that maximized scaling. `--check` checks payload presence only. The supported game path is 32-bit Wine/OpenGL, not general Vulkan or 64-bit gaming. Do not redistribute the game-containing bundle.
+
+The sections below describe the **older CDEmu/VHBA AppImage and historical launchers**, not requirements of the new kernel-free package. Their artifacts are preserved. Historical experiments are also retained in `notes.md`.
 
 See [DISPLAY-FIX.md](DISPLAY-FIX.md) for the approved settings, root-cause evidence, failed attempts, and reusable lessons.
 
@@ -8,6 +12,8 @@ See [DISPLAY-FIX.md](DISPLAY-FIX.md) for the approved settings, root-cause evide
 
 Artifact: `local/appimage-dist/Overboard-x86_64.AppImage`.
 Build: `games/overboard/extras/build_appimage.sh`.
+
+Opsætning på en anden maskine: [NY-MASKINE.md](NY-MASKINE.md). `--check` samler manglende krav og skelner mellem manglende klient, utilgængelig CDEmu-tjeneste og ikke-indlæst VHBA. Et OK verificerer ikke gameplay eller alle systembiblioteker.
 
 The private bundle includes the original installed game, Wine-GE 7-43, Xephyr, Python-Xlib/six, and the full BIN/TOC backup. It requires host Python 3, Gamescope, CDEmu with a loaded VHBA kernel module, udisksctl/findmnt, and compatible Wine/Xephyr system libraries. It is not an entirely host-independent package and must not be redistributed with copyrighted game data.
 

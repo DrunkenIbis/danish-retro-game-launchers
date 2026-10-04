@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+app=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)
+r="$app/display"
+name=${0##*/}
+export PATH="$app/usr/bin:$PATH"
+# Capture before Gamescope mutates discovery paths, including on Python re-entry.
+if [[ ! ${OVERBOARD_WINE_XDG_DATA_DIRS+x} ]]; then
+  export OVERBOARD_WINE_XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+fi
+if [[ $name != python3 ]]; then
+export XKB_CONFIG_ROOT="$r/share/X11/xkb"
+export XKB_BINDIR="$app/usr/bin"
+export WLR_XWAYLAND="$app/usr/bin/Xwayland"
+export LIBGL_DRIVERS_PATH="$r/dri"
+export LIBDECOR_PLUGIN_DIR="$r/libdecor"
+export __EGL_VENDOR_LIBRARY_FILENAMES="$r/share/glvnd/egl_vendor.d/50_mesa.json"
+export XDG_DATA_DIRS="$r/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+fi
+if [[ $name == python3 ]]; then
+  name=python3.14
+  export PYTHONHOME="$r" PYTHONPLATLIBDIR=lib PYTHONNOUSERSITE=1
+fi
+if [[ $name == gamescope ]]; then
+  export GAMESCOPE_SCRIPT_PATH="$r/share/gamescope/scripts"
+  shopt -s nullglob globstar
+  scripts=("$GAMESCOPE_SCRIPT_PATH"/**/*.lua)
+  if (( ${#scripts[@]} == 0 )); then
+    printf '%s\n' 'Overboard: missing bundled Gamescope scripts' >&2
+    exit 1
+  fi
+  export VK_DRIVER_FILES
+  VK_DRIVER_FILES=$(printf '%s:' "$r"/share/vulkan/icd.d/*.json)
+  VK_DRIVER_FILES=${VK_DRIVER_FILES%:}
+fi
+exec "$r/lib/ld-linux-x86-64.so.2" --library-path "$r/lib" "$r/bin/$name" "$@"

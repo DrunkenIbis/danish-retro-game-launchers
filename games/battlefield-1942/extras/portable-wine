@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# No global foreign LD_LIBRARY_PATH: host shell/coreutils must use host glibc.
+set -Eeuo pipefail
+ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
+NAME="${0##*/}"
+case "$NAME" in
+ wine) TRIPLET=i386-linux-gnu; LOADER=ld-linux.so.2; WLIB=lib;;
+ wine64|wineserver) TRIPLET=x86_64-linux-gnu; LOADER=ld-linux-x86-64.so.2; WLIB=lib64;;
+ *) printf 'Unknown private runtime entry point\n' >&2; exit 64;;
+esac
+RUNTIME="$ROOT/portable"
+export WINELOADER="$RUNTIME/bin/wine" WINESERVER="$RUNTIME/bin/wineserver"
+export WINEDLLPATH="$ROOT/wine/lib/wine:$ROOT/wine/lib/wine/i386-unix:$ROOT/wine/lib64/wine:$ROOT/wine/lib64/wine/x86_64-unix"
+export LIBGL_DRIVERS_PATH="$RUNTIME/usr/lib/i386-linux-gnu/dri"
+export ALSA_PLUGIN_DIR="$RUNTIME/usr/lib/i386-linux-gnu/alsa-lib"
+export FONTCONFIG_PATH="$RUNTIME/etc/fonts"
+LIBS="$RUNTIME/usr/lib/$TRIPLET:$RUNTIME/lib/$TRIPLET:$RUNTIME/usr/lib/$TRIPLET/pulseaudio:$ROOT/wine/$WLIB:$ROOT/wine/$WLIB/wine:$ROOT/wine/$WLIB/wine/i386-unix:$ROOT/wine/$WLIB/wine/x86_64-unix"
+exec "$RUNTIME/usr/lib/$TRIPLET/$LOADER" --library-path "$LIBS" "$ROOT/wine/bin/$NAME" "$@"

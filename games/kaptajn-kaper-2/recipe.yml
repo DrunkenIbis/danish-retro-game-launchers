@@ -1,0 +1,25 @@
+id: kaptajn-kaper-2
+title: Kaptajn Kaper i Kattegat
+platform: dos
+engine: dosbox-staging
+engine_version: 0.83.0
+source:
+  url: https://www.kaptajnkaper.dk/Kaper2.zip
+  sha256: a9cf151351ad6e97f3d8f3bf338829b878df6bdeff6e190fbf3de8bbd7cf8732
+  private_path: local/sources/kaptajn-kaper-2/Kaper2.zip
+runtime: local/runtime/kaptajn-kaper-2
+install: ./install.sh --download --no-launch
+launch: ./launch.sh
+entrypoint: GO.BAT
+setup_required: false
+verification:
+  source_gameplay: user-confirmed
+  agent_visual: map-and-help
+  appimage_build: passed
+  appimage_metadata_and_payload_hashes: passed
+  appimage_gameplay: not-retested-at-user-request
+appimage:
+  build: ./extras/build_appimage.sh
+  output: extras/dist/kaptajn-kaper-2-x86_64.AppImage
+  bundled_dosbox: true
+  state: ~/.local/share/kaptajn-kaper-2

@@ -82,6 +82,7 @@ Legend: ✅ = script exists in the recipe and is the current working/migrated pa
 | Global Operations | ✅ | ⚠️ blocked by SafeDisc/SecDrv before gameplay | — |
 | Gys på Regneslottet | ✅ | ✅ user-confirmed working; CPU/audio-stutter fix | ✅ bundled DOSBox; launch verified and user-confirmed |
 | Harald Hårdtand: Kampen om de rene tænder | ✅ | ✅ first-level movement/shooting verified; user-confirmed working | ✅ bundled DOSBox; gameplay verified; fresh/default-state tests exited normally (0) |
+| [Kaptajn Kaper i Kattegat](games/kaptajn-kaper-2/) | ✅ download + checksum | ✅ brugerbekræftet | ✅ bundlet DOSBox; pakke/metadata kontrolleret, gameplay ikke gentestet efter brugerens ønske |
 | Magnus & Myggen: Den Store Skattejagt | ✅ | ⚠️ Centered Wine desktop; gameplay not screenshot-verified | — |
 | Magnus & Myggen: Leg og Lær | ✅ | ⚠️ crash fixed, then blocked by CD-check dialog | ✅ |
 | Magnus & Myggen: Midnatsmysteriet | — original download setup completed manually | ✅ 800×600 window verified; five launcher tests pass | ✅ Download-based; bundled Wine/CD data; user-confirmed gameplay; first isolated test exited 0; portability/repeat-start checks pending |

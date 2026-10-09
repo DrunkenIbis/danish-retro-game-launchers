@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+STATE="${XDG_DATA_HOME:-$HOME/.local/share}/kaptajn-kaper-2"
+mkdir -p "$STATE"
+exec 9>"$STATE/.launch.lock"
+flock -n 9 || { printf 'Kaptajn Kaper kører allerede.\n' >&2; exit 1; }
+if [[ ! -d "$STATE/game" ]]; then
+    seed="$(mktemp -d "$STATE/.seed.XXXXXXXX")"
+    trap 'rm -rf -- "$seed"' EXIT
+    cp -a "$HERE/game/." "$seed/"
+    chmod -R u+rwX "$seed"
+    mv -- "$seed" "$STATE/game"
+    trap - EXIT
+fi
+for f in TEMP.PIC TITEL.PIC FIGURES.DAT GO.BAT GRAFTDA2.COM HLP.DAT KAPER.EXE MAP.PIC REC.DAT SIGTE.PIC; do
+    [[ -s "$STATE/game/$f" ]] || { printf 'Spilfil mangler: %s\n' "$STATE/game/$f" >&2; exit 1; }
+done
+cp "$HERE/kaper.conf" "$STATE/kaper.conf"
+cd "$STATE"
+export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-x11}"
+export SDL_AUDIODRIVER="${SDL_AUDIODRIVER:-pulse}"
+exec "$HERE/runtime/dosbox" -noprimaryconf -nolocalconf -conf "$STATE/kaper.conf" "$@"

@@ -17,6 +17,15 @@ if [[ ! -d "$STATE/game" ]]; then
     mv -- "$seed" "$STATE/game"
     trap - EXIT
 fi
+# Upgrade only the known original program; never replace custom source or saves.
+if [[ -f "$STATE/game/SPECIAL.BAS" && ! -L "$STATE/game/SPECIAL.BAS" ]]; then
+    digest="$(sha256sum "$STATE/game/SPECIAL.BAS")"
+    if [[ "${digest%% *}" == 80f05272ba7d06a3a67d58823061963c56d664432723c26116cbc0e08fd87d7a ]]; then
+        cp -n "$STATE/game/SPECIAL.BAS" "$STATE/game/SPECIAL.pre-input-fix.BAS"
+        cp "$HERE/game/SPECIAL.BAS" "$STATE/game/SPECIAL.BAS.update"
+        mv "$STATE/game/SPECIAL.BAS.update" "$STATE/game/SPECIAL.BAS"
+    fi
+fi
 for f in SPECIAL.BAS TITEL.PIC MAP.PIC SIGTE.PIC FIGURES.DAT HLP.DAT; do
     [[ -s "$STATE/game/$f" ]] || { printf 'Spilfil mangler: %s\n' "$f" >&2; exit 1; }
 done

@@ -29,8 +29,9 @@ Geninstallation bevarer REC.DAT/TEMP.PIC. Manifest indeholder kildecommit, hash 
 ## Status
 
 Installation og alle fire datageneratorer gennemført. Startskærm og Kattegat-kort visuelt set via launch.sh.
-Begge hidtidige PC-BASIC-processer afsluttede med exit 0. Sejlads/kamp og hørbar lyd er ikke fuldt verificeret.
-Den tidligere brugerbekræftelse af DOS-spillet gælder Release 5, ikke automatisk denne Release 3.
+Brugeren har bekræftet forbedret bevægelse, gentagen F1-hjælp og retur til kortet samt lyd i kamp i den rettede Release 3-AppImage. Interaktive tests er stoppet efter brugerens ønske. Esc og fuld gennemspilning er ikke verificeret.
+
+Inputrettelsen erstatter BIOS-buffer-POKE med INKEY$-tømning og mapper piletaster til talretninger. Tre regressionstests dækker buffer, tal og pile; se `INPUT-FIX.md`.
 
 ## AppImage — Version 1 Release 3
 

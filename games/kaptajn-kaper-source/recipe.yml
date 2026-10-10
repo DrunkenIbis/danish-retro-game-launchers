@@ -15,7 +15,11 @@ launch: ./launch.sh
 verification:
   generators: passed
   visual: title-and-map
-  full_gameplay: pending
+  full_gameplay: not-exhaustively-tested
+  movement: user-confirmed-improved
+  help_f1: user-confirmed-repeated-open-and-return
+  combat_audio: user-confirmed
+  escape: not-tested
 appimage:
   status: built
   build: ./extras/build_appimage.sh
@@ -23,4 +27,4 @@ appimage:
   bundled_python: true
   bundled_pcbasic: true
   state: ~/.local/share/kaptajn-kaper-source
-  gameplay: pending
+  gameplay: user-confirmed-input-fixed-build

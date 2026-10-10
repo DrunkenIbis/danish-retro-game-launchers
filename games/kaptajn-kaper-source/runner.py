@@ -25,6 +25,19 @@ def adapt_skud(data):
     return data.replace(old, b'4000 REM Render ship and reach BSAVE (Linux source recipe)')
 
 
+def adapt_special(data):
+    old = b'2410 DEF SEG=0:POKE 1050,PEEK(1052):RETURN'
+    if data.count(old) != 1:
+        raise ValueError('Unexpected upstream SPECIAL.BAS line 2410')
+    # BIOS pointer writes replay stale entries in PC-BASIC 2.0.7.
+    # Drain through the interpreter instead, retaining the accepted key in A.
+    mapping = (b'2405 IF A=CHR$(0)+CHR$(72) THEN A="8"\r\n'
+               b'2406 IF A=CHR$(0)+CHR$(80) THEN A="2"\r\n'
+               b'2407 IF A=CHR$(0)+CHR$(75) THEN A="4"\r\n'
+               b'2408 IF A=CHR$(0)+CHR$(77) THEN A="6"\r\n')
+    return data.replace(old, mapping + b'2410 DEF SEG=0:WHILE INKEY$<>"":WEND:RETURN')
+
+
 def run(*args, **kwargs):
     return subprocess.run([str(x) for x in args], check=True, **kwargs)
 
@@ -66,7 +79,7 @@ def main():
             for name in FILES:
                 data = subprocess.check_output(['git', '-C', str(source), 'show', COMMIT + ':' + name])
                 original[name] = hashlib.sha256(data).hexdigest()
-                (seed / name).write_bytes(adapt_skud(data) if name == 'SKUD.BAS' else data)
+                (seed / name).write_bytes(adapt_skud(data) if name == 'SKUD.BAS' else adapt_special(data) if name == 'SPECIAL.BAS' else data)
             logs = runtime / 'logs'
             logs.mkdir(exist_ok=True)
             for name in GENERATORS:
@@ -89,7 +102,7 @@ def main():
                 shutil.copy2(seed / name, target)
             manifest = {'game_version': '1', 'game_release': '3', 'display_version': '1.3', 'repository': URL, 'commit': COMMIT, 'original_sha256': original,
                         'runtime_sha256': {n: hashlib.sha256((game / n).read_bytes()).hexdigest() for n in (*FILES, *GENERATED)},
-                        'adaptations': ['SKUD.BAS line 4000: remove jump that skips ship rendering and BSAVE'],
+                        'adaptations': ['SKUD.BAS line 4000: remove jump that skips ship rendering and BSAVE', 'SPECIAL.BAS: drain INKEY$ instead of BIOS POKE; map PC-BASIC arrows to numeric directions'],
                         'entrypoint': 'SPECIAL.BAS', 'pcbasic': '2.0.7'}
             (runtime / 'source-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
         print('Kildeudgave installeret. REC.DAT og TEMP.PIC bevaret.', flush=True)

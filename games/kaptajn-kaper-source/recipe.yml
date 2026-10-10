@@ -1,0 +1,21 @@
+id: kaptajn-kaper-source
+title: Kaptajn Kaper - Version 1 Release 3 (GitHub-kilde)
+game_version: "1"
+game_release: "3"
+display_version: "1.3"
+engine: pcbasic
+engine_version: "2.0.7"
+source:
+  url: https://github.com/kb-dk/KaptajnKaper.git
+  commit: 32ee1365f2026748ec2e7079e7395f143026e751
+  license: GPL-3.0
+entrypoint: SPECIAL.BAS
+install: ./install.sh --no-launch
+launch: ./launch.sh
+verification:
+  generators: passed
+  visual: title-and-map
+  full_gameplay: pending
+appimage:
+  status: not-built
+  planned_filename: kaptajn-kaper-v1-release3-source-x86_64.AppImage

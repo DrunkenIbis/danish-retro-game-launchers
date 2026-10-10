@@ -1,6 +1,8 @@
-# Kaptajn Kaper i Kattegat (Kaper2.zip)
+# Kaptajn Kaper — Version 1, Release 5 (1.5 / ZIP-DOS)
 
-DOS-spillet viser **Version 1 Release 5**, selv om arkivet hedder Kaper2.zip.
+DOS-spillet viser **Version 1 Release 5** (kort: **1.5**), selv om arkivet hedder Kaper2.zip.
+Dette er den først installerede udgave. Den separate [GitHub-kildeudgave](../kaptajn-kaper-source/) er **Version 1 Release 3 (1.3)**.
+Mapper og gemmedata beholder deres eksisterende navne for ikke at bryde installationer.
 Brugeren har bekræftet, at spillet virker som det skal. Ingen yderligere gameplay-test ønsket.
 
 ## Installation og start
@@ -26,7 +28,7 @@ Overrides: `RETRO_GAME_SOURCE_DIR`, `RETRO_GAME_RUNTIME_DIR` (basismapper),
 
 ```sh
 ./games/kaptajn-kaper-2/extras/build_appimage.sh
-./games/kaptajn-kaper-2/extras/dist/kaptajn-kaper-2-x86_64.AppImage
+./games/kaptajn-kaper-2/extras/dist/kaptajn-kaper-v1-release5-dos-x86_64.AppImage
 ```
 
 Byggeren bruger repoets eksisterende checksum-fastlåste DOSBox- og AppImage-værktøjer.

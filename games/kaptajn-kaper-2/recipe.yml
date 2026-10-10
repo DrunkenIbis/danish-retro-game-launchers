@@ -1,5 +1,8 @@
 id: kaptajn-kaper-2
-title: Kaptajn Kaper i Kattegat
+title: Kaptajn Kaper - Version 1 Release 5 (DOS)
+game_version: "1"
+game_release: "5"
+display_version: "1.5"
 platform: dos
 engine: dosbox-staging
 engine_version: 0.83.0
@@ -20,6 +23,6 @@ verification:
   appimage_gameplay: not-retested-at-user-request
 appimage:
   build: ./extras/build_appimage.sh
-  output: extras/dist/kaptajn-kaper-2-x86_64.AppImage
+  output: extras/dist/kaptajn-kaper-v1-release5-dos-x86_64.AppImage
   bundled_dosbox: true
   state: ~/.local/share/kaptajn-kaper-2

@@ -59,7 +59,7 @@ def main():
         shutil.copy2(work / 'prepared/kaper.conf', app / 'kaper.conf')
         shutil.copy2(HERE / 'AppRun', app / 'AppRun')
         (app / 'AppRun').chmod(0o755)
-        desktop = f'[Desktop Entry]\nType=Application\nName=Kaptajn Kaper i Kattegat\nExec={ID}\nIcon={ID}\nCategories=Game;\nTerminal=false\n'
+        desktop = f'[Desktop Entry]\nType=Application\nName=Kaptajn Kaper - Version 1 Release 5 (DOS)\nX-AppImage-Version=1.5\nExec={ID}\nIcon={ID}\nCategories=Game;\nTerminal=false\n'
         for target in (app / f'{ID}.desktop', app / f'usr/share/applications/{ID}.desktop'):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(desktop)
@@ -74,14 +74,14 @@ def main():
         shutil.copy2(app / f'{ID}.png', icon)
         shutil.copy2(GAME / 'README.md', app / 'README.md')
         files = [GAME / 'runner.py', GAME / 'dosbox.conf', HERE / 'AppRun', HERE / 'build_appimage.py', HELPER]
-        provenance = {'dosbox_sha256': utils.DOSBOX_SHA, 'appimagetool_sha256': utils.TOOL_SHA,
+        provenance = {'game_version': '1', 'game_release': '5', 'edition': 'ZIP/DOS', 'dosbox_sha256': utils.DOSBOX_SHA, 'appimagetool_sha256': utils.TOOL_SHA,
                       'recipe_commit': subprocess.check_output(['git','rev-parse','HEAD'], cwd=REPO, text=True).strip(),
                       'source_hashes': {str(p.relative_to(REPO)): utils.digest(p) for p in files},
                       'game_hashes': {p.name: utils.digest(p) for p in (app / 'game').iterdir()}}
         (app / 'build-provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
         tool.chmod(0o755)
         utils.run(tool, '--appimage-extract', cwd=work, stdout=subprocess.DEVNULL)
-        pending = work / f'{ID}-x86_64.AppImage'
+        pending = work / 'kaptajn-kaper-v1-release5-dos-x86_64.AppImage'
         utils.run(work / 'squashfs-root/AppRun', app, pending, env=dict(os.environ, ARCH='x86_64'))
         output = dist / pending.name
         pending.replace(output)

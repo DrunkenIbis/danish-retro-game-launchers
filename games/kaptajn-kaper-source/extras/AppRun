@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ "${1:-}" == --version ]]; then
+    printf 'Kaptajn Kaper - Version 1 Release 3 (GitHub-kilde)\n'
+    exec "$HERE/runtime/pcbasic" --version
+fi
+STATE="${XDG_DATA_HOME:-$HOME/.local/share}/kaptajn-kaper-source"
+mkdir -p "$STATE"
+exec 9>"$STATE/.launch.lock"
+flock -n 9 || { printf 'Kaptajn Kaper Release 3 kører allerede.\n' >&2; exit 1; }
+if [[ ! -d "$STATE/game" ]]; then
+    seed="$(mktemp -d "$STATE/.seed.XXXXXXXX")"
+    trap 'rm -rf -- "$seed"' EXIT
+    cp -a "$HERE/game/." "$seed/"
+    chmod -R u+rwX "$seed"
+    mv -- "$seed" "$STATE/game"
+    trap - EXIT
+fi
+for f in SPECIAL.BAS TITEL.PIC MAP.PIC SIGTE.PIC FIGURES.DAT HLP.DAT; do
+    [[ -s "$STATE/game/$f" ]] || { printf 'Spilfil mangler: %s\n' "$f" >&2; exit 1; }
+done
+printf '[pcbasic]\n' > "$STATE/pcbasic.ini"
+cd "$STATE/game"
+export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-x11}"
+export SDL_AUDIODRIVER="${SDL_AUDIODRIVER:-pulse}"
+"$HERE/runtime/pcbasic" SPECIAL.BAS --config="$STATE/pcbasic.ini" \
+    --codepage=850 --video=vga --syntax=advanced --resume=False \
+    --state="$STATE/pcbasic.session" --interface=graphical --sound=True \
+    --quit=True --dimensions=960,720 --scaling=crisp \
+    '--caption=Kaptajn Kaper - Version 1 Release 3 (GitHub-kilde AppImage)' "$@" 9>&-

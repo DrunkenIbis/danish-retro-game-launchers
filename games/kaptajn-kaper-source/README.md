@@ -32,6 +32,26 @@ Installation og alle fire datageneratorer gennemført. Startskærm og Kattegat-k
 Begge hidtidige PC-BASIC-processer afsluttede med exit 0. Sejlads/kamp og hørbar lyd er ikke fuldt verificeret.
 Den tidligere brugerbekræftelse af DOS-spillet gælder Release 5, ikke automatisk denne Release 3.
 
-**Ingen AppImage bygget af Release 3 endnu.** Release 5-AppImage må ikke forveksles med denne variant.
-Hvis denne udgave pakkes senere, skal filnavnet være `kaptajn-kaper-v1-release3-source-x86_64.AppImage`,
-programnavnet indeholde `Version 1 Release 3 (GitHub-kilde)`, og dens brugerdata skal holdes separat.
+## AppImage — Version 1 Release 3
+
+```sh
+./games/kaptajn-kaper-source/extras/build_appimage.sh
+./games/kaptajn-kaper-source/extras/dist/kaptajn-kaper-v1-release3-source-x86_64.AppImage
+```
+
+Python 3.12, PC-BASIC 2.0.7 og SDL2 er indbygget med PyInstaller 6.16.0.
+Der kræves ikke system-Python, uv, Git, Wine eller DOSBox for at spille.
+Værten skal stadig have x86-64 Linux, kompatibel glibc, Bash/coreutils/flock, X11/XWayland,
+lydsystem og normalt FUSE. Uden FUSE kan `--appimage-extract-and-run` anvendes.
+Dette er en lokalt bygget pakke, ikke et løfte om testet portabilitet på alle Linux-distributioner.
+
+Programnavn og metadata viser **Version 1 Release 3 (GitHub-kilde)** / **1.3**.
+Brugerdata ligger i `${XDG_DATA_HOME:-$HOME/.local/share}/kaptajn-kaper-source`, adskilt fra Release 5.
+Seed kopieres atomisk første gang; senere starter bevarer eksisterende data.
+`--version` viser spillets version og den indbyggede PC-BASIC-version uden at oprette brugerdata.
+
+Byggeren genererer en frisk seed fra det fastlåste Git-commit — ikke fra en igangværende spilsession.
+Original BASIC-kilde og GPL-licens ligger i `upstream-source/`; tilpasningsopskriften og manifest følger med.
+Pakken holdes lokal som de øvrige spilpakker; en fuld tredjeparts-distributionsaudit er ikke udført.
+
+Aktuel pakkekontrol og checksum dokumenteres i `APPIMAGE.md`. Build/versionstest er ikke i sig selv gameplay-verifikation.

@@ -17,5 +17,10 @@ verification:
   visual: title-and-map
   full_gameplay: pending
 appimage:
-  status: not-built
-  planned_filename: kaptajn-kaper-v1-release3-source-x86_64.AppImage
+  status: built
+  build: ./extras/build_appimage.sh
+  output: extras/dist/kaptajn-kaper-v1-release3-source-x86_64.AppImage
+  bundled_python: true
+  bundled_pcbasic: true
+  state: ~/.local/share/kaptajn-kaper-source
+  gameplay: pending

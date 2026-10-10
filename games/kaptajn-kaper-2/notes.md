@@ -17,7 +17,7 @@
 - Indbygget proveniens angiver game_version=1, game_release=5, edition=ZIP/DOS.
 - Alle spilfilers hash matcher den tidligere pakke. Kun mærkning/dokumentation ændret; ingen gameplay-gentest.
 - Skrivebords- og menugenvej peger nu på den versionerede pakke. Gemmemappen er uændret.
-- Den separate GitHub-kilde er Version 1 Release 3 (1.3); ingen Release 3-AppImage bygget endnu.
+- Den separate GitHub-kilde er Version 1 Release 3 (1.3); egen Release 3-AppImage findes nu under `games/kaptajn-kaper-source/extras/dist/`.
 
 ### Tidligere pakke, bevaret som rollback
 - Fil: `extras/dist/kaptajn-kaper-2-x86_64.AppImage`.
